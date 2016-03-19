@@ -1,0 +1,7 @@
+idStyle;style;abrevStyle
+0;"NONE";"X"
+1;"FREESTYLE";"FR"
+2;"BREASTSTROKE";"BR"
+3;"BUTTERFLY";"FL"
+4;"BACKSTROKE";"BK"
+5;"INDIVIDUAL MEDLEY";"IM"

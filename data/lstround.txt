@@ -1,0 +1,6 @@
+idRound;title;roundAbrev
+0;"None";""
+1;"Heat";"H"
+2;ÓSemi Final";"SFI"
+3;ÓFinal";"FI"
+4;ÓConsolation";"CON"
