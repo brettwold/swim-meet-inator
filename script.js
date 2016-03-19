@@ -1,4 +1,5 @@
 global.$ = $;
+var models  = require('./models');
 
 var remote = require('remote');
 var Menu = remote.require('menu');
@@ -6,7 +7,7 @@ var BrowserWindow = remote.require('browser-window');
 var MenuItem = remote.require('menu-item');
 var shell = require('shell');
 
-var Results = require('results');
+var Results = require('./results');
 
 // append default actions to menu for OSX
 var initMenu = function () {
