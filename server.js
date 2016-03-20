@@ -9,9 +9,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var results = require('./routes/results');
-
 let server;
 let expressApp = express();
 
@@ -66,6 +63,9 @@ function onListening() {
 var ApiServer = function() {
 };
 
+var routes = require('./server/routes/index');
+var results = require('./server/routes/results');
+var meets = require('./server/routes/meets');
 
 ApiServer.prototype.startServer = function() {
 
@@ -79,6 +79,7 @@ ApiServer.prototype.startServer = function() {
 
   expressApp.use('/', routes);
   expressApp.use('/api/results', results);
+  expressApp.use('/api/meets', meets);
 
   // catch 404 and forward to error handler
   expressApp.use(function(req, res, next) {
@@ -101,10 +102,8 @@ ApiServer.prototype.startServer = function() {
   // no stacktraces leaked to user
   expressApp.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: {}
-    });
+    console.error(err.stack);
+    res.send('Something broke!');
   });
 
   server = http.createServer(expressApp);

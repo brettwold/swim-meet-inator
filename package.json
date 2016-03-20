@@ -34,7 +34,6 @@
     "sequelize": "^3.19.3",
     "sequelize-cli": "^2.3.1",
     "serve-favicon": "~2.3.0",
-    "sqlite3": "^3.1.1",
-    "express-handlebars": "^3.0.0"
+    "sqlite3": "^3.1.1"
   }
 }

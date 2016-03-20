@@ -3,10 +3,8 @@ angular
   .config(['$routeProvider',
     function($routeProvider) {
       $routeProvider.
-        when('/home', {
-          templateUrl: 'partials/home.html'
-        }).
-        otherwise({
-          redirectTo: '/'
+        when('/results', {
+          templateUrl: 'partials/results.html',
+          controller: 'ResultCtrl'
         });
     }]);

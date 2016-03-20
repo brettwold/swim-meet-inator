@@ -136,6 +136,7 @@ CREATE TABLE "meets"
 	"id"				PRIMARY KEY,
 	"name"				VARCHAR (128),
 	"title"				VARCHAR (256),
+  "venue"       VARCHAR (512),
 	"meet_date"			TIMESTAMP WITHOUT TIME ZONE,
 	"qual_date"			TIMESTAMP WITHOUT TIME ZONE,
 	"age_groups"			BOOL NOT NULL,

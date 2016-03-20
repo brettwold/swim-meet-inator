@@ -1,0 +1,55 @@
+<div ng-controller="MeetCtrl" layout="column">
+  <div ng-include="'partials/meets-menu.html'"></div>
+
+  <div ng-cloak class="md-inline-form">
+    <md-content layout-gt-sm="row" layout-padding>
+     <form name="userForm" flex>
+       <div layout="row">
+         <md-input-container class="md-block" flex-gt-xs>
+           <label>Name</label>
+           <input ng-model="meet.name">
+         </md-input-container>
+         <md-datepicker ng-model="meet.meet_date" md-placeholder="Meet date">
+         </md-datepicker>
+       </div>
+       <div layout-gt-sm="row">
+         <md-input-container class="md-block" flex-gt-xs>
+           <label>Venue</label>
+           <input ng-model="meet.venue">
+         </md-input-container>
+         <md-datepicker ng-model="meet.qual_date" md-placeholder="Qualification date">
+         </md-datepicker>
+       </div>
+       <div layout-gt-sm="row">
+         <md-input-container>
+           <label>Type</label>
+           <md-select ng-model="meet.meet_type" flex-gt-xs>
+             <md-option ng-repeat="type in meet_types" value="{{type}}">{{type}}</md-option>
+           </md-select>
+         </md-input-container>
+         <md-input-container>
+           <label>Lanes</label>
+           <md-select ng-model="meet.lanes" flex-gt-xs>
+             <md-option ng-repeat="lane in lanes" value="{{lane}}">{{lane}}</md-option>
+           </md-select>
+         </md-input-container>
+         <md-input-container class="md-block" flex-gt-xs>
+           <label>Promoter</label>
+           <input ng-model="meet.promoter">
+         </md-input-container>
+       </div>
+       <md-switch ng-model="meet.hdw" aria-label="Heat declared winner">
+         Heat declared winner
+       </md-switch>
+       <md-switch ng-model="meet.aoe" aria-label="Age on entry">
+         Age on entry
+       </md-switch>
+       <md-button class="md-raised md-primary" ng-click="save()">
+         Save
+       </md-button>
+     </form>
+  </md-content>
+</div>
+
+
+</div>
