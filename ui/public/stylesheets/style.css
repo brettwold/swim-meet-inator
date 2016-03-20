@@ -1,0 +1,10 @@
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+body {
+  padding-top: 50px;
+}
+.swim-resultinator {
+  padding: 40px 15px;
+  text-align: center;
+}

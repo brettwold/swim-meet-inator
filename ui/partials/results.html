@@ -1,0 +1,36 @@
+<div ng-controller="ResultCtrl" ng-cloak>
+	<h1>Results ({{results.length}})</h1>
+
+	<table>
+		<tr>
+			<th>Event</th>
+			<th>Round</th>
+			<th>Heat</th>
+			<th>Lap</th>
+			<th>Lane</th>
+			<th>Status</th>
+			<th>Rank</th>
+			<th>Time</th>
+			<th>Result</th>
+			<th>Mod</th>
+			<th>Backup Time</th>
+			<th>Backup Result</th>
+			<th>Backup Mod</th>
+		</tr>
+	  <tr ng-repeat="result in results">
+			<td>{{result.event_id}}</td>
+			<td>{{result.round}}</td>
+			<td>{{result.heat}}</td>
+			<td>{{result.lap}}</td>
+			<td>{{result.lane}}</td>
+			<td>{{result.status}}</td>
+			<td>{{result.rank}}</td>
+			<td>{{result.time}}</td>
+			<td>{{result.result}}</td>
+			<td>{{result.mod}}</td>
+			<td>{{result.backup_time}}</td>
+			<td>{{result.backup_result}}</td>
+			<td>{{result.backup_mod}}</td>
+		</tr>
+	</table>
+</div>

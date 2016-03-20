@@ -9,10 +9,7 @@ router.get('/', function(req, res, next) {
 
   var results = new Results();
   results.open(process.cwd() + '/data', function() {
-    console.log("Got " + results.resultData.length + " results");
-    res.render('results', {
-      results: results.resultData
-    });
+    res.json(results.resultData);
   });
 });
 

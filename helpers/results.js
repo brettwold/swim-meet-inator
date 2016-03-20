@@ -21,9 +21,7 @@ Results.prototype.open = function(dir, callback) {
 	lineReader.on('line', function (line) {
 		var lineData = models.ResultLine.build({fromData: line});
 		lineData.validate().then(function(errs) {
-			if(errs) {
-				console.log(errs);
-			} else {
+			if(!errs) {
 				self.resultData.push(lineData);
 			}
 
@@ -34,7 +32,5 @@ Results.prototype.open = function(dir, callback) {
 	    callback();
 	});
 };
-
-Results.prototype.get
 
 module.exports = Results;
