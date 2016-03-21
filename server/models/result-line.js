@@ -9,7 +9,6 @@ function trimWhiteSpaceFromResultString(str) {
 module.exports = function(sequelize, DataTypes) {
 
   var ResultLine = sequelize.define("ResultLine", {
-    event_id: DataTypes.INTEGER,
 		round: DataTypes.INTEGER,
 		heat: DataTypes.INTEGER,
 		lap: {
@@ -22,13 +21,18 @@ module.exports = function(sequelize, DataTypes) {
 		lane: DataTypes.INTEGER,
 		status: DataTypes.INTEGER,
 		rank: DataTypes.INTEGER,
-		time: DataTypes.STRING,
-		result: DataTypes.INTEGER,
+		time: DataTypes.INTEGER,
+		result: DataTypes.STRING,
 		mod: DataTypes.STRING,
 		backup_time: DataTypes.INTEGER,
 		backup_result: DataTypes.INTEGER,
 		backup_mod: DataTypes.STRING,
   }, {
+		classMethods: {
+			associate: function(models) {
+				ResultLine.belongsTo(models.event);
+			}
+		},
 		getterMethods: {
 			fromData: function() {}
 		},

@@ -1,24 +1,8 @@
-<md-toolbar class="md-menu-toolbar">
-<div layout="row">
-  <md-toolbar-filler layout layout-align="center center">
-    <md-icon md-svg-icon="call:chat"></md-icon>
-  </md-toolbar-filler>
-  <div>
+<md-toolbar>
+  <div layout="row" class="md-toolbar-tools">
     <h2 class="md-toolbar-tools">Results</h2>
-    <md-menu-bar>
-      <md-menu>
-        <button ng-click="$mdOpenMenu()">
-          Manage
-        </button>
-        <md-menu-content>
-        <md-menu-item>
-          <md-button ng-click="navigateTo('/add')">
-            Create new...
-          </md-button>
-        </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-    </md-menu-bar>
+    <md-button class="md-raised" aria-label="Refresh" ng-click="refresh()">
+      Refresh
+    </md-button>
   </div>
-</div>
 </md-toolbar>

@@ -12,7 +12,7 @@ var bodyParser = require('body-parser');
 let server;
 let expressApp = express();
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3456');
 
 function normalizePort(val) {
   var port = parseInt(val, 10);

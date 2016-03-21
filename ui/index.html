@@ -23,12 +23,6 @@
         <h1 class="md-toolbar-tools">Swim Resultinator</h1>
       </md-toolbar>
       <md-content layout-padding ng-controller="LeftCtrl">
-        <md-button ng-click="close()" class="md-primary" hide-gt-md>
-          Close Sidenav Left
-        </md-button>
-        <p hide-md show-gt-md>
-
-        </p>
         <div>
           <md-list ng-controller="MenuListCtrl" ng-cloak>
             <md-list-item class="md-clickable" ng-click="navigateTo('/home')">Home</md-list-item>
@@ -36,10 +30,6 @@
             <md-list-item class="md-clickable" ng-click="navigateTo('/results')">Results</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/about')">About</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/contact')">Contact</md-list-item>
-          </md-list>
-
-          <md-list>
-            <a href="http://127.0.0.1:3000/api/meets">Meets</a>
           </md-list>
         </div>
       </md-content>

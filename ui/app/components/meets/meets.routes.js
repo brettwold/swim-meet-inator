@@ -5,10 +5,12 @@ angular
       $routeProvider.
         when('/meets', {
           templateUrl: 'partials/meets.html',
-          controller: 'MeetCtrl'
+          controller: 'MeetCtrl',
+          status: 'list'
         }).
         when('/meets/edit/:id?', {
           templateUrl: 'partials/meets-edit.html',
-          controller: 'MeetCtrl'
+          controller: 'MeetCtrl',
+          status: 'edit'
         });
     }]);

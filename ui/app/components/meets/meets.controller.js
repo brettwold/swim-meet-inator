@@ -3,9 +3,10 @@ angular
   .controller('MeetCtrl', MeetCtrl)
   .factory('MeetFactory', MeetFactory);
 
-function MeetCtrl($scope, $location, $routeParams, MeetFactory) {
+function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory) {
 
   $scope.meet = {};
+  $scope.status = $route.current.status;
   $scope.meet_types = ["Level 1", "Level 2", "Level 3", "Level 4"];
   $scope.lanes = ["6", "8", "10"];
 
@@ -19,22 +20,26 @@ function MeetCtrl($scope, $location, $routeParams, MeetFactory) {
     });
   };
 
+  $scope.add = function() {
+    $scope.navigateTo('/edit');
+  };
+
   $scope.save = function() {
     MeetFactory.save($scope.meet).then(function(response) {
       $scope.meet = response.data;
     })
-  }
+  };
 
   $scope.delete = function(id) {
     MeetFactory.delete(id);
     $scope.getAll();
-  }
+  };
 
   if($routeParams.id) {
     MeetFactory.get($routeParams.id).then(function(response) {
       $scope.meet = response.data;
     });
-  }
+  };
 }
 
 function MeetFactory($http, UrlService) {
