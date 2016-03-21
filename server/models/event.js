@@ -2,7 +2,7 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Event = sequelize.define("event", {
-    meet_id: DataTypes.INTEGER
+    meet_id: DataTypes.UUID
   }, {
     classMethods: {
       associate: function(models) {

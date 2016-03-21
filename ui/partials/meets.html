@@ -1,6 +1,16 @@
 <div ng-controller="MeetCtrl">
   <div ng-include="'partials/meets-menu.html'"></div>
 
-  <div ng-init="getAll()">
+  <div ng-init="getAll()" layout-padding>
+    <table>
+      <tr><th>Meet</th><th></th></tr>
+      <tr ng-repeat="meet in meets.rows">
+        <td>{{meet.name}}</td>
+        <td>
+          <md-button ng-click="navigateTo('/edit/' + meet.id)" class="md-primary">Edit</md-button>
+          <md-button ng-click="delete(meet.id)" class="md-primary">Delete</md-button>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

@@ -7,8 +7,8 @@ angular
           templateUrl: 'partials/meets.html',
           controller: 'MeetCtrl'
         }).
-        when('/meets/add', {
-          templateUrl: 'partials/meets-add.html',
+        when('/meets/edit/:id?', {
+          templateUrl: 'partials/meets-edit.html',
           controller: 'MeetCtrl'
         });
     }]);

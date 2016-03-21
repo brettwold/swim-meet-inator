@@ -133,7 +133,7 @@ CREATE INDEX "meet_parameters_meet_id_idx" ON "meet_parameters" ("meet_id");
 
 CREATE TABLE "meets"
  (
-	"id"				PRIMARY KEY,
+	"id"				VARCHAR (64) PRIMARY KEY,
 	"name"				VARCHAR (128),
 	"title"				VARCHAR (256),
   "venue"       VARCHAR (512),
@@ -145,7 +145,7 @@ CREATE TABLE "meets"
 	"lanes"				INTEGER,
 	"final_lanes"			INTEGER,
 	"hdw"				BOOL NOT NULL,
-	"program_notes"			BOOL NOT NULL,
+	"program_notes"			BOOL,
 	"aoe"				BOOL NOT NULL,
 	"aoe_online"			VARCHAR (50),
 	"announcer"			VARCHAR (128),

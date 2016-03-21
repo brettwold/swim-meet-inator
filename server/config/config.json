@@ -5,23 +5,31 @@
     "database": "main",
     "storage": "data/swim.db",
     "dialect": "sqlite",
-	"define": {
-	    "underscored": true,
-	    "timestamps": true
-	  }
+  	"define": {
+  	    "underscored": true,
+  	    "timestamps": true
+  	}
   },
   "test": {
     "username": "root",
     "password": null,
     "database": "database_test",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+  	"define": {
+  	    "underscored": true,
+  	    "timestamps": true
+  	}
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "database_production",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+  	"define": {
+  	    "underscored": true,
+  	    "timestamps": true
+  	}
   }
 }

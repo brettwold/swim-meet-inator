@@ -70,7 +70,7 @@ var meets = require('./server/routes/meets');
 ApiServer.prototype.startServer = function() {
 
   // uncomment after placing your favicon in /public
-  //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+  expressApp.use(favicon(path.join(__dirname, 'ui/public', 'favicon.ico')));
   expressApp.use(logger('dev'));
   expressApp.use(bodyParser.json());
   expressApp.use(bodyParser.urlencoded({ extended: false }));
