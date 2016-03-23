@@ -14,7 +14,13 @@
              <input ng-model="meet.venue">
            </md-input-container>
          </div>
-         <div layout-gt-sm="row" flex>
+         <div layout="row">
+           <md-input-container class="md-block" flex-gt-xs>
+             <label>Promoter</label>
+             <input ng-model="meet.promoter">
+           </md-input-container>
+         </div>
+         <div layout-gt-sm="row" class="form_dates">
            <div layout="column">
              <label>Start date</label>
              <md-datepicker ng-model="meet.meet_date" utc-parser md-placeholder="Meet date">
@@ -33,28 +39,38 @@
          </div>
          <div layout-gt-sm="row">
            <md-input-container>
+             <label>Age entry type</label>
+             <md-select ng-model="meet.age_type" flex-gt-xs>
+               <md-option ng-repeat="type in config.meet_age_types" value="{{type.code}}">{{type.name}}</md-option>
+             </md-select>
+           </md-input-container>
+         </div>
+         <div layout-gt-sm="row">
+           <md-input-container>
              <label>Type</label>
              <md-select ng-model="meet.meet_type" flex-gt-xs>
-               <md-option ng-repeat="type in meet_types" value="{{type}}">{{type}}</md-option>
+               <md-option ng-repeat="type in config.meet_types" value="{{type}}">{{type}}</md-option>
              </md-select>
            </md-input-container>
            <md-input-container>
              <label>Lanes</label>
              <md-select ng-model="meet.lanes" flex-gt-xs>
-               <md-option ng-repeat="lane in lanes" value="{{lane}}">{{lane}}</md-option>
+               <md-option ng-repeat="lane in config.lanes" value="{{lane}}">{{lane}}</md-option>
              </md-select>
            </md-input-container>
-           <md-input-container class="md-block" flex-gt-xs>
-             <label>Promoter</label>
-             <input ng-model="meet.promoter">
+           <md-input-container>
+             <label>Course</label>
+             <md-select ng-model="meet.course_type" flex-gt-xs>
+               <md-option ng-repeat="course_type in config.course_types" value="{{course_type.code}}">{{course_type.name}}</md-option>
+             </md-select>
            </md-input-container>
+           <md-input-container>
+             <label>Entrants</label>
+             <md-select multiple="true" ng-model="meet.genders" flex-gt-xs>
+               <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{gender}}</md-option>
+             </md-select>
+            <md-input-container>
          </div>
-         <md-switch ng-model="meet.hdw" aria-label="Heat declared winner">
-           Heat declared winner
-         </md-switch>
-         <md-switch ng-model="meet.aoe" aria-label="Age on entry">
-           Age on entry
-         </md-switch>
        </form>
 
        <md-card id="events">
@@ -63,10 +79,33 @@
              <span class="md-headline">Events</span>
            </div>
          </md-toolbar>
-         <md-list>
-           <md-item></md-item>
-           <md-divider></md-divider>
-         </md-list>
+         <div layout-padding>
+           <div ng-if="!meet.course_type">
+             <span class="md-subhead">Select course type above to add events to this meet</span>
+           </div>
+           <div ng-if="meet.course_type">
+             {{meet.events}}
+             <md-list>
+               <md-list-item layout="row">
+                 <div flex="30">Stroke</div>
+                 <div flex ng-if="meet.genders">Entrants (<span ng-repeat="gender in meet.genders">{{config.genders[gender]}}<span ng-if="!$last">, </span></span>)</div>
+                 <div flex ng-if="!meet.genders">Select entrant types above</div>
+               </md-list-item>
+               <md-divider></md-divider>
+               <div ng-repeat="stroke in config.strokes">
+                 <md-list-item ng-repeat="(lengths, distance) in stroke.distances[meet.course_type]" layout="row">
+                    <span flex="30">{{distance}} {{stroke.name}}</span>
+                    <span flex>
+                      <md-select multiple="true" ng-model="meet.events[stroke.code][distance].genders" ng-if="meet.genders" aria-label="Genders">
+                        <md-option ng-repeat="gender in meet.genders" value="{{gender}}">{{config.genders[gender]}}</md-option>
+                      </md-select>
+                    </span>
+                 </md-list-item>
+                 <md-divider></md-divider>
+               </div>
+             </md-list>
+           </div>
+         </div>
        </md-card>
     </md-content>
     </div>

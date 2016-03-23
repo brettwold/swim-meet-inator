@@ -3,12 +3,12 @@
 module.exports = function(sequelize, DataTypes) {
   var Event = sequelize.define("event", {
     event_number: DataTypes.INTEGER,
-  	event_type: DataTypes.STRING,
+  	event_type: DataTypes.CHAR(3),
   	event_sequence: DataTypes.INTEGER,
   	age_group: DataTypes.STRING,
-  	sex: DataTypes.CHAR(1),
-  	distance: DataTypes.INTEGER,
-  	stroke:	DataTypes.STRING,
+  	genders: DataTypes.STRING,
+  	distance: DataTypes.STRING,
+  	stroke:	DataTypes.CHAR(2),
   	event_date:	DataTypes.DATEONLY,
   	limit_time:	DataTypes.INTEGER,
   	record_time: DataTypes.INTEGER,

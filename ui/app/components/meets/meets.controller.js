@@ -3,12 +3,11 @@ angular
   .controller('MeetCtrl', MeetCtrl)
   .factory('MeetFactory', MeetFactory);
 
-function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory) {
+function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) {
 
-  $scope.meet = {};
+  $scope.meet = {events: {}};
   $scope.status = $route.current.status;
-  $scope.meet_types = ["Level 1", "Level 2", "Level 3", "Level 4"];
-  $scope.lanes = ["6", "8", "10"];
+  $scope.config = Config;
 
   $scope.navigateTo = function(to, event) {
     $location.path('/meets' + to);
@@ -33,6 +32,24 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory) {
   $scope.delete = function(id) {
     MeetFactory.delete(id);
     $scope.getAll();
+  };
+
+  $scope.addEvent = function(index) {
+    if(!$scope.meet.events) {
+      $scope.meet.events = new Array();
+    }
+    console.log(index);
+    $scope.meet.events.push( { stroke: $scope.config.strokes[index].code } );
+  }
+
+  $scope.exists = function (item, list) {
+    return list.indexOf(item) > -1;
+  };
+
+  $scope.toggle = function (item, list) {
+    var idx = list.indexOf(item);
+    if (idx > -1) list.splice(idx, 1);
+    else list.push(item);
   };
 
   if($routeParams.id) {
