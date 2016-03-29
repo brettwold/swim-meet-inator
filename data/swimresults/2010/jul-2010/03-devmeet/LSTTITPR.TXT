@@ -1,0 +1,28 @@
+event;round;text
+501 ;0 ;"Girls 9/11/13 Years 200m Freestyle" ;"" ;"" ;
+502 ;0 ;"Boys 9/11/13 Years 200m Breaststroke" ;"" ;"" ;
+503 ;0 ;"Girls 15/16,17/18 Years 200m Backstroke" ;"" ;"" ;
+504 ;0 ;"Boys 15/16,17/18 Years 200m Butterfly" ;"" ;"" ;
+505 ;0 ;"Girls 11/13 Years 100m Butterfly" ;"" ;"" ;
+506 ;0 ;"Boys 11/13 Years 100m Freestyle" ;"" ;"" ;
+507 ;0 ;"Girls 15/16,17/18 Years 100m Breaststroke" ;"" ;"" ;
+508 ;0 ;"Boys 15/16,17/18 Years 100m Backstroke" ;"" ;"" ;
+509 ;0 ;"Girls 9/11/13 Years 50m Backstroke" ;"" ;"" ;
+510 ;0 ;"Boys 9/11/13 Years 50m Butterfly" ;"" ;"" ;
+511 ;0 ;"Girls 15/16,17/18 Years 50m Freestyle" ;"" ;"" ;
+512 ;0 ;"Boys 15/16,17/18 Years 50m Breaststroke" ;"" ;"" ;
+513 ;0 ;"Girls 9/11/13 Years 100m Individual Medley" ;"" ;"" ;
+514 ;0 ;"Boys 15/16,17/18 Years 100m Individual Medley" ;"" ;"" ;
+601 ;0 ;"Boys 9/11/13 Years 200m Butterfly" ;"" ;"" ;
+602 ;0 ;"Girls 9/11/13 Years 200m Backstroke" ;"" ;"" ;
+603 ;0 ;"Boys 15/16,17/18 Years 200m Breaststroke" ;"" ;"" ;
+604 ;0 ;"Girls 15/16,17/18 Years 200m Freestyle" ;"" ;"" ;
+605 ;0 ;"Boys 11/13 Years 100m Backstroke" ;"" ;"" ;
+606 ;0 ;"Girls 11/13 Years 100m Breaststroke" ;"" ;"" ;
+607 ;0 ;"Boys 15/16,17/18 Years 100m Freestyle" ;"" ;"" ;
+608 ;0 ;"Girls 15/16,17/18 Years 100m Butterfly" ;"" ;"" ;
+609 ;0 ;"Boys 9/11/13 Years 50m Breaststroke" ;"" ;"" ;
+610 ;0 ;"Girls 9/11/13 Years 50m Freestyle" ;"" ;"" ;
+611 ;0 ;"Boys 15/16,17/18 Years 50m Butterfly" ;"" ;"" ;
+612 ;0 ;"Girls 15/16,17/18 Years 50m Backstroke" ;"" ;"" ;
+999 ;0 ;"" ;"" ;"" ;

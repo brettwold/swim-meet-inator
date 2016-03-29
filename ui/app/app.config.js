@@ -9,6 +9,10 @@ angular
       "M": "Men",
       "W": "Women"
     },
+    swimmer_genders: {
+      "M": "Male",
+      "F": "Female"
+    },
     meet_age_types: [
       {name: "Age on entry", code: "AOE"},
       {name: "Age on meet date", code: "AMD"},

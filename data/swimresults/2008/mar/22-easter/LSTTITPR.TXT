@@ -1,0 +1,19 @@
+event;round;text
+101 ;0 ;"Girls Age 11 & Under 50m Freestyle" ;"" ;"" ;
+103 ;0 ;"Boys Age 11 & Under 50m Breaststroke" ;"" ;"" ;
+105 ;0 ;"Girls Age 11 & Under 50m Backstroke" ;"" ;"" ;
+107 ;0 ;"Boys Age 11 & Under 50m Butterfly" ;"" ;"" ;
+109 ;0 ;"Girls Age 11 & Under 50m Breaststroke" ;"" ;"" ;
+111 ;0 ;"Boys Age 11 & Under 50m Freestyle" ;"" ;"" ;
+113 ;0 ;"Girls Age 11 & Under 50m Butterfly" ;"" ;"" ;
+115 ;0 ;"Boys Age 11 & Under 50m Backstroke" ;"" ;"" ;
+201 ;0 ;"Girls Ages 12-14 50m Freestyle" ;"" ;"" ;
+204 ;0 ;"Boys Ages 12-14 50m Breaststroke" ;"" ;"" ;
+207 ;0 ;"Girls Ages 12-14 50m Backstroke" ;"" ;"" ;
+210 ;0 ;"Boys Ages 12-14 50m Butterfly" ;"" ;"" ;
+213 ;0 ;"Girls Ages 12-14 50m Breaststroke" ;"" ;"" ;
+216 ;0 ;"Boys Ages 12-14 50m Freestyle" ;"" ;"" ;
+219 ;0 ;"Girls Ages 12-14 50m Butterfly" ;"" ;"" ;
+222 ;0 ;"Boys Ages 12-14 50m Backstroke" ;"" ;"" ;
+999 ;0 ;"" ;"" ;"" ;
+300 ;0 ;"" ;"" ;"" ;

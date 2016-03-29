@@ -1,0 +1,19 @@
+event;round;text
+201 ;0 ;"Boys 14/U 200m Backstroke" ;"" ;"" ;
+202 ;0 ;"Girls 13/U 200m Freestyle" ;"" ;"" ;
+203 ;0 ;"Boys 14/U 100m Breaststroke" ;"" ;"" ;
+204 ;0 ;"Girls 13/U 100m Butterfly" ;"" ;"" ;
+205 ;0 ;"Boys 14/U 200m Butterfly" ;"" ;"" ;
+206 ;0 ;"Girls 13/U 200m Breaststroke" ;"" ;"" ;
+207 ;0 ;"Boys 14/U 100m Freestyle" ;"" ;"" ;
+208 ;0 ;"Girls 13/U 100m Backstroke" ;"" ;"" ;
+209 ;0 ;"Boys 14/U 100m Individual Medley" ;"" ;"" ;
+301 ;0 ;"Girls 13/U 200m Backstroke" ;"" ;"" ;
+302 ;0 ;"Boys 14/U 200m Freestyle" ;"" ;"" ;
+303 ;0 ;"Girls 13/U 100m Breaststroke" ;"" ;"" ;
+304 ;0 ;"Boys 14/U 100m Butterfly" ;"" ;"" ;
+305 ;0 ;"Girls 13/U 200m Butterfly" ;"" ;"" ;
+306 ;0 ;"Boys 14/U 200m Breaststroke" ;"" ;"" ;
+307 ;0 ;"Girls 13/U 100m Freestyle" ;"" ;"" ;
+308 ;0 ;"Boys 14/U 100m Backstroke" ;"" ;"" ;
+309 ;0 ;"Girls 13/U 100m Individual Medley" ;"" ;"" ;

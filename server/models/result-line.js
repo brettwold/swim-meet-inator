@@ -1,14 +1,12 @@
 // maps to ARES result list
 // columns are:
 //    event;round;heat;lap;lane;idStatus;rank;time;result;mod;btime;bresult;bmod
-
-function trimWhiteSpaceFromResultString(str) {
-	return str.replace(/['"]+/g, '').trim();
-}
+var Utils = require('../helpers/utils');
 
 module.exports = function(sequelize, DataTypes) {
 
   var ResultLine = sequelize.define("ResultLine", {
+		external_event_id: DataTypes.INTEGER,
 		round: DataTypes.INTEGER,
 		heat: DataTypes.INTEGER,
 		lap: {
@@ -30,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
 		classMethods: {
 			associate: function(models) {
-				ResultLine.belongsTo(models.event);
+				ResultLine.belongsTo(models.Event);
 			}
 		},
 		getterMethods: {
@@ -41,19 +39,19 @@ module.exports = function(sequelize, DataTypes) {
 				var fields = data.split(';');
 				var fieldCount = 0;
 
-				this.setDataValue('event_id', fields[fieldCount++]);
-				this.setDataValue('round', fields[fieldCount++]);
-				this.setDataValue('heat', fields[fieldCount++]);
-				this.setDataValue('lap', fields[fieldCount++]);
-				this.setDataValue('lane', fields[fieldCount++]);
+				this.setDataValue('external_event_id', parseInt(fields[fieldCount++]));
+				this.setDataValue('round', parseInt(fields[fieldCount++]));
+				this.setDataValue('heat', parseInt(fields[fieldCount++]));
+				this.setDataValue('lap', parseInt(fields[fieldCount++]));
+				this.setDataValue('lane', parseInt(fields[fieldCount++]));
 				this.setDataValue('status', fields[fieldCount++]);
-				this.setDataValue('rank', fields[fieldCount++]);
-				this.setDataValue('time', fields[fieldCount++]);
-				this.setDataValue('result', trimWhiteSpaceFromResultString(fields[fieldCount++]));
-				this.setDataValue('mod', trimWhiteSpaceFromResultString(fields[fieldCount++]));
-				this.setDataValue('backup_time', fields[fieldCount++]);
-				this.setDataValue('backup_result', trimWhiteSpaceFromResultString(fields[fieldCount++]));
-				this.setDataValue('backup_mod', trimWhiteSpaceFromResultString(fields[fieldCount++]));
+				this.setDataValue('rank', parseInt(fields[fieldCount++]));
+				this.setDataValue('time', parseInt(fields[fieldCount++]));
+				this.setDataValue('result', Utils.trimQuotes(fields[fieldCount++]));
+				this.setDataValue('mod', Utils.trimQuotes(fields[fieldCount++]));
+				this.setDataValue('backup_time', parseInt(fields[fieldCount++]));
+				this.setDataValue('backup_result', Utils.trimQuotes(fields[fieldCount++]));
+				this.setDataValue('backup_mod', Utils.trimQuotes(fields[fieldCount++]));
 		  }
 		}
 

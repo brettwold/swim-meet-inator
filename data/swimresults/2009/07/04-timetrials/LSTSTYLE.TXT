@@ -1,0 +1,6 @@
+idStyle;Style;StyleAbrév
+0; "Freestyle   "  ;"FR"
+1; "Backstroke  "  ;"BA"
+2; "Breaststroke"  ;"BR"
+3; "Butterfly   "  ;"BU"
+4; "Medley      "  ;"ME"

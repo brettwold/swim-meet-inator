@@ -1,0 +1,22 @@
+event;round;text
+201 ;0 ;"Boys Ages 9,10 200m Freestyle";"" ;"" ;
+202 ;0 ;"Boys Ages 12,13 200m Breaststroke";"" ;"" ;
+203 ;0 ;"Girls Ages 9,10 200m Breaststroke";"" ;"" ;
+204 ;0 ;"Girls Ages 12,13 200m Freestyle";"" ;"" ;
+205 ;0 ;"Boys Ages 12,13 100m Freestyle";"" ;"" ;
+206 ;0 ;"Girls Ages 12,13 100m Butterfly";"" ;"" ;
+207 ;0 ;"Boys Ages 9,10 50m Backstroke";"" ;"" ;
+208 ;0 ;"Boys Ages 12,13 50m Butterfly";"" ;"" ;
+209 ;0 ;"Girls Ages 9,10 50m Butterfly";"" ;"" ;
+210 ;0 ;"Girls Ages 12,13 50m Backstroke";"" ;"" ;
+211 ;0 ;"Boys Ages 9,10 100m Individual Medley";"" ;"" ;
+221 ;0 ;"Girls Ages 9,10 50m Breaststroke";"" ;"" ;
+222 ;0 ;"Girls Ages 12,13 50m Freestyle";"" ;"" ;
+223 ;0 ;"Boys Ages 9,10 50m Freestyle";"" ;"" ;
+224 ;0 ;"Boys Ages 12,13 50m Breaststroke";"" ;"" ;
+225 ;0 ;"Girls Ages 12,13 100m Breaststroke";"" ;"" ;
+226 ;0 ;"Boys Ages 12,13 100m Backstroke";"" ;"" ;
+227 ;0 ;"Girls Ages 9,10 200m Butterfly";"" ;"" ;
+228 ;0 ;"Girls Ages 12,13 200m Backstroke";"" ;"" ;
+229 ;0 ;"Boys Ages 9,10 200m Backstroke";"" ;"" ;
+230 ;0 ;"Boys Ages 12,13 200m Butterfly";"" ;"" ;

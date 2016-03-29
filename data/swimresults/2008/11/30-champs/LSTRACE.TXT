@@ -1,0 +1,3 @@
+event;round;nbHeat;idLen;idStyle;abCat;date;time
+151 ;0 ;11 ;5 ;0 ;"G" ;"11/30/08" ;"00:00" ;
+999 ;4 ;1 ;0 ;0 ;"M" ;"11/27/08" ;"00:00" ;

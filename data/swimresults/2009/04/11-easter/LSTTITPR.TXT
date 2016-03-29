@@ -1,0 +1,10 @@
+event;round;text
+101 ;0 ;"Female Age 14 & Under 50m Freestyle" ;"" ;"" ;
+103 ;0 ;"Male Age 14 & Under 50m Breaststroke" ;"" ;"" ;
+105 ;0 ;"Female Age 14 & Under 50m Backstroke" ;"" ;"" ;
+107 ;0 ;"Male Age 14 & Under 50m Butterfly" ;"" ;"" ;
+109 ;0 ;"Female Age 14 & Under 50m Breaststroke" ;"" ;"" ;
+111 ;0 ;"Male Age 14 & Under 50m Freestyle" ;"" ;"" ;
+113 ;0 ;"Female Age 14 & Under 50m Butterfly" ;"" ;"" ;
+115 ;0 ;"Male Age 14 & Under 50m Backstroke" ;"" ;"" ;
+999 ;4 ;"" ;"" ;"" ;

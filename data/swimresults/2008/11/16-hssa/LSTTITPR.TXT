@@ -1,0 +1,26 @@
+event;round;text
+1 ;0 ;"Boys Junior 200m Freestyle Relay" ;"" ;"" ;
+2 ;0 ;"Girls Junior 200m Freestyle Relay" ;"" ;"" ;
+3 ;0 ;"Boys Intermediate 200m Medley Relay" ;"" ;"" ;
+4 ;0 ;"Girls Intermediate 200m Medley Relay" ;"" ;"" ;
+5 ;0 ;"Boys Senior 200m Freestyle Relay" ;"" ;"" ;
+6 ;0 ;"Girls Senior 200m Freestyle Relay" ;"" ;"" ;
+7 ;0 ;"Boys Junior 200m Freestyle Relay" ;"" ;"" ;
+8 ;0 ;"Girls Junior 200m Freestyle Relay" ;"" ;"" ;
+9 ;0 ;"Boys Intermediate 200m Medley Relay" ;"" ;"" ;
+10 ;0 ;"Girls Intermediate 200m Medley Relay" ;"" ;"" ;
+11 ;0 ;"Boys Senior 200m Freestyle Relay" ;"" ;"" ;
+12 ;0 ;"Girls Senior 200m Freestyle Relay" ;"" ;"" ;
+13 ;0 ;"Boys Junior 200m Medley Relay" ;"" ;"" ;
+14 ;0 ;"Girls Junior 200m Medley Relay" ;"" ;"" ;
+15 ;0 ;"Boys Intermediate 200m Freestyle Relay" ;"" ;"" ;
+16 ;0 ;"Girls Intermediate 200m Freestyle Relay" ;"" ;"" ;
+17 ;0 ;"Boys Senior 200m Medley Relay" ;"" ;"" ;
+18 ;0 ;"Girls Senior 200m Medley Relay" ;"" ;"" ;
+19 ;0 ;"Boys Junior 200m Medley Relay" ;"" ;"" ;
+20 ;0 ;"Girls Junior 200m Medley Relay" ;"" ;"" ;
+21 ;0 ;"Boys Intermediate 200m Freestyle Relay" ;"" ;"" ;
+22 ;0 ;"Girls Intermediate 200m Freestyle Relay" ;"" ;"" ;
+23 ;0 ;"Boys Senior 200m Medley Relay" ;"" ;"" ;
+24 ;0 ;"Girls Senior 200m Medley Relay" ;"" ;"" ;
+999 ;0 ;"" ;"" ;"" ;

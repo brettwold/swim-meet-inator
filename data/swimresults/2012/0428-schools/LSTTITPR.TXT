@@ -1,0 +1,14 @@
+event;round;text
+1 ;0 ;"Boys Large Schools 100m Medley Relay" ;"" ;"" ;
+2 ;0 ;"Girls Large Schools 100m Medley Relay" ;"" ;"" ;
+3 ;0 ;"Mixed Small Schools 100m Medley Relay" ;"" ;"" ;
+4 ;0 ;"Boys Large Schools 100m Medley Relay" ;"" ;"" ;
+5 ;0 ;"Girls Large Schools 100m Medley Relay" ;"" ;"" ;
+6 ;0 ;"Mixed Small Schools 100m Medley Relay" ;"" ;"" ;
+7 ;0 ;"Boys Large Schools 100m Freestyle Relay" ;"" ;"" ;
+8 ;0 ;"Girls Large Schools 100m Freestyle Relay" ;"" ;"" ;
+9 ;0 ;"Mixed Small Schools 100m Freestyle Relay" ;"" ;"" ;
+10 ;0 ;"Boys Large Schools 100m Freestyle Relay" ;"" ;"" ;
+11 ;0 ;"Girls Large Schools 100m Freestyle Relay" ;"" ;"" ;
+12 ;0 ;"Mixed Small Schools 100m Freestyle Relay" ;"" ;"" ;
+999 ;4 ;"" ;"" ;"" ;

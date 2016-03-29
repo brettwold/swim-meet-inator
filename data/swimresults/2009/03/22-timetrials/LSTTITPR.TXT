@@ -1,0 +1,17 @@
+event;round;text
+101 ;0 ;"Girls Development 50m Freestyle" ;"" ;"" ;
+105 ;0 ;"Girls Lessons 25m Freestyle" ;"" ;"" ;
+107 ;0 ;"Girls Development 50m Breaststroke" ;"" ;"" ;
+111 ;0 ;"Girls Lessons 25m Breaststroke" ;"" ;"" ;
+113 ;0 ;"Girls Development 50m Backstroke" ;"" ;"" ;
+117 ;0 ;"Girls Lessons 25m Backstroke" ;"" ;"" ;
+119 ;0 ;"Girls Development 100m Individual Medley" ;"" ;"" ;
+201 ;0 ;"Girls Jun Perf/Perf 200m Butterfly" ;"" ;"" ;
+205 ;0 ;"Girls Squads 200m Freestyle" ;"" ;"" ;
+219 ;0 ;"Girls Jun Perf/Perf 200m Backstroke" ;"" ;"" ;
+223 ;0 ;"Girls Academy 100m Individual Medley" ;"" ;"" ;
+225 ;0 ;"Girls Squads 200m Individual Medley" ;"" ;"" ;
+239 ;0 ;"Girls Jun Perf/Perf 200m Breaststroke" ;"" ;"" ;
+999 ;4 ;"" ;"" ;"" ;
+217 ;0 ;"" ;"" ;"" ;
+237 ;0 ;"" ;"" ;"" ;

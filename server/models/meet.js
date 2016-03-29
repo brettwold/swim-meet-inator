@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var Meet = sequelize.define("meet", {
+  var Meet = sequelize.define("Meet", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV1,
@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
     }, {
       classMethods: {
         associate: function(models) {
-          Meet.hasMany(models.event)
+          Meet.hasMany(models.Event)
         }
       }
   }, {tableName: 'meets'});

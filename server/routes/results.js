@@ -7,8 +7,31 @@ var Results = require('../helpers/results');
 router.get('/', function(req, res, next) {
 
   var results = new Results();
-  results.open(process.cwd() + '/data', function() {
+  results.results(process.cwd() + '/data', function() {
     res.json(results.resultData);
+  });
+});
+
+router.get('/swimmers', function(req, res, next) {
+
+  var results = new Results();
+  results.swimmers(process.cwd() + '/data', function(resultData) {
+    res.json(resultData);
+  });
+});
+
+router.get('/swims', function(req, res, next) {
+
+  var results = new Results();
+  results.swims(process.cwd() + '/data', function(resultData) {
+    res.json(resultData);
+  });
+});
+
+router.get('/walk', function(req, res, next) {
+  var results = new Results();
+  results.walk(process.cwd() + '/data/swimresults', function(resultData) {
+    res.json(resultData);
   });
 });
 

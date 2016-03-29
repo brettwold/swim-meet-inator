@@ -1,0 +1,26 @@
+event;round;text
+101 ;0 ;"Boys Open 200m Individual Medley" ;"" ;"" ;
+102 ;0 ;"Girls Open 400m Freestyle" ;"" ;"" ;
+103 ;0 ;"Boys Open 100m Freestyle" ;"" ;"" ;
+104 ;0 ;"Girls Open 100m Butterfly" ;"" ;"" ;
+105 ;0 ;"Boys Open 200m Backstroke" ;"" ;"" ;
+106 ;0 ;"Girls Open 200m Breaststroke" ;"" ;"" ;
+107 ;0 ;"Boys Open 100m Breaststroke" ;"" ;"" ;
+108 ;0 ;"Girls Open 100m Backstroke" ;"" ;"" ;
+109 ;0 ;"Boys Open 400m Individual Medley" ;"" ;"" ;
+110 ;0 ;"Girls Open 200m Freestyle" ;"" ;"" ;
+111 ;0 ;"Boys Open 50m Freestyle" ;"" ;"" ;
+112 ;0 ;"Girls Open 200m Butterfly" ;"" ;"" ;
+201 ;0 ;"Girls Open 200m Individual Medley" ;"" ;"" ;
+202 ;0 ;"Boys Open 400m Freestyle" ;"" ;"" ;
+203 ;0 ;"Girls Open 100m Freestyle" ;"" ;"" ;
+204 ;0 ;"Boys Open 100m Butterfly" ;"" ;"" ;
+205 ;0 ;"Girls Open 200m Backstroke" ;"" ;"" ;
+206 ;0 ;"Boys Open 200m Breaststroke" ;"" ;"" ;
+207 ;0 ;"Girls Open 100m Breaststroke" ;"" ;"" ;
+208 ;0 ;"Boys Open 100m Backstroke" ;"" ;"" ;
+209 ;0 ;"Girls Open 400m Individual Medley" ;"" ;"" ;
+210 ;0 ;"Boys Open 200m Freestyle" ;"" ;"" ;
+211 ;0 ;"Girls Open 50m Freestyle" ;"" ;"" ;
+212 ;0 ;"Boys Open 200m Butterfly" ;"" ;"" ;
+999 ;0 ;"" ;"" ;"" ;

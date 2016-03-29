@@ -1,0 +1,9 @@
+event;round;text
+201 ;0 ;"Girls 9-11 Years 200m Breaststroke";"" ;"" ;
+204 ;0 ;"Boys 9-11 Years 200m Breaststroke";"" ;"" ;
+207 ;0 ;"Girls 12/Over 200m Backstroke";"" ;"" ;
+210 ;0 ;"Boys 12/Over 200m Backstroke";"" ;"" ;
+214 ;0 ;"Girls 9/Over 50m Butterfly";"" ;"" ;
+220 ;0 ;"Boys 9/Over 50m Butterfly";"" ;"" ;
+227 ;0 ;"Girls 11/Over 100m Freestyle";"" ;"" ;
+231 ;0 ;"Boys 12/Over 100m Freestyle";"" ;"" ;

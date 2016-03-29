@@ -1,0 +1,17 @@
+<div ng-controller="EntryCtrl">
+  <div ng-include="'partials/meets-menu.html'"></div>
+
+  <div ng-init="getAll()" layout-padding>
+    <md-list>
+      <md-list-item class="md-2-line" ng-repeat="meet in meets.rows" ng-click="navigateTo('/edit/' + meet.id)">
+        <div class="md-list-item-text">
+          <h3>{{meet.name}}</h3>
+          <h4>{{meet.meet_date | date : "d MMM yyyy"}}</h4>
+        </div>
+        <span flex></span>
+        <md-button ng-click="delete(meet.id)" class="md-secondary">Delete</md-button>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
+  </div>
+</div>

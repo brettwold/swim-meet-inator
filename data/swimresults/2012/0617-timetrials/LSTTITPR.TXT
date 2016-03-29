@@ -1,0 +1,9 @@
+event;round;text
+1 ;0 ;"Female All swimmers 100m Freestyle";"" ;"" ;
+3 ;0 ;"Male All swimmers 100m Freestyle";"" ;"" ;
+5 ;0 ;"Female 10 and Under 100m Backstroke";"" ;"" ;
+6 ;0 ;"Male 10 and Under 100m Backstroke";"" ;"" ;
+7 ;0 ;"Female 11/Over 200m Individual Medley";"" ;"" ;
+8 ;0 ;"Male 11/Over 200m Individual Medley";"" ;"" ;
+9 ;0 ;"Female All swimmers 50m Backstroke";"" ;"" ;
+11 ;0 ;"Male All swimmers 50m Backstroke";"" ;"" ;

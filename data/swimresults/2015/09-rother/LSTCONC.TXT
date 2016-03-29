@@ -1,0 +1,7 @@
+id;bib;lastname;firstname;birthyear;abNat;abCat
+0 ;"" ;"" ;"Seaclose" ;"" ;"" ;"" ;
+1 ;"" ;"" ;"Romsey" ;"" ;"" ;"" ;
+2 ;"" ;"" ;"Ringwood" ;"" ;"" ;"" ;
+3 ;"" ;"" ;"Andover" ;"" ;"" ;"" ;
+4 ;"" ;"" ;"Havant + Waterlooville" ;"" ;"" ;"" ;
+5 ;"" ;"" ;"Eastleigh" ;"" ;"" ;"" ;

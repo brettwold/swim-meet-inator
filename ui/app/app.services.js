@@ -1,7 +1,7 @@
 angular
   .module('SwimResultinator')
-  .factory('UrlService', function() {
+  .factory('UrlService', function($location) {
     return {
-        baseUrl : 'http://127.0.0.1:3456'
+        baseUrl : 'http://' + $location.host() + ':3456'
     };
   });

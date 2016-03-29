@@ -1,0 +1,4 @@
+event;round;text
+101 ;0 ;"Boys All Ages 1500m Freestyle" ;"" ;"" ;
+151 ;0 ;"Girls All Ages 800m Freestyle" ;"" ;"" ;
+999 ;4 ;"" ;"" ;"" ;

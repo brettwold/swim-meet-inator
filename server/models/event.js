@@ -1,8 +1,8 @@
 "use strict";
 
 module.exports = function(sequelize, DataTypes) {
-  var Event = sequelize.define("event", {
-    event_number: DataTypes.INTEGER,
+  var Event = sequelize.define("Event", {
+    external_event_id: DataTypes.INTEGER,
   	event_type: DataTypes.CHAR(3),
   	event_sequence: DataTypes.INTEGER,
   	age_group: DataTypes.STRING,
@@ -26,8 +26,8 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Event.hasMany(models.swim);
-        Event.belongsTo(models.meet);
+        Event.hasMany(models.Swim);
+        Event.belongsTo(models.Meet);
       }
     }
   });

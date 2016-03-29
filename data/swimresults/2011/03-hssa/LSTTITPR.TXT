@@ -1,0 +1,7 @@
+event;round;text
+1 ;0 ;"Boys Large Schools 100m Freestyle Relay";"" ;"" ;
+2 ;0 ;"Girls Large Schools 100m Freestyle Relay";"" ;"" ;
+3 ;0 ;"Mixed Small Schools 100m Freestyle Relay";"" ;"" ;
+4 ;0 ;"Boys Large Schools 100m Medley Relay";"" ;"" ;
+5 ;0 ;"Girls Large Schools 100m Medley Relay";"" ;"" ;
+6 ;0 ;"Mixed Small Schools 100m Medley Relay";"" ;"" ;

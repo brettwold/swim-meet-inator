@@ -1,0 +1,6 @@
+event;round;text
+1 ;0 ;"Female All Swimmers 25m Freestyle" ;"" ;"" ;
+3 ;0 ;"Female All Swimmers 25m Breaststroke" ;"" ;"" ;
+5 ;0 ;"Female All Swimmers 25m Backstroke" ;"" ;"" ;
+7 ;0 ;"Female All Swimmers 50m Freestyle" ;"" ;"" ;
+999 ;4 ;"" ;"" ;"" ;

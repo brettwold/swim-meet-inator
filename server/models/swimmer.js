@@ -1,10 +1,16 @@
 "use strict";
+// Maps to ARES lstconc.txt (swimmers file)
+// fields are:
+//    id;bib;lastname;firstname;birthyear;abNat;abCat
+
+var Utils = require('../helpers/utils');
 
 module.exports = function(sequelize, DataTypes) {
-  var Swimmer = sequelize.define("swimmer", {
+  var Swimmer = sequelize.define("Swimmer", {
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
-    club: DataTypes.STRING,
+    club: DataTypes.INTEGER,
+    dob: DataTypes.DATEONLY,
     age: DataTypes.INTEGER,
     gender: DataTypes.CHAR(1),
     card_printed:	DataTypes.BOOLEAN,
@@ -21,8 +27,21 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
     	associate: function(models) {
-        Swimmer.hasMany(models.swim);
+        Swimmer.hasMany(models.Swim);
+        Swimmer.belongsTo(models.Club);
     	}
+    },
+    setterMethods: {
+      fromData: function(data) {
+        var fields = data.split(';');
+        var fieldCount = 0;
+        this.setDataValue('id', parseInt(fields[fieldCount++]));
+        fieldCount++;
+        //this.setDataValue('bib', fields[fieldCount++]);
+        this.setDataValue('last_name', Utils.trimQuotes(fields[fieldCount++]));
+        this.setDataValue('first_name',Utils.trimQuotes(fields[fieldCount++]));
+        this.setDataValue('dob', fields[fieldCount++]);
+      }
     }
   });
 

@@ -1,0 +1,2 @@
+event;round;nbHeat;idLen;idStyle;abCat;date;time
+103 ;0 ;2 ;2 ;3 ;"G" ;"01/03/15" ;"00:00" ;

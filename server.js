@@ -1,7 +1,6 @@
 'use strict';
 
 var express = require('express');
-var exphbs  = require('express-handlebars');
 var http = require('http');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -60,12 +59,13 @@ function onListening() {
   console.log('Listening on ' + bind);
 }
 
+function logErrors(err, req, res, next) {
+  console.error(err.stack);
+  next(err);
+}
+
 var ApiServer = function() {
 };
-
-var routes = require('./server/routes/index');
-var results = require('./server/routes/results');
-var meets = require('./server/routes/meets');
 
 ApiServer.prototype.startServer = function() {
 
@@ -77,9 +77,11 @@ ApiServer.prototype.startServer = function() {
   expressApp.use(cookieParser());
   expressApp.use(express.static(path.join(__dirname, 'ui')));
 
-  expressApp.use('/', routes);
-  expressApp.use('/api/results', results);
-  expressApp.use('/api/meets', meets);
+  expressApp.use('/', require('./server/routes/index'));
+  expressApp.use('/api/results', require('./server/routes/results'));
+  expressApp.use('/api/meets', require('./server/routes/meets'));
+  expressApp.use('/api/clubs', require('./server/routes/clubs'));
+  expressApp.use('/api/asa', require('./server/routes/asa'));
 
   // catch 404 and forward to error handler
   expressApp.use(function(req, res, next) {
@@ -91,9 +93,9 @@ ApiServer.prototype.startServer = function() {
   if (expressApp.get('env') === 'development') {
     expressApp.use(function(err, req, res, next) {
       res.status(err.status || 500);
-      res.render('error', {
+      res.json({
         message: err.message,
-        error: err
+        error: err.stack
       });
     });
   }
@@ -103,7 +105,6 @@ ApiServer.prototype.startServer = function() {
   expressApp.use(function(err, req, res, next) {
     res.status(err.status || 500);
     console.error(err.stack);
-    res.send('Something broke!');
   });
 
   server = http.createServer(expressApp);

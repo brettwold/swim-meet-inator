@@ -1,0 +1,15 @@
+event;round;text
+301 ;0 ;"Girls 9-14 Years 200m Freestyle";"" ;"" ;
+302 ;0 ;"Boys 9-14 Years 200m Butterfly";"" ;"" ;
+303 ;0 ;"Girls 9-14 Years 50m Breaststroke";"" ;"" ;
+304 ;0 ;"Boys 9-14 Years 50m Freestyle";"" ;"" ;
+305 ;0 ;"Girls 11-14 Years 100m Backstroke";"" ;"" ;
+306 ;0 ;"Boys 11-14 Years 100m Breaststroke";"" ;"" ;
+307 ;0 ;"Girls 9-14 Years 100m Individual Medley";"" ;"" ;
+401 ;0 ;"Girls 9-14 Years 200m Backstroke";"" ;"" ;
+402 ;0 ;"Boys 9-14 Years 200m Breaststroke";"" ;"" ;
+403 ;0 ;"Girls 9-14 Years 50m Butterfly";"" ;"" ;
+404 ;0 ;"Boys 9-14 Years 50m Backstroke";"" ;"" ;
+405 ;0 ;"Girls 11-14 Years 100m Freestyle";"" ;"" ;
+406 ;0 ;"Boys 11-14 Years 100m Butterfly";"" ;"" ;
+407 ;0 ;"Girls 9-14 Years 200m Individual Medley";"" ;"" ;

@@ -6,6 +6,7 @@ angular
 function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) {
 
   $scope.meet = {events: {}};
+  $scope.menu = { title: "Meet management" };
   $scope.status = $route.current.status;
   $scope.config = Config;
 
@@ -51,6 +52,16 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
     if (idx > -1) list.splice(idx, 1);
     else list.push(item);
   };
+
+  if($scope.status == 'list') {
+    $scope.menu.title = "Meet management";
+  } else if($scope.status == 'edit') {
+    if($scope.meet.id) {
+      $scope.menu.title = "Edit meet";
+    } else {
+      $scope.menu.title = "Create new meet";
+    }
+  }
 
   if($routeParams.id) {
     MeetFactory.get($routeParams.id).then(function(response) {

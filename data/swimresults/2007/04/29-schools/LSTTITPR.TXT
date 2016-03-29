@@ -1,0 +1,15 @@
+event;round;text
+999 ;4 ;"" ;"" ;"" ;
+1 ;4 ;"Small Schools" ;"" ;"" ;
+1 ;0 ;"Small Schools" ;"" ;"" ;
+2 ;0 ;"" ;"" ;"" ;
+3 ;0 ;"" ;"" ;"" ;
+4 ;3 ;"Small Schools" ;"" ;"" ;
+5 ;3 ;"" ;"" ;"" ;
+6 ;3 ;"" ;"" ;"" ;
+7 ;0 ;"Small Schools Mixed Stroke" ;"" ;"" ;
+10 ;3 ;"Small Schools Mixed Stroke" ;"" ;"" ;
+8 ;0 ;"" ;"" ;"" ;
+9 ;0 ;"" ;"" ;"" ;
+11 ;3 ;"" ;"" ;"" ;
+12 ;3 ;"" ;"" ;"" ;
