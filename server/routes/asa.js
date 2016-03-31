@@ -27,13 +27,24 @@ function processName(data, str) {
 
   if(namesArr.length == 3) {
     name = removeExtraWhitespace(namesArr[0]);
-    console.log(JSON.stringify(name.split(' ')));
     data.first_name = getFirstName(name);
     data.last_name = getLastName(name);
-    data.id = removeBrackets(namesArr[1]);
+    data.regno = removeBrackets(namesArr[1]);
     data.club = namesArr[2];
   } else {
     data.last_name = str;
+  }
+}
+
+function processDistanceAndStroke(data, str) {
+  strokeArr = str.split(" ");
+
+  if(strokeArr.length >= 2) {
+    data.distance = strokeArr[0];
+    data.stroke = strokeArr[1];
+    if(strokeArr.length == 3) {
+      data.stroke += " " + strokeArr[2];
+    }
   }
 }
 
@@ -43,7 +54,7 @@ router.get('/swimmer/:id', function(req, res, next) {
   request(url, function(error, response, html) {
     if(!error) {
       var $ = cheerio.load(html);
-      var json = { first_name : "", last_name: "", id: "", club: "", times : [] };
+      var json = { first_name : "", last_name: "", regno: "", club: "", times : [] };
 
       var names = $('.rankingsContent p').first().text();
       processName(json, names);
@@ -55,12 +66,12 @@ router.get('/swimmer/:id', function(req, res, next) {
 
           if(selectcol.eq(0).text() != "") {
             time.course = rankTableIndex == 0 ? "LC" : "SC";
-            time.stroke = selectcol.eq(0).text().trim();
+            processDistanceAndStroke(time, selectcol.eq(0).text().trim());
             time.time = selectcol.eq(1).text().trim();
             time.fina_points = selectcol.eq(2).text().trim();
             time.date = selectcol.eq(3).text().trim();
             time.meet = selectcol.eq(4).text().trim();
-            time.location = selectcol.eq(5).text().trim();
+            time.venue = selectcol.eq(5).text().trim();
             time.license = selectcol.eq(6).text().trim();
             time.level = selectcol.eq(7).text().trim();
             json.times.push(time);

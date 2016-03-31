@@ -30,7 +30,7 @@ module.exports = function(sequelize, DataTypes) {
     		Swim.belongsTo(models.Event, {
     		  onDelete: "CASCADE",
     		  foreignKey: {
-    		    allowNull: false
+    		    allowNull: true
     		  }
     		});
         Swim.belongsTo(models.Swimmer);

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Club = require('../models').Club;
+var Swimmer = require('../models').Swimmer;
 
 /* GET meets listing. */
 router.get('/', function(req, res, next) {
@@ -26,6 +27,10 @@ router.get('/:id', function(req, res, next) {
 
 router.post('/add', function(req, res, next) {
   Club.upsert(req.body);
+});
+
+router.post('/addswimmer', function(req, res, next) {
+  Swimmer.upsert(req.body);
 });
 
 router.get('/delete/:id', function(req, res, next) {

@@ -43,7 +43,12 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) 
   }
 
   $scope.addSwimmer = function() {
-
+    if($scope.club) {
+      $scope.swimmer.club_id = $scope.club.id;
+      ClubFactory.addSwimmer($scope.swimmer).then(function(response) {
+        $scope.swimmer = null;
+      });
+    }
   }
 
   if($routeParams.id) {
@@ -75,8 +80,12 @@ function ClubFactory($http, UrlService) {
     return $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum);
   }
 
-  factory.save = function(id) {
-    return $http.post(UrlService.baseUrl + '/api/clubs/add', id);
+  factory.addSwimmer = function(swimmer) {
+    return $http.post(UrlService.baseUrl + '/api/clubs/addswimmer', swimmer);
+  }
+
+  factory.save = function(club) {
+    return $http.post(UrlService.baseUrl + '/api/clubs/add', club);
   }
 
   factory.delete = function(id) {
