@@ -28,8 +28,14 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
     	associate: function(models) {
         Swimmer.hasMany(models.Swim);
+        Swimmer.hasMany(models.SwimTime);
         Swimmer.belongsTo(models.Club);
     	}
+    },
+    getterMethods: {
+      fullName: function() {
+        return this.getDataValue('first_name') + ' ' + this.getDataValue('last_name');
+      }
     },
     setterMethods: {
       fromData: function(data) {

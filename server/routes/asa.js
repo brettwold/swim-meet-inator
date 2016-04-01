@@ -3,6 +3,9 @@ var cheerio = require('cheerio');
 var request = require('request');
 var router = express.Router();
 
+var Swimmer = require('../models').Swimmer;
+var SwimTime = require('../models').SwimTime;
+
 const BASE_URL = 'https://swimmingresults.org';
 const INDIVIDUAL_BEST = '/individualbest/personal_best.php?mode=A&tiref=';
 
@@ -48,16 +51,18 @@ function processDistanceAndStroke(data, str) {
   }
 }
 
+
+
 router.get('/swimmer/:id', function(req, res, next) {
   url = BASE_URL + INDIVIDUAL_BEST + req.params.id;
 
   request(url, function(error, response, html) {
     if(!error) {
       var $ = cheerio.load(html);
-      var json = { first_name : "", last_name: "", regno: "", club: "", times : [] };
+      var swimmer = {times: []};
 
       var names = $('.rankingsContent p').first().text();
-      processName(json, names);
+      processName(swimmer, names);
 
       $('#rankTable').each(function(rankTableIndex, rankTable) {
         $(rankTable).find('tr').each(function(i, row) {
@@ -65,21 +70,21 @@ router.get('/swimmer/:id', function(req, res, next) {
           var selectcol = $(row).find('td');
 
           if(selectcol.eq(0).text() != "") {
-            time.course = rankTableIndex == 0 ? "LC" : "SC";
+            time.course_type = rankTableIndex == 0 ? "LC" : "SC";
             processDistanceAndStroke(time, selectcol.eq(0).text().trim());
-            time.time = selectcol.eq(1).text().trim();
+            time.time_formatted = selectcol.eq(1).text().trim();
             time.fina_points = selectcol.eq(2).text().trim();
             time.date = selectcol.eq(3).text().trim();
-            time.meet = selectcol.eq(4).text().trim();
+            time.meet_name = selectcol.eq(4).text().trim();
             time.venue = selectcol.eq(5).text().trim();
             time.license = selectcol.eq(6).text().trim();
             time.level = selectcol.eq(7).text().trim();
-            json.times.push(time);
+            swimmer.times.push(time);
           }
         });
       });
 
-      res.json(json);
+      res.json(swimmer);
     }
   });
 });

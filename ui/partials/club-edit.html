@@ -1,76 +1,86 @@
 <div ng-controller="ClubCtrl" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
-  <div layout-padding>
-    <div ng-cloak class="md-inline-form">
-      <md-content layout="column">
-        <md-input-container class="md-block" flex-gt-xs>
-          <label>Name</label>
-          <input ng-model="club.name">
-        </md-input-container>
-      </md-content>
-    </div>
-  </div>
-
-  <md-card id="events">
-    <md-toolbar>
-      <div layout="row" class="md-toolbar-tools">
-        <span class="md-headline">Swimmers</span>
-      </div>
-    </md-toolbar>
-
-    <div layout="column" layout-padding>
-      <div layout="row">
-        <md-input-container class="md-block" flex-gt-xs>
-          <label>ASA Number</label>
-          <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
-          <input ng-model="asanum">
-        </md-input-container>
-        <span flex>
-          <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="findSwimmer()">
-            Find
-          </md-button>
-        </span>
-      </div>
-      <div ng-if="swimmer">
-        <div layout="column">
-          <div layout="row">
-            <md-input-container class="md-block" flex>
-              <label>Firstname</label>
-              <input ng-model="swimmer.first_name">
+  <md-tabs md-dynamic-height md-border-bottom>
+  <md-tab label="club">
+    <md-content class="md-padding">
+      <div layout-padding>
+        <div ng-cloak class="md-inline-form">
+          <md-content layout="column">
+            <md-input-container class="md-block" flex-gt-xs>
+              <label>Name</label>
+              <input ng-model="club.name">
             </md-input-container>
-            <md-input-container class="md-block" flex>
-              <label>Lastname</label>
-              <input ng-model="swimmer.last_name">
-            </md-input-container>
-            <md-input-container class="md-block" flex>
-              <label>Date of birth</label>
-              <input ng-model="swimmer.dob">
-            </md-input-container>
-            <md-input-container>
-              <label>Gender</label>
-              <md-select ng-model="swimmer.gender" flex>
-                <md-option ng-repeat="(key, gender) in config.swimmer_genders" value="{{key}}">{{gender}}</md-option>
-              </md-select>
-            <md-input-container>
-          </div>
-          <md-button class="md-raised" aria-label="Add to club" ng-click="addSwimmer()">
-            Add to club
-          </md-button>
+          </md-content>
         </div>
+      </div>
+
+      <md-card id="findswimmer">
+        <md-toolbar>
+          <div layout="row" class="md-toolbar-tools">
+            <span class="md-headline">Swimmers</span>
+          </div>
+        </md-toolbar>
+
+        <div layout="column" layout-padding>
+          <div layout="row">
+            <md-input-container class="md-block" flex-gt-xs>
+              <label>ASA Number</label>
+              <input ng-model="asanum">
+            </md-input-container>
+            <span flex>
+              <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="findSwimmer()">
+                Find
+              </md-button>
+            </span>
+          </div>
+          <div layout-padding ng-if="swimmer" layout="column">
+            <div layout="row">
+              <md-input-container class="md-block" flex>
+                <label>Firstname</label>
+                <input ng-model="swimmer.first_name">
+              </md-input-container>
+              <md-input-container class="md-block" flex>
+                <label>Lastname</label>
+                <input ng-model="swimmer.last_name">
+              </md-input-container>
+              <md-input-container class="md-block" flex>
+                <label>Date of birth</label>
+                <input ng-model="swimmer.dob">
+              </md-input-container>
+              <md-input-container>
+                <label>Gender</label>
+                <md-select ng-model="swimmer.gender" flex>
+                  <md-option ng-repeat="(key, gender) in config.swimmer_genders" value="{{key}}">{{gender}}</md-option>
+                </md-select>
+              <md-input-container>
+            </div>
+            <md-button class="md-raised md-primary" aria-label="Add to club" ng-click="addSwimmer()">
+              Add to club
+            </md-button>
+        </div>
+      </md-card>
+    </md-content>
+  </md-tab>
+
+  <md-tab label="swimmers" md-on-select="getSwimmers()">
+    <md-content class="md-padding">
         <md-content>
           <md-list class="md-dense" flex>
-            <md-subheader class="md-no-sticky">Swim times</md-subheader>
-            <md-list-item ng-repeat="time in swimmer.times">
+            <md-subheader class="md-no-sticky">Swimmers ({{ swimmers.count }})</md-subheader>
+            <md-list-item ng-repeat="swimmer in swimmers.rows">
               <div class="md-list-item-text" layout="row" flex>
-                <span flex="10">{{ time.course }}</span>
-                <span flex="10">{{ time.distance }}</span>
-                <span flex>{{ time.stroke }}</span>
-                <span flex >{{ time.time }}</span>
+                <span flex>{{ swimmer.id }}</span>
+                <span flex>{{ swimmer.regno }}</span>
+                <span flex>{{ swimmer.first_name }} {{ swimmer.last_name }}</span>
+                <span flex>{{ swimmer.dob }}</span>
+                <span flex>{{ swimmer.gender }}</span>
+                <md-button ng-click="deleteSwimmer(swimmer.id)" class="md-secondary">Delete</md-button>
               </div>
             </md-list-item>
           </md-list>
         </md-content>
       </div>
-    </div>
-  </md-card>
+    </md-content>
+  </md-tab>
+</md-tabs>
 </div>

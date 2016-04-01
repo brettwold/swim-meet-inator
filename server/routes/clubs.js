@@ -25,12 +25,39 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
+router.get('/:id/swimmers', function(req, res, next) {
+  Swimmer.findAndCountAll({
+    offset: 0,
+    limit: 10,
+    where: { club_id: req.params.id }
+  })
+  .then(function(result) {
+    console.log(result.count);
+    console.log(result.rows);
+    res.json(result);
+  });
+});
+
 router.post('/add', function(req, res, next) {
-  Club.upsert(req.body);
+  Club.upsert(req.body).then(function(club) {
+    res.json(club);
+  });
 });
 
 router.post('/addswimmer', function(req, res, next) {
-  Swimmer.upsert(req.body);
+  Swimmer.upsert(req.body).then(function(swimmer) {
+    res.json(swimmer);
+  });
+});
+
+router.post('/deleteswimmer', function(req, res, next) {
+  console.log(req.body.id);
+  Swimmer.findById(req.body.id).then(function(swimmer) {
+    var club_id = swimmer.club_id;
+    swimmer.destroy().then(function() {
+      next('/' + club_id + '/swimmers');
+    });
+  })
 });
 
 router.get('/delete/:id', function(req, res, next) {

@@ -1,0 +1,16 @@
+<md-content>
+  <md-list class="md-dense" flex>
+    <md-subheader class="md-no-sticky">Swim times</md-subheader>
+    <md-list-item ng-repeat="time in swimmer.getSwimTimes()">
+      <div class="md-list-item-text" layout="row" flex>
+        <span flex="10">{{ time.course_type }}</span>
+        <span flex="10">{{ time.distance }}</span>
+        <span flex>{{ time.stroke }}</span>
+        <span flex >{{ time.time_formatted }}</span>
+        <span flex >{{ time.date }}</span>
+        <span flex >{{ time.meet_name }}</span>
+        <span flex >{{ time.venue }}</span>
+      </div>
+    </md-list-item>
+  </md-list>
+</md-content>
