@@ -31,7 +31,7 @@ router.post('/add', function(req, res, next) {
 router.get('/delete/:id', function(req, res, next) {
   Meet.findById(req.params.id).then(function(result) {
     result.destroy();
-    //res.json({status: "ok"});
+    res.json({status: "ok"});
   });
 });
 

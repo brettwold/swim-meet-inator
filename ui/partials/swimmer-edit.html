@@ -1,0 +1,55 @@
+<div ng-controller="SwimmersCtrl" layout="column">
+  <div ng-include="'partials/section-menu.html'"></div>
+  <div layout-padding>
+    <div ng-cloak class="md-inline-form">
+      <md-content layout="column">
+        <div layout="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Firstname</label>
+            <input ng-model="swimmer.first_name">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Surname</label>
+            <input ng-model="swimmer.last_name">
+          </md-input-container>
+          <md-input-container class="md-block" flex>
+            <label>Date of birth</label>
+            <input ng-model="swimmer.dob">
+          </md-input-container>
+          <md-input-container>
+            <label>Gender</label>
+            <md-select ng-model="swimmer.gender" flex>
+              <md-option ng-repeat="(key, gender) in config.swimmer_genders" value="{{key}}">{{gender}}</md-option>
+            </md-select>
+          <md-input-container>
+        </div>
+        <div layout="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>ASA Number</label>
+            <input ng-model="swimmer.regno">
+          </md-input-container>
+          <span flex>
+            <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="lookupTimes()">
+              Lookup times
+            </md-button>
+          </span>
+        </div>
+      </md-content>
+    </div>
+    <div>
+      <md-list class="md-dense" flex>
+        <md-subheader class="md-no-sticky">Individual best swim times</md-subheader>
+        <md-list-item ng-repeat="time in swimmer.SwimTimes">
+          <div class="md-list-item-text" layout="row" flex>
+            <span flex="10">{{ time.course_type }}</span>
+            <span flex="10">{{ time.distance }}</span>
+            <span flex>{{ config.strokes[time.stroke].name }}</span>
+            <span flex >{{ time.time_formatted }}</span>
+            <span flex >{{ time.meet_name }}</span>
+            <span flex >{{ time.venue }}</span>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+</div>

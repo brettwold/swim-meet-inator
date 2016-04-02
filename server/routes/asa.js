@@ -9,6 +9,14 @@ var SwimTime = require('../models').SwimTime;
 const BASE_URL = 'https://swimmingresults.org';
 const INDIVIDUAL_BEST = '/individualbest/personal_best.php?mode=A&tiref=';
 
+const STROKE_LOOKUP = {
+  'Freestyle': 'FS',
+  'Breaststroke': 'BR',
+  'Backstroke': 'BK',
+  'Butterfly': 'BF',
+  'Individual': 'IM',
+};
+
 function removeBrackets(str) {
   return str.replace(/\(|\)/g,'');
 }
@@ -44,14 +52,9 @@ function processDistanceAndStroke(data, str) {
 
   if(strokeArr.length >= 2) {
     data.distance = strokeArr[0];
-    data.stroke = strokeArr[1];
-    if(strokeArr.length == 3) {
-      data.stroke += " " + strokeArr[2];
-    }
+    data.stroke = STROKE_LOOKUP[strokeArr[1]];
   }
 }
-
-
 
 router.get('/swimmer/:id', function(req, res, next) {
   url = BASE_URL + INDIVIDUAL_BEST + req.params.id;
@@ -66,12 +69,13 @@ router.get('/swimmer/:id', function(req, res, next) {
 
       $('#rankTable').each(function(rankTableIndex, rankTable) {
         $(rankTable).find('tr').each(function(i, row) {
-          var time = {};
+          var time = SwimTime.build();
           var selectcol = $(row).find('td');
 
           if(selectcol.eq(0).text() != "") {
             time.course_type = rankTableIndex == 0 ? "LC" : "SC";
             processDistanceAndStroke(time, selectcol.eq(0).text().trim());
+            time.source = "ASA";
             time.time_formatted = selectcol.eq(1).text().trim();
             time.fina_points = selectcol.eq(2).text().trim();
             time.date = selectcol.eq(3).text().trim();
@@ -79,9 +83,15 @@ router.get('/swimmer/:id', function(req, res, next) {
             time.venue = selectcol.eq(5).text().trim();
             time.license = selectcol.eq(6).text().trim();
             time.level = selectcol.eq(7).text().trim();
+            time.save();
             swimmer.times.push(time);
           }
         });
+      });
+
+      Swimmer.find({regno: swimmer.regno, include: [ SwimTime ]}).then(function(storedswimmer) {
+        SwimTime.destroy({ where: { swimmer_id: storedswimmer.id }});
+        storedswimmer.setSwimTimes(swimmer.times);
       });
 
       res.json(swimmer);

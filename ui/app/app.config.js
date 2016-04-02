@@ -24,7 +24,7 @@ angular
           "LC": {1:"50m", 2:"100m", 4:"200m", 8:"400m", 16:"800m", 30:"1500m"}
         }
       },
-      "BS": {name: "Backstroke", code: "BS", distances: {
+      "BK": {name: "Backstroke", code: "BS", distances: {
           "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m"},
           "LC": {1:"50m", 2:"100m", 4:"200m"}
         }

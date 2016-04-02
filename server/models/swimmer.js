@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     	}
     },
     getterMethods: {
-      fullName: function() {
+      full_name: function() {
         return this.getDataValue('first_name') + ' ' + this.getDataValue('last_name');
       }
     },
