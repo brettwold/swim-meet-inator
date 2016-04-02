@@ -76,9 +76,14 @@ router.get('/swimmer/:id', function(req, res, next) {
         $(rankTable).find('tr').each(function(i, row) {
           var time = SwimTime.build();
           var selectcol = $(row).find('td');
+          var course_type = "LC";
+          console.log($(rankTable).prev('p').text());
+          if($(rankTable).prev('p').text().indexOf('Short') > -1) {
+            course_type = "SC";
+          }
 
           if(selectcol.eq(0).text() != "") {
-            time.course_type = rankTableIndex == 0 ? "LC" : "SC";
+            time.course_type = course_type;
             processDistanceAndStroke(time, selectcol.eq(0).text().trim());
             time.source = "ASA";
             time.time_formatted = selectcol.eq(1).text().trim();
