@@ -38,7 +38,6 @@ function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, C
 
   $scope.lookupTimes = function() {
     SwimmerFactory.lookupTimes($scope.swimmer.regno).then(function(response) {
-      console.log(response.data.times);
       $scope.swimmer.SwimTimes = response.data.times;
     });
   }

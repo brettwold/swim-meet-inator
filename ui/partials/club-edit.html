@@ -13,56 +13,9 @@
           </md-content>
         </div>
       </div>
-
-      <md-card id="findswimmer">
-        <md-toolbar>
-          <div layout="row" class="md-toolbar-tools">
-            <span class="md-headline">Swimmers</span>
-          </div>
-        </md-toolbar>
-
-        <div layout="column" layout-padding>
-          <div layout="row">
-            <md-input-container class="md-block" flex-gt-xs>
-              <label>ASA Number</label>
-              <input ng-model="asanum">
-            </md-input-container>
-            <span flex>
-              <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="findSwimmer()">
-                Find
-              </md-button>
-            </span>
-          </div>
-          <div layout-padding ng-if="swimmer" layout="column">
-            <div layout="row">
-              <md-input-container class="md-block" flex>
-                <label>Firstname</label>
-                <input ng-model="swimmer.first_name">
-              </md-input-container>
-              <md-input-container class="md-block" flex>
-                <label>Lastname</label>
-                <input ng-model="swimmer.last_name">
-              </md-input-container>
-              <md-input-container class="md-block" flex>
-                <label>Date of birth</label>
-                <input ng-model="swimmer.dob">
-              </md-input-container>
-              <md-input-container>
-                <label>Gender</label>
-                <md-select ng-model="swimmer.gender" flex>
-                  <md-option ng-repeat="(key, gender) in config.swimmer_genders" value="{{key}}">{{gender}}</md-option>
-                </md-select>
-              <md-input-container>
-            </div>
-            <md-button class="md-raised md-primary" aria-label="Add to club" ng-click="addSwimmer()">
-              Add to club
-            </md-button>
-        </div>
-      </md-card>
-    </md-content>
   </md-tab>
 
-  <md-tab label="swimmers" md-on-select="getSwimmers()">
+  <md-tab label="swimmers" md-on-select="getSwimmers()" ng-if="club.id">
     <md-content class="md-padding">
         <md-content>
           <md-list class="md-dense" flex>

@@ -38,7 +38,6 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) 
 
   $scope.findSwimmer = function() {
     ClubFactory.getSwimmer($scope.asanum).then(function(response) {
-      console.log(response.data);
       $scope.swimmer = response.data;
     });
   }
@@ -50,12 +49,6 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) 
         $scope.swimmer = null;
       });
     }
-  }
-
-  $scope.getSwimmers = function() {
-    ClubFactory.getSwimmers($scope.club.id).then(function(response) {
-      $scope.swimmers = response.data;
-    });
   }
 
   $scope.deleteSwimmer = function(id) {
@@ -91,10 +84,6 @@ function ClubFactory($http, UrlService) {
 
   factory.getSwimmer = function(asanum) {
     return $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum);
-  }
-
-  factory.getSwimmers = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/clubs/' + id + '/swimmers');
   }
 
   factory.addSwimmer = function(swimmer) {

@@ -8,6 +8,7 @@ var SwimTime = require('../models').SwimTime;
 router.get('/', function(req, res, next) {
 
   Swimmer.findAndCountAll({
+    order: 'last_name ASC',
     offset: 0,
     limit: 10
   })
@@ -18,14 +19,21 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  console.log(req.params.id);
   Swimmer.findById(req.params.id, { include: [ SwimTime ]}).then(function(result) {
     res.json(result);
   });
 });
 
 router.post('/add', function(req, res, next) {
-  Swimmer.upsert(req.body);
+  if(!req.body.id) {
+    Swimmer.create(req.body).then(function(result) {
+      res.json(result);
+    });
+  } else {
+    Swimmer.update(req.body, { where: {id: req.body.id }}).then(function(result) {
+      res.json(req.body);
+    });
+  }
 });
 
 router.get('/delete/:id', function(req, res, next) {

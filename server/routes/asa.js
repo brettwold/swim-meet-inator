@@ -1,6 +1,7 @@
 var express = require('express');
 var cheerio = require('cheerio');
 var request = require('request');
+var moment = require('moment');
 var router = express.Router();
 
 var Swimmer = require('../models').Swimmer;
@@ -31,6 +32,10 @@ function getLastName(str) {
 
 function removeExtraWhitespace(str) {
   return str.replace(/\s{2,}/g, ' ').trim();
+}
+
+function formatDate(str) {
+  return moment(str, 'DD/MM/YY').format('YYYY-MM-DD');
 }
 
 function processName(data, str) {
@@ -78,20 +83,22 @@ router.get('/swimmer/:id', function(req, res, next) {
             time.source = "ASA";
             time.time_formatted = selectcol.eq(1).text().trim();
             time.fina_points = selectcol.eq(2).text().trim();
-            time.date = selectcol.eq(3).text().trim();
+            time.date = formatDate(selectcol.eq(3).text().trim());
             time.meet_name = selectcol.eq(4).text().trim();
             time.venue = selectcol.eq(5).text().trim();
             time.license = selectcol.eq(6).text().trim();
             time.level = selectcol.eq(7).text().trim();
-            time.save();
+            time.round = 'U';
             swimmer.times.push(time);
           }
         });
       });
 
-      Swimmer.find({regno: swimmer.regno, include: [ SwimTime ]}).then(function(storedswimmer) {
-        SwimTime.destroy({ where: { swimmer_id: storedswimmer.id }});
-        storedswimmer.setSwimTimes(swimmer.times);
+      Swimmer.find({where: {regno: swimmer.regno}, include: [ SwimTime ]}).then(function(storedswimmer) {
+        for(sTime in swimmer.times) {
+          swimmer.times[sTime].swimmer_id = storedswimmer.id;
+          SwimTime.upsert(swimmer.times[sTime].get());
+        }
       });
 
       res.json(swimmer);

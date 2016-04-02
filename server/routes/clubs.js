@@ -33,13 +33,12 @@ router.get('/:id/swimmers', function(req, res, next) {
   })
   .then(function(result) {
     console.log(result.count);
-    console.log(result.rows);
     res.json(result);
   });
 });
 
 router.post('/add', function(req, res, next) {
-  Club.upsert(req.body).then(function(club) {
+  Club.create(req.body).then(function(club) {
     res.json(club);
   });
 });

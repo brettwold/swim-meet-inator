@@ -5,6 +5,7 @@
     "database": "main",
     "storage": "data/swim.db",
     "dialect": "sqlite",
+    "omitNull": true,
   	"define": {
   	    "underscored": true,
   	    "timestamps": true
