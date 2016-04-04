@@ -1,7 +1,10 @@
 angular
-.module('SwimResultinator')
-.controller('SwimmersCtrl', SwimmersCtrl)
-.factory('SwimmerFactory', SwimmerFactory);
+  .module('SwimResultinator')
+  .controller('SwimmersCtrl', SwimmersCtrl)
+  .factory('SwimmerFactory', SwimmerFactory)
+  .config(function(appRouteProvider) {
+    appRouteProvider.setName('swimmer', SwimmersCtrl);
+  });
 
 function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, Config) {
 

@@ -1,9 +1,12 @@
 angular
   .module('SwimResultinator')
-  .controller('EntryCtrl', MeetCtrl)
+  .controller('EntryCtrl', EntryCtrl)
   .factory('EntryFactory', EntryFactory);
+  .config(function(appRouteProvider) {
+    appRouteProvider.setName('entry', EntryCtrl);
+  });
 
-function MeetCtrl($scope, $location, $route, $routeParams, EntryFactory, Config) {
+function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, Config) {
 
   $scope.meet = {events: {}};
   $scope.config = Config;

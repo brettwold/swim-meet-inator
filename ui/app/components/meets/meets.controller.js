@@ -1,7 +1,10 @@
 angular
   .module('SwimResultinator')
   .controller('MeetCtrl', MeetCtrl)
-  .factory('MeetFactory', MeetFactory);
+  .factory('MeetFactory', MeetFactory)
+  .config(function(appRouteProvider) {
+    appRouteProvider.setName('meet', MeetCtrl);
+  });
 
 function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) {
 

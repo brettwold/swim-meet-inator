@@ -61,6 +61,35 @@ function processDistanceAndStroke(data, str) {
   }
 }
 
+function processBestTimeTables($, swimmer) {
+  $('#rankTable').each(function(rankTableIndex, rankTable) {
+    $(rankTable).find('tr').each(function(i, row) {
+      var time = SwimTime.build();
+      var selectcol = $(row).find('td');
+      var course_type = "LC";
+
+      if($(rankTable).prev('p').text().indexOf('Short') > -1) {
+        course_type = "SC";
+      }
+
+      if(selectcol.eq(0).text() != "") {
+        time.course_type = course_type;
+        processDistanceAndStroke(time, selectcol.eq(0).text().trim());
+        time.source = "ASA";
+        time.time_formatted = selectcol.eq(1).text().trim();
+        time.fina_points = selectcol.eq(2).text().trim();
+        time.date = formatDate(selectcol.eq(3).text().trim());
+        time.meet_name = selectcol.eq(4).text().trim();
+        time.venue = selectcol.eq(5).text().trim();
+        time.license = selectcol.eq(6).text().trim();
+        time.level = selectcol.eq(7).text().trim();
+        time.round = 'U';
+        swimmer.times.push(time);
+      }
+    });
+  });
+}
+
 router.get('/swimmer/:id', function(req, res, next) {
   url = BASE_URL + INDIVIDUAL_BEST + req.params.id;
 
@@ -72,32 +101,7 @@ router.get('/swimmer/:id', function(req, res, next) {
       var names = $('.rankingsContent p').first().text();
       processName(swimmer, names);
 
-      $('#rankTable').each(function(rankTableIndex, rankTable) {
-        $(rankTable).find('tr').each(function(i, row) {
-          var time = SwimTime.build();
-          var selectcol = $(row).find('td');
-          var course_type = "LC";
-          console.log($(rankTable).prev('p').text());
-          if($(rankTable).prev('p').text().indexOf('Short') > -1) {
-            course_type = "SC";
-          }
-
-          if(selectcol.eq(0).text() != "") {
-            time.course_type = course_type;
-            processDistanceAndStroke(time, selectcol.eq(0).text().trim());
-            time.source = "ASA";
-            time.time_formatted = selectcol.eq(1).text().trim();
-            time.fina_points = selectcol.eq(2).text().trim();
-            time.date = formatDate(selectcol.eq(3).text().trim());
-            time.meet_name = selectcol.eq(4).text().trim();
-            time.venue = selectcol.eq(5).text().trim();
-            time.license = selectcol.eq(6).text().trim();
-            time.level = selectcol.eq(7).text().trim();
-            time.round = 'U';
-            swimmer.times.push(time);
-          }
-        });
-      });
+      processBestTimeTables($, swimmer);
 
       Swimmer.find({where: {regno: swimmer.regno}, include: [ SwimTime ]}).then(function(storedswimmer) {
         for(sTime in swimmer.times) {

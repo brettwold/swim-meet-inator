@@ -4,7 +4,7 @@ angular
     function($routeProvider) {
       $routeProvider.
         when('/results', {
-          templateUrl: 'partials/results.html',
+          templateUrl: 'app/components/results/results.html',
           controller: 'ResultCtrl'
         });
     }]);

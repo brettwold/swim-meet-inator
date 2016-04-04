@@ -1,7 +1,10 @@
 angular
   .module('SwimResultinator')
   .controller('ClubCtrl', ClubCtrl)
-  .factory('ClubFactory', ClubFactory);
+  .factory('ClubFactory', ClubFactory)
+  .config(function(appRouteProvider) {
+    appRouteProvider.setName('club', ClubCtrl);
+  });
 
 function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) {
 
