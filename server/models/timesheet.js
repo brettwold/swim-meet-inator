@@ -5,11 +5,14 @@ var TimeUtils = require('../helpers/timeutils');
 module.exports = function(sequelize, DataTypes) {
   var Timesheet = sequelize.define("Timesheet", {
     level: DataTypes.INTEGER,
-    name:	DataTypes.STRING
+    name:	DataTypes.STRING,
+    course_type: DataTypes.CHAR(2),
+    genders: DataTypes.STRING,
+    entry_groups: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
-        Timesheet.hasMany(models.EntryTime);
+        Timesheet.hasMany(models.TimesheetEntrytime);
       }
     }
   });

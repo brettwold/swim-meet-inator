@@ -83,6 +83,7 @@ ApiServer.prototype.startServer = function() {
   expressApp.use('/api/clubs', require('./server/routes/clubs'));
   expressApp.use('/api/swimmers', require('./server/routes/swimmers'));
   expressApp.use('/api/asa', require('./server/routes/asa'));
+  expressApp.use('/api/timesheets', require('./server/routes/timesheets'));
 
   // catch 404 and forward to error handler
   expressApp.use(function(req, res, next) {

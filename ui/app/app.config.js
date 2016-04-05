@@ -2,6 +2,7 @@ angular
   .module('SwimResultinator')
   .constant('Config', {
     meet_types: ["Level 1", "Level 2", "Level 3", "Level 4"],
+    levels: { 1 : "Level 1", 2: "Level 2", 3: "Level 3", 4: "Level 4"},
     lanes: ["6", "8", "10"],
     genders: {
       "B": "Boys",
@@ -18,6 +19,14 @@ angular
       {name: "Age on meet date", code: "AMD"},
       {name: "Age on 31st December", code: "AOD"}
     ],
+    entry_groups: {
+      "9U": "9 and under",
+      "10": "10",
+      "11": "11",
+      "12": "12",
+      "13": "13",
+      "14": "14"
+    },
     strokes: {
       "FS": {name: "Freestyle", code: "FS", distances: {
           "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m", 16:"400m", 32:"800m", 60:"1500m"},

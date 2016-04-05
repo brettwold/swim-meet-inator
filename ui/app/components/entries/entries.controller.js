@@ -1,7 +1,7 @@
 angular
   .module('SwimResultinator')
   .controller('EntryCtrl', EntryCtrl)
-  .factory('EntryFactory', EntryFactory);
+  .factory('EntryFactory', EntryFactory)
   .config(function(appRouteProvider) {
     appRouteProvider.setName('entry', EntryCtrl);
   });

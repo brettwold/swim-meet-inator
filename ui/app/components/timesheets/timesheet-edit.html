@@ -1,0 +1,61 @@
+<div ng-controller="TimesheetCtrl" layout="column">
+  <div ng-include="'partials/section-menu.html'"></div>
+
+  <md-content class="md-padding">
+    <div layout-padding>
+      <div ng-cloak class="md-inline-form">
+        <div layout="column">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Name</label>
+            <input ng-model="timesheet.name">
+          </md-input-container>
+          <div layout="row">
+          <md-input-container flex>
+            <label>Course type</label>
+            <md-select ng-model="timesheet.course_type">
+              <md-option ng-repeat="course_type in config.course_types" value="{{course_type.code}}">{{course_type.name}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Level</label>
+            <md-select ng-model="timesheet.level">
+              <md-option ng-repeat="(key, level) in config.levels" value="{{key}}">{{level}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Entrants</label>
+            <md-select multiple="true" ng-model="timesheet.genders">
+              <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{gender}}</md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex>
+            <label>Groups</label>
+            <md-select multiple="true" ng-model="timesheet.entry_groups">
+              <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{group}}</md-option>
+            </md-select>
+          </md-input-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </md-content>
+
+  <md-content ng-if="timesheet.id">
+    <div layout-padding>
+      <div ng-cloak class="md-inline-form">
+        <md-list ng-repeat="(key, gender) in timesheet.genders">
+          <md-subheader class="md-no-sticky">{{gender}}</md-subheader>
+          <div ng-repeat="stroke in config.strokes">
+            <md-list-item ng-repeat="(lengths, distance) in stroke.distances[timesheet.course_type]" layout="row">
+              <span flex="30">{{distance}} {{stroke.name}}</span>
+              <span flex>
+                <input ng-model="timesheet.entries[gender][stroke][distance]">
+              </span>
+            </md-list-item>
+            <md-divider></md-divider>
+          </div>
+        </md-list>
+      </div>
+    </div>
+  </md-content>
+</div>
