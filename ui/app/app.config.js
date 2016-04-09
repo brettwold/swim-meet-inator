@@ -20,49 +20,77 @@ angular
       {name: "Age on 31st December", code: "AOD"}
     ],
     entry_groups: {
-      "9U": "9 and under",
-      "10": "10",
-      "11": "11",
-      "12": "12",
-      "13": "13",
-      "14": "14"
+      1: { name: "9 and under", min: 0, max: 9 },
+      2: { name: "10", min: 10, max: 10 },
+      3: { name: "11", min: 11, max: 11 },
+      4: { name: "12", min: 12, max: 12 },
+      5: { name: "13", min: 13, max: 13 },
+      6: { name: "14", min: 14, max: 14 },
+      7: { name: "15", min: 15, max: 15 },
+      8: { name: "16+", min: 16, max: 101 },
+      9: { name: "Open", min: 18, max: 101 }
     },
     strokes: {
-      "FS": {name: "Freestyle", code: "FS", distances: {
-          "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m", 16:"400m", 32:"800m", 60:"1500m"},
-          "LC": {1:"50m", 2:"100m", 4:"200m", 8:"400m", 16:"800m", 30:"1500m"}
-        }
-      },
-      "BK": {name: "Backstroke", code: "BS", distances: {
-          "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m"},
-          "LC": {1:"50m", 2:"100m", 4:"200m"}
-        }
-      },
-      "BR": {name: "Breastroke", code: "BR", distances: {
-          "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m"},
-          "LC": {1:"50m", 2:"100m", 4:"200m"}
-        }
-      },
-      "BF": {name: "Butterfly", code: "BF", distances: {
-          "SC": {1:"25m", 2:"50m", 4:"100m", 8:"200m"},
-          "LC": {1:"50m", 2:"100m", 4:"200m"}
-        }
-      },
-      "IM": {name: "Individual medley", code: "IM", distances: {
-          "SC": {4:"100m", 8:"200m", 16:"400m"},
-          "LC": {4:"200m", 8:"400m"}
-        }
-      },
-      "MR": {name: "Medley relay", code: "MR", distances: {
-          "SC": {4:"4x25m", 8:"4x50m", 16:"4x100m"},
-          "LC": {4:"4x50m", 8:"4x100m"}
-        }
-      },
-      "FR": {name: "Freestyle relay", code: "FR", distances: {
-          "SC": {4:"4x25m", 8:"4x50m", 16:"4x100m"},
-          "LC": {4:"4x50m", 8:"4x100m"}
-        }
-      },
+      "FS": "Freestyle",
+      "BK": "Backstroke",
+      "BR": "Breaststroke",
+      "BF": "Butterfly",
+      "IM": "Individual medley",
+      "MR": "Medley relay",
+      "FR": "Freestyle relay",
+    },
+    races: {
+      101: { name: "25m Freestyle", stroke: "FS", course_type: "SC", distance: 25, lengths: 1, team: false },
+      102: { name: "50m Freestyle", stroke: "FS", course_type: "SC", distance: 50, lengths: 2, team: false },
+      103: { name: "100m Freestyle", stroke: "FS", course_type: "SC", distance: 100, lengths: 4, team: false },
+      104: { name: "200m Freestyle", stroke: "FS", course_type: "SC", distance: 200, lengths: 8, team: false },
+      105: { name: "400m Freestyle", stroke: "FS", course_type: "SC", distance: 400, lengths: 16, team: false },
+      106: { name: "800m Freestyle", stroke: "FS", course_type: "SC", distance: 800, lengths: 32, team: false },
+      107: { name: "1500m Freestyle", stroke: "FS", course_type: "SC", distance: 1500, lengths: 60, team: false },
+      108: { name: "25m Backstroke", stroke: "BK", course_type: "SC", distance: 25, lengths: 1, team: false },
+      109: { name: "50m Backstroke", stroke: "BK", course_type: "SC", distance: 50, lengths: 2, team: false },
+      110: { name: "100m Backstroke", stroke: "BK", course_type: "SC", distance: 100, lengths: 4, team: false },
+      111: { name: "200m Backstroke", stroke: "BK", course_type: "SC", distance: 200, lengths: 8, team: false },
+      112: { name: "25m Breaststroke", stroke: "BR", course_type: "SC", distance: 25, lengths: 1, team: false },
+      113: { name: "50m Breaststroke", stroke: "BR", course_type: "SC", distance: 50, lengths: 2, team: false },
+      114: { name: "100m Breaststroke", stroke: "BR", course_type: "SC", distance: 100, lengths: 4, team: false },
+      115: { name: "200m Breaststroke", stroke: "BR", course_type: "SC", distance: 200, lengths: 8, team: false },
+      116: { name: "25m Butterfly", stroke: "BF", course_type: "SC", distance: 25, lengths: 1, team: false },
+      117: { name: "50m Butterfly", stroke: "BF", course_type: "SC", distance: 50, lengths: 2, team: false },
+      118: { name: "100m Butterfly", stroke: "BF", course_type: "SC", distance: 100, lengths: 4, team: false },
+      119: { name: "200m Butterfly", stroke: "BF", course_type: "SC", distance: 200, lengths: 8, team: false },
+      120: { name: "100m Individual medley", stroke: "IM", course_type: "SC", distance: 100, lengths: 4, team: false },
+      121: { name: "200m Individual medley", stroke: "IM", course_type: "SC", distance: 200, lengths: 8, team: false },
+      122: { name: "400m Individual medley", stroke: "IM", course_type: "SC", distance: 400, lengths: 16, team: false },
+      123: { name: "4x25m Medley relay", stroke: "MR", course_type: "SC", distance: 100, lengths: 4, team: true },
+      124: { name: "4x50m Medley relay", stroke: "MR", course_type: "SC", distance: 200, lengths: 8, team: true },
+      125: { name: "4x100m Medley relay", stroke: "MR", course_type: "SC", distance: 400, lengths: 16, team: true },
+      126: { name: "4x25m Freestyle relay", stroke: "FR", course_type: "SC", distance: 100, lengths: 4, team: true },
+      127: { name: "4x50m Freestyle relay", stroke: "FR", course_type: "SC", distance: 200, lengths: 8, team: true },
+      128: { name: "4x100m Freestyle relay", stroke: "FR", course_type: "SC", distance: 400, lengths: 16, team: true },
+      201: { name: "50m Freestyle", stroke: "FS", course_type: "LC", distance: 50, lengths: 1, team: false },
+      202: { name: "100m Freestyle", stroke: "FS", course_type: "LC", distance: 100, lengths: 2, team: false },
+      203: { name: "200m Freestyle", stroke: "FS", course_type: "LC", distance: 200, lengths: 4, team: false },
+      204: { name: "400m Freestyle", stroke: "FS", course_type: "LC", distance: 400, lengths: 8, team: false },
+      205: { name: "800m Freestyle", stroke: "FS", course_type: "LC", distance: 800, lengths: 16, team: false },
+      206: { name: "1500m Freestyle", stroke: "FS", course_type: "LC", distance: 1500, lengths: 32, team: false },
+      207: { name: "50m Backstroke", stroke: "BK", course_type: "LC", distance: 50, lengths: 1, team: false },
+      208: { name: "100m Backstroke", stroke: "BK", course_type: "LC", distance: 100, lengths: 2, team: false },
+      209: { name: "200m Backstroke", stroke: "BK", course_type: "LC", distance: 200, lengths: 4, team: false },
+      210: { name: "50m Breaststroke", stroke: "BR", course_type: "LC", distance: 50, lengths: 1, team: false },
+      211: { name: "100m Breaststroke", stroke: "BR", course_type: "LC", distance: 100, lengths: 2, team: false },
+      212: { name: "200m Breaststroke", stroke: "BR", course_type: "LC", distance: 200, lengths: 4, team: false },
+      213: { name: "50m Butterfly", stroke: "BF", course_type: "LC", distance: 50, lengths: 1, team: false },
+      214: { name: "100m Butterfly", stroke: "BF", course_type: "LC", distance: 100, lengths: 2, team: false },
+      215: { name: "200m Butterfly", stroke: "BF", course_type: "LC", distance: 200, lengths: 4, team: false },
+      216: { name: "200m Individual medley", stroke: "IM", course_type: "LC", distance: 200, lengths: 4, team: false },
+      217: { name: "400m Individual medley", stroke: "IM", course_type: "LC", distance: 400, lengths: 8, team: false },
+      218: { name: "4x50m Medley relay", stroke: "MR", course_type: "LC", distance: 200, lengths: 4, team: true },
+      219: { name: "4x100m Medley relay", stroke: "MR", course_type: "LC", distance: 400, lengths: 8, team: true },
+      220: { name: "4x200m Medley relay", stroke: "MR", course_type: "LC", distance: 800, lengths: 16, team: true },
+      221: { name: "4x50m Freestyle relay", stroke: "FR", course_type: "LC", distance: 200, lengths: 4, team: true },
+      222: { name: "4x100m Freestyle relay", stroke: "FR", course_type: "LC", distance: 400, lengths: 8, team: true },
+      223: { name: "4x200m Medley relay", stroke: "FR", course_type: "LC", distance: 800, lengths: 16, team: true },
     },
     event_types: [
       {name: "Heat declared winner", code: "HDW"},

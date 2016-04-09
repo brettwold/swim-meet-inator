@@ -4,6 +4,22 @@ angular
   .factory('TimesheetFactory', TimesheetFactory)
   .config(function(appRouteProvider) {
     appRouteProvider.setName('timesheet', TimesheetCtrl);
+  })
+  .filter('raceByCourse', function(Config) {
+    return function(input, search) {
+      if (!input) return input;
+      if (!search) return input;
+      var expected = ('' + search).toLowerCase();
+      var result = {};
+      angular.forEach(input, function(value, key) {
+        var actual = value.course_type;
+
+        if (actual.toLowerCase() === expected) {
+          result[key] = value;
+        }
+      });
+      return result;
+    }
   });
 
 function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory, Config) {
@@ -28,7 +44,7 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
 
   $scope.save = function() {
     TimesheetFactory.save($scope.timesheet).then(function(response) {
-      $scope.swimmer = response.data;
+      $scope.timesheet = response.data;
     })
   };
 
