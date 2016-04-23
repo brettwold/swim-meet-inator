@@ -57,7 +57,26 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
     for(idx in $scope.timesheet.race_types_arr) {
       if($scope.timesheet.race_types_arr[idx] == type) return;
     }
-    $scope.timesheet.race_types_arr.push(type);
+
+    var race_types = $scope.timesheet.race_types_arr;
+    if(race_types === null) {
+      race_types = [];
+    }
+    race_types.push(type);
+    $scope.timesheet.race_types_arr = race_types.sort();
+  }
+
+  $scope.addEntryGroup = function(group) {
+    for(idx in $scope.timesheet.entry_groups_arr) {
+      if($scope.timesheet.entry_groups_arr[idx] == group) return;
+    }
+
+    var entry_groups = $scope.timesheet.entry_groups_arr;
+    if(entry_groups === null) {
+      entry_groups = [];
+    }
+    entry_groups.push(group);
+    $scope.timesheet.entry_groups_arr = entry_groups.sort();
   }
 
   if($routeParams.id) {
@@ -86,6 +105,10 @@ function TimesheetFactory($http, UrlService) {
   }
 
   factory.save = function(timesheet) {
+    delete timesheet.entry_groups;
+    delete timesheet.race_types;
+    delete timesheet.genders;
+    delete timesheet.timesheet_data;
     return $http.post(UrlService.baseUrl + '/api/timesheets/save', timesheet);
   }
 

@@ -17,7 +17,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  console.log(req.params.id);
   Timesheet.findById(req.params.id).then(function(result) {
     res.json(result);
   });
@@ -33,7 +32,8 @@ router.post('/save', function(req, res, next) {
     });
   } else {
     Timesheet.findById(req.body.id).then(function(ts){
-      console.log("DATA: " + ts.entry_groups);
+      console.log("DATA: " + req.body.entry_groups_arr);
+      ts.updateAttributes(req.body);
 
       ts.save().then(function(){
         res.json(req.body);

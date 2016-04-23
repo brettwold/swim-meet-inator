@@ -35,13 +35,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     setterMethods: {
       genders_arr: function(arr) {
-        return this.setDataValue('genders', arr.join());
+        return this.setDataValue('genders', arr !== null ? arr.join() : null);
       },
       entry_groups_arr: function(arr) {
-        return this.setDataValue('entry_groups', arr.join());
+        return this.setDataValue('entry_groups', arr !== null ? arr.join() : null);
       },
       race_types_arr: function(arr) {
-        return this.setDataValue('race_types', arr.join());
+        return this.setDataValue('race_types', arr !== null ? arr.join() : null);
       },
       sheet: function(d) {
         return this.setDataValue('timesheet_data', JSON.stringify(d));

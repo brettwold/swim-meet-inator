@@ -30,14 +30,6 @@
             </md-input-container>
           </div>
           <div layout="row">
-            <md-input-container flex>
-              <label>Groups</label>
-              <md-select multiple="true" ng-model="timesheet.entry_groups_arr">
-                <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
-              </md-select>
-            </md-input-container>
-          </div>
-          <div layout="row">
             <md-input-container flex="20">
               <label>Add race type</label>
               <md-select ng-model="selected_race_type">
@@ -46,6 +38,17 @@
             </md-input-container>
             <md-input-container flex>
               <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+                Add
+              </md-button>
+            </md-input-container>
+            <md-input-container flex="20">
+              <label>Add group</label>
+              <md-select ng-model="entry_group">
+                <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container flex>
+              <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
                 Add
               </md-button>
             </md-input-container>
@@ -59,11 +62,10 @@
     <div layout-padding>
 
       <div ng-cloak class="md-inline-form">
-        {{timesheet.sheet}}
         <md-list ng-repeat="gender in timesheet.genders_arr">
           <div layout="row">
             <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
-            <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in timesheet.entry_groups_arr">{{ config.entry_groups[entry_group].name }}</md-subheader>
+            <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in timesheet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
           </div>
           <div ng-repeat="race_type in timesheet.race_types_arr">
             <md-list-item layout="row">
