@@ -2,9 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var Timesheet = require('../models').Timesheet;
-var TimesheetEntry = require('../models').TimesheetEntry;
-var TimesheetEntrytime = require('../models').TimesheetEntrytime;
-
 
 /* GET meets listing. */
 router.get('/', function(req, res, next) {
@@ -26,44 +23,23 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-function updateEntries(entries, timesheet_id) {
-  for(gender in entries) {
-    for(stroke in entries[gender]) {
-      for(distance in entries[gender][stroke]) {
-        for(group in entries[gender][stroke][distance]) {
-          var tEntry = {
-            timesheet_id: timesheet_id,
-            gender: gender,
-            stroke: stroke,
-            distance: distance
-          };
-          TimesheetEntry.findOrCreate({ where: tEntry }).then(function(ent) {
-            for(time in entries[gender][stroke][distance][group]) {
-              var entrytime = TimesheetEntrytime.build();
-              entrytime.timesheet_entry_id = ent.id;
-              entrytime.entry_group = group;
-              entrytime.time = time;
-              TimesheetEntrytime.upsert(entrytime);
-            }
-          });
-        }
-      }
-    }
-  }
-}
-
 router.post('/save', function(req, res, next) {
   console.log(JSON.stringify(req.body));
+
   if(!req.body.id) {
-    Timesheet.create(req.body).then(function(result) {
+    var ts = Timesheet.build(req.body);
+    ts.save().then(function(result) {
       res.json(result);
     });
   } else {
-    Timesheet.update(req.body, { where: {id: req.body.id }}).then(function(result) {
-      if(req.body.entries) {
-        updateEntries(req.body.entries, req.body.id);
-      }
-      res.json(req.body);
+    Timesheet.findById(req.body.id).then(function(ts){
+      console.log("DATA: " + ts.entry_groups);
+
+      ts.save().then(function(){
+        res.json(req.body);
+      }).catch(function(error) {
+        console.log(error);
+      });
     });
   }
 });

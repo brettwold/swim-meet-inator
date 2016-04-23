@@ -12,3 +12,9 @@ body {
 .form_dates {
   margin-bottom: 20px;
 }
+
+.timesheet-entry {
+  margin: 0px;
+  display: block;
+  width: 80%;
+}

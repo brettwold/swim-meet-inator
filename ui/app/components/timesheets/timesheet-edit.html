@@ -38,11 +38,16 @@
             </md-input-container>
           </div>
           <div layout="row">
-            <md-input-container flex>
-              <label>Race types</label>
-              <md-select multiple="true" ng-model="timesheet.race_types_arr">
-                <md-option ng-repeat="(key, race) in config.races" value="{{key}}">{{ race.course_type }} {{ race.name }}</md-option>
+            <md-input-container flex="20">
+              <label>Add race type</label>
+              <md-select ng-model="selected_race_type">
+                <md-option ng-repeat="(key, race) in config.races | raceByCourse:timesheet.course_type" value="{{key}}">{{ race.name }}</md-option>
               </md-select>
+            </md-input-container>
+            <md-input-container flex>
+              <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+                Add
+              </md-button>
             </md-input-container>
           </div>
         </div>
@@ -52,30 +57,19 @@
 
   <md-content ng-if="timesheet.id">
     <div layout-padding>
-      <div layout="row">
-        <md-input-container flex>
-          <md-select ng-model="race_types">
-            <md-option ng-repeat="(key, race) in config.races | raceByCourse:timesheet.course_type" value="{{key}}">{{ race.course_type }} {{ race.name }}</md-option>
-          </md-select>
-        </md-input-container>
-        <md-input-container flex>
-          <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType()">
-            Add
-          </md-button>
-        </md-input-container>
-      </div>
+
       <div ng-cloak class="md-inline-form">
-        {{timesheet.entries}}
+        {{timesheet.sheet}}
         <md-list ng-repeat="gender in timesheet.genders_arr">
           <div layout="row">
-            <md-subheader class="md-no-sticky" flex="30">{{config.genders[gender]}}</md-subheader>
+            <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
             <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in timesheet.entry_groups_arr">{{ config.entry_groups[entry_group].name }}</md-subheader>
           </div>
           <div ng-repeat="race_type in timesheet.race_types_arr">
             <md-list-item layout="row">
-              <span flex="30">{{ config.races[race_type].name }}</span>
+              <span flex="20">{{ config.races[race_type].name }}</span>
               <span flex ng-repeat="entry_group in timesheet.entry_groups_arr">
-                <input ng-model="timesheet.entries[gender][race_type][entry_group]">
+                <input ng-model="timesheet.sheet[gender][race_type][entry_group]" class="timesheet-entry">
               </span>
             </md-list-item>
             <md-divider></md-divider>

@@ -53,6 +53,13 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
     $scope.getAll();
   };
 
+  $scope.addRaceType = function(type) {
+    for(idx in $scope.timesheet.race_types_arr) {
+      if($scope.timesheet.race_types_arr[idx] == type) return;
+    }
+    $scope.timesheet.race_types_arr.push(type);
+  }
+
   if($routeParams.id) {
     TimesheetFactory.get($routeParams.id).then(function(response) {
       $scope.timesheet = response.data;
@@ -78,8 +85,8 @@ function TimesheetFactory($http, UrlService) {
     return $http.get(UrlService.baseUrl + '/api/timesheets/' + id);
   }
 
-  factory.save = function(id) {
-    return $http.post(UrlService.baseUrl + '/api/timesheets/save', id);
+  factory.save = function(timesheet) {
+    return $http.post(UrlService.baseUrl + '/api/timesheets/save', timesheet);
   }
 
   factory.delete = function(id) {
