@@ -3,7 +3,7 @@ angular
   .controller('SwimmersCtrl', SwimmersCtrl)
   .factory('SwimmerFactory', SwimmerFactory)
   .config(function(appRouteProvider) {
-    appRouteProvider.setName('swimmer', SwimmersCtrl);
+    appRouteProvider.setName('swimmers', 'swimmer', SwimmersCtrl);
   });
 
 function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, Config) {

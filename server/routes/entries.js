@@ -1,35 +1,33 @@
 var express = require('express');
 var router = express.Router();
 
-var Meet = require('../models').Meet;
+var Entry = require('../models').Entry;
 
 /* GET meets listing. */
 router.get('/', function(req, res, next) {
 
-  Meet.findAndCountAll({
+  Entry.findAndCountAll({
     offset: 0,
     limit: 10
   })
   .then(function(result) {
-    console.log(result.count);
-    console.log(result.rows);
     res.json(result);
   });
 });
 
 router.get('/:id', function(req, res, next) {
   console.log(req.params.id);
-  Meet.findById(req.params.id).then(function(result) {
+  Entry.findById(req.params.id).then(function(result) {
     res.json(result);
   });
 });
 
 router.post('/add', function(req, res, next) {
-  Meet.upsert(req.body);
+  Entry.upsert(req.body);
 });
 
 router.get('/delete/:id', function(req, res, next) {
-  Meet.findById(req.params.id).then(function(result) {
+  Entry.findById(req.params.id).then(function(result) {
     result.destroy();
     //res.json({status: "ok"});
   });

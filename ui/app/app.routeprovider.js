@@ -7,17 +7,22 @@ angular
     var name;
     var controller;
 
-    this.setName = function(name, controller) {
+    this.setName = function(listname, singularname, controller) {
       this.name = name;
       this.controller = controller;
       $routeProvider.
-        when('/' + name + 's', {
-          templateUrl: pathprefix + name + 's/' + name + 's.html',
+        when('/' + listname, {
+          templateUrl: pathprefix + listname + '/' + listname + '.html',
           controller: controller,
           status: 'list'
         }).
-        when('/' + name + 's/:id?', {
-          templateUrl: pathprefix + name + 's/' + name + '-edit.html',
+        when('/' + listname + '/:id?', {
+          templateUrl: pathprefix + listname + '/' + singularname + '-edit.html',
+          controller: controller,
+          status: 'edit'
+        }).
+        when('/' + listname + '/category/:category?', {
+          templateUrl: pathprefix + listname + '/' + listname + '.html',
           controller: controller,
           status: 'edit'
         });

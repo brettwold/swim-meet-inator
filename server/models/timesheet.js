@@ -17,7 +17,9 @@ module.exports = function(sequelize, DataTypes) {
 
   }, {
     classMethods: {
+      associate: function(models) {
 
+      }
     },
     getterMethods: {
       genders_arr: function() {

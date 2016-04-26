@@ -3,7 +3,7 @@ angular
   .controller('MeetCtrl', MeetCtrl)
   .factory('MeetFactory', MeetFactory)
   .config(function(appRouteProvider) {
-    appRouteProvider.setName('meet', MeetCtrl);
+    appRouteProvider.setName('meets', 'meet', MeetCtrl);
   });
 
 function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) {
@@ -42,7 +42,6 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
     if(!$scope.meet.events) {
       $scope.meet.events = new Array();
     }
-    console.log(index);
     $scope.meet.events.push( { stroke: $scope.config.strokes[index].code } );
   }
 
@@ -55,6 +54,31 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
     if (idx > -1) list.splice(idx, 1);
     else list.push(item);
   };
+
+  $scope.addRaceType = function(type) {
+    $scope.meet.race_types_arr = addItemToArray(type, $scope.meet.race_types_arr);
+  }
+
+  $scope.addEntryGroup = function(group) {
+    $scope.meet.entry_groups_arr = addItemToArray(group, $scope.meet.entry_groups_arr);
+  }
+
+  function addItemToArray(item, arr) {
+    if(item) {
+      for(idx in arr) {
+        if(arr[idx] == item) return arr;
+      }
+
+      var new_arr = arr;
+      if(new_arr === null) {
+        new_arr = [];
+      }
+      new_arr.push(item);
+      return new_arr.sort();
+    }
+
+    return arr;
+  }
 
   if($scope.status == 'list') {
     $scope.menu.title = "Meet management";
@@ -70,6 +94,9 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
     MeetFactory.get($routeParams.id).then(function(response) {
       $scope.meet = response.data;
     });
+    MeetFactory.getAllTimesheets().then(function(result){
+      $scope.timesheets = result.data;
+    });
   };
 }
 
@@ -80,12 +107,20 @@ function MeetFactory($http, UrlService) {
     return $http.get(UrlService.baseUrl + '/api/meets');
   }
 
+  factory.getAllTimesheets = function() {
+    return $http.get(UrlService.baseUrl + '/api/timesheets');
+  }
+
   factory.get = function(id) {
     return $http.get(UrlService.baseUrl + '/api/meets/' + id);
   }
 
   factory.save = function(meet) {
-    return $http.post(UrlService.baseUrl + '/api/meets/add', meet);
+    delete meet.entry_groups;
+    delete meet.race_types;
+    delete meet.genders;
+    delete meet.entry_events_data;
+    return $http.post(UrlService.baseUrl + '/api/meets/save', meet);
   }
 
   factory.delete = function(id) {

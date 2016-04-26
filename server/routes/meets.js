@@ -11,8 +11,6 @@ router.get('/', function(req, res, next) {
     limit: 10
   })
   .then(function(result) {
-    console.log(result.count);
-    console.log(result.rows);
     res.json(result);
   });
 });
@@ -24,8 +22,24 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-router.post('/add', function(req, res, next) {
-  Meet.upsert(req.body);
+router.post('/save', function(req, res, next) {
+  if(!req.body.id) {
+    var meet = Meet.build(req.body);
+    meet.save().then(function(result) {
+      res.json(result);
+    });
+  } else {
+    Meet.findById(req.body.id).then(function(meet) {
+      console.log("meet data: " + JSON.stringify(req.body));
+      meet.updateAttributes(req.body);
+
+      meet.save().then(function(){
+        res.json(meet);
+      }).catch(function(error) {
+        console.log(error);
+      });
+    });
+  }
 });
 
 router.get('/delete/:id', function(req, res, next) {

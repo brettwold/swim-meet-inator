@@ -80,6 +80,7 @@ ApiServer.prototype.startServer = function() {
   expressApp.use('/', require('./server/routes/index'));
   expressApp.use('/api/results', require('./server/routes/results'));
   expressApp.use('/api/meets', require('./server/routes/meets'));
+  expressApp.use('/api/entries', require('./server/routes/entries'));
   expressApp.use('/api/clubs', require('./server/routes/clubs'));
   expressApp.use('/api/swimmers', require('./server/routes/swimmers'));
   expressApp.use('/api/asa', require('./server/routes/asa'));

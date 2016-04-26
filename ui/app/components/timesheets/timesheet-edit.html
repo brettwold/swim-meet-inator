@@ -60,7 +60,7 @@
 
   <md-content ng-if="timesheet.id">
     <div layout-padding>
-
+      {{ timesheet.sheet }}
       <div ng-cloak class="md-inline-form">
         <md-list ng-repeat="gender in timesheet.genders_arr">
           <div layout="row">
@@ -71,7 +71,7 @@
             <md-list-item layout="row">
               <span flex="20">{{ config.races[race_type].name }}</span>
               <span flex ng-repeat="entry_group in timesheet.entry_groups_arr">
-                <input ng-model="timesheet.sheet[gender][race_type][entry_group]" class="timesheet-entry">
+                <input ng-model="timesheet.sheet[gender][entry_group][race_type]" class="timesheet-entry">
               </span>
             </md-list-item>
             <md-divider></md-divider>

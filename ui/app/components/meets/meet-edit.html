@@ -44,6 +44,18 @@
                <md-option ng-repeat="type in config.meet_age_types" value="{{type.code}}">{{type.name}}</md-option>
              </md-select>
            </md-input-container>
+           <md-input-container>
+             <label>Timesheet</label>
+             <md-select ng-model="meet.timesheet_id" flex-gt-xs>
+               <md-option ng-repeat="sheet in timesheets.rows" value="{{sheet.id}}">{{ sheet.name }}</md-option>
+             </md-select>
+           </md-input-container>
+         </div>
+         <div>
+           <md-input-container class="md-block" flex-gt-xs>
+             <label>Cost per race</label>
+             <input ng-model="meet.cost_per_race">
+           </md-input-container>
          </div>
          <div layout-gt-sm="row">
            <md-input-container>
@@ -66,12 +78,36 @@
            </md-input-container>
            <md-input-container>
              <label>Entrants</label>
-             <md-select multiple="true" ng-model="meet.genders" flex-gt-xs>
+             <md-select multiple="true" ng-model="meet.genders_arr" flex-gt-xs>
                <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{gender}}</md-option>
              </md-select>
             <md-input-container>
          </div>
-       </form>
+         <div layout="row">
+           <md-input-container flex="20">
+             <label>Add race type</label>
+             <md-select ng-model="selected_race_type">
+               <md-option ng-repeat="(key, race) in config.races | raceByCourse:meet.course_type" value="{{key}}">{{ race.name }}</md-option>
+             </md-select>
+           </md-input-container>
+           <md-input-container flex>
+             <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+               Add
+             </md-button>
+           </md-input-container>
+           <md-input-container flex="20">
+             <label>Add group</label>
+             <md-select ng-model="entry_group">
+               <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
+             </md-select>
+           </md-input-container>
+           <md-input-container flex>
+             <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
+               Add
+             </md-button>
+           </md-input-container>
+         </div>
+      </form>
 
        <md-card id="events">
          <md-toolbar>
@@ -80,26 +116,19 @@
            </div>
          </md-toolbar>
          <div layout-padding>
-           <div ng-if="!meet.course_type">
-             <span class="md-subhead">Select course type above to add events to this meet</span>
-           </div>
-           <div ng-if="meet.course_type">
-             {{meet.events}}
-             <md-list>
-               <md-list-item layout="row">
-                 <div flex="30">Stroke</div>
-                 <div flex ng-if="meet.genders">Entrants (<span ng-repeat="gender in meet.genders">{{config.genders[gender]}}<span ng-if="!$last">, </span></span>)</div>
-                 <div flex ng-if="!meet.genders">Select entrant types above</div>
-               </md-list-item>
-               <md-divider></md-divider>
-               <div ng-repeat="stroke in config.strokes">
-                 <md-list-item ng-repeat="(lengths, distance) in stroke.distances[meet.course_type]" layout="row">
-                    <span flex="30">{{distance}} {{stroke.name}}</span>
-                    <span flex>
-                      <md-select multiple="true" ng-model="meet.events[stroke.code][distance].genders" ng-if="meet.genders" aria-label="Genders">
-                        <md-option ng-repeat="gender in meet.genders" value="{{gender}}">{{config.genders[gender]}}</md-option>
-                      </md-select>
-                    </span>
+           <div>
+             <md-list ng-repeat="gender in meet.genders_arr">
+               <div layout="row">
+                 <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
+                 <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in meet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
+               </div>
+               <div ng-repeat="race_type in meet.race_types_arr">
+                 <md-list-item layout="row">
+                   <span flex="20">{{ config.races[race_type].name }}</span>
+                   <span flex ng-repeat="entry_group in meet.entry_groups_arr">
+                     <md-checkbox ng-model="meet.entry_events[gender][entry_group][race_type]" aria-label="">
+                     </md-checkbox>
+                   </span>
                  </md-list-item>
                  <md-divider></md-divider>
                </div>

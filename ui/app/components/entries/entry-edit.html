@@ -1,0 +1,49 @@
+<div ng-controller="EntryCtrl" layout="column">
+  <div ng-include="'partials/section-menu.html'"></div>
+  <div layout-padding>
+    <div ng-cloak class="md-inline-form">
+      <md-content layout="column">
+        <form name="userForm" flex>
+          <div layout="column">
+            <md-input-container>
+              <label>Select meet</label>
+              <md-select ng-model="entry.meet_id">
+                <md-option ng-repeat="meet in meets" value="{{ meet.id }}">{{ meet.name }}</md-option>
+              </md-select>
+            </md-input-container>
+            <md-input-container>
+              <label>Select swimmer</label>
+              <md-select ng-model="entry.swimmer_id">
+                <md-option ng-repeat="swimmer in swimmers" value="{{ swimmer.id }}">{{ swimmer.full_name }}</md-option>
+              </md-select>
+            </md-input-container>
+            <div ng-if="entry.swimmer_id" layout="column">
+              <div><span>Date of birth</span><span>{{ swimmerDob() }}</span></div>
+              <div><span>Age at meet</span><span>{{ swimmerAgeAtMeet() }}</span></div>
+              <div><span>Group</span><span>{{ swimmerGroup() }}</span></div>
+              <div><span>Gender</span><span>{{ swimmerGender() }}</span></div>
+            </div>
+            <h2>Events</h2>
+            <md-list class="md-dense" flex>
+              <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
+              <md-list-item>
+                <div class="md-list-item-text" layout="row" flex>
+                  <md-checkbox ng-model="entry.events[race_type]" aria-label="">
+                  </md-checkbox>
+                  <span flex>Race</span>
+                  <span flex="10">Time</span>
+                  <span flex="10">Date</span>
+                  <span flex>Location</span>
+                </div>
+              </md-list-item>
+              <md-list-item ng-repeat="event in simmer_events">
+                <div class="md-list-item-text" layout="row" flex>
+                </div>
+              </md-list-item>
+            </md-list>
+
+        </form>
+      </md-content>
+    </div>
+  </div>
+</div>

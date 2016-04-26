@@ -3,7 +3,7 @@ angular
   .controller('TimesheetCtrl', TimesheetCtrl)
   .factory('TimesheetFactory', TimesheetFactory)
   .config(function(appRouteProvider) {
-    appRouteProvider.setName('timesheet', TimesheetCtrl);
+    appRouteProvider.setName('timesheets', 'timesheet', TimesheetCtrl);
   })
   .filter('raceByCourse', function(Config) {
     return function(input, search) {
@@ -54,29 +54,28 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.addRaceType = function(type) {
-    for(idx in $scope.timesheet.race_types_arr) {
-      if($scope.timesheet.race_types_arr[idx] == type) return;
-    }
-
-    var race_types = $scope.timesheet.race_types_arr;
-    if(race_types === null) {
-      race_types = [];
-    }
-    race_types.push(type);
-    $scope.timesheet.race_types_arr = race_types.sort();
+    $scope.timesheet.race_types_arr = addItemToArray(type, $scope.timesheet.race_types_arr);
   }
 
   $scope.addEntryGroup = function(group) {
-    for(idx in $scope.timesheet.entry_groups_arr) {
-      if($scope.timesheet.entry_groups_arr[idx] == group) return;
+    $scope.timesheet.entry_groups_arr = addItemToArray(group, $scope.timesheet.entry_groups_arr);
+  }
+
+  function addItemToArray(item, arr) {
+    if(item) {
+      for(idx in arr) {
+        if(arr[idx] == item) return arr;
+      }
+
+      var new_arr = arr;
+      if(new_arr === null) {
+        new_arr = [];
+      }
+      new_arr.push(item);
+      return new_arr.sort();
     }
 
-    var entry_groups = $scope.timesheet.entry_groups_arr;
-    if(entry_groups === null) {
-      entry_groups = [];
-    }
-    entry_groups.push(group);
-    $scope.timesheet.entry_groups_arr = entry_groups.sort();
+    return arr;
   }
 
   if($routeParams.id) {
