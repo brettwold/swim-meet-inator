@@ -12,6 +12,8 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
   $scope.menu = { title: "Entry management" };
   $scope.status = $route.current.status;
   $scope.meet;
+  $scope.swimmer;
+  $scope.swimmerId;
   $scope.entry = {};
 
   $scope.navigateTo = function(to, event) {
@@ -34,8 +36,8 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
     MeetFactory.getAll().then(function(result) {
       $scope.meets = result.data.rows;
     });
-    SwimmerFactory.getAll().then(function(result) {
-      $scope.swimmers = result.data.rows;
+    SwimmerFactory.loadSwimmers().then(function(swimmers) {
+      $scope.swimmers = swimmers;
     });
     if($scope.entry.id) {
       $scope.menu.title = "Edit entry";

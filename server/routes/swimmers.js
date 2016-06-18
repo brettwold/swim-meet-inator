@@ -24,7 +24,7 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-router.post('/add', function(req, res, next) {
+router.put('/save', function(req, res, next) {
   if(!req.body.id) {
     Swimmer.create(req.body).then(function(result) {
       res.json(result);

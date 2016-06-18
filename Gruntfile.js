@@ -13,4 +13,5 @@ module.exports = function(grunt) {
     db.sequelize.sync();
   });
 
+  grunt.loadNpmTasks('grunt-browserify');
 };

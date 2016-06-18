@@ -3,7 +3,7 @@
 
   <div ng-init="getAll()" layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="swimmer in swimmers.rows" ng-click="navigateTo('/' + swimmer.id)">
+      <md-list-item class="md-2-line" ng-repeat="swimmer in swimmers" ng-click="navigateTo('/' + swimmer.id)">
         <div class="md-list-item-text" layout="row">
           <h3 flex>{{swimmer.first_name}}</h3>
           <h3 flex>{{swimmer.last_name}}</h3>

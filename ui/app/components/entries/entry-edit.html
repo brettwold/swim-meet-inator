@@ -13,16 +13,11 @@
             </md-input-container>
             <md-input-container>
               <label>Select swimmer</label>
-              <md-select ng-model="entry.swimmer_id">
+              <md-select ng-model="swimmerId">
                 <md-option ng-repeat="swimmer in swimmers" value="{{ swimmer.id }}">{{ swimmer.full_name }}</md-option>
               </md-select>
             </md-input-container>
-            <div ng-if="entry.swimmer_id" layout="column">
-              <div><span>Date of birth</span><span>{{ swimmerDob() }}</span></div>
-              <div><span>Age at meet</span><span>{{ swimmerAgeAtMeet() }}</span></div>
-              <div><span>Group</span><span>{{ swimmerGroup() }}</span></div>
-              <div><span>Gender</span><span>{{ swimmerGender() }}</span></div>
-            </div>
+            <swimmer swimmer-id="entry.swimmer_id"/>
             <h2>Events</h2>
             <md-list class="md-dense" flex>
               <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
