@@ -105,7 +105,6 @@ app.factory('Swimmer', ['$http', 'UrlService', function($http, UrlService) {
       if (!this.dob) {
         return false;
       }
-      console.log("Got dob: " + this.dob);
       return moment(this.dob, "YYYY-MM-DD").format("D MMM YYYY");
     }
   };
