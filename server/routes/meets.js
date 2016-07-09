@@ -22,7 +22,7 @@ router.get('/:id', function(req, res, next) {
   });
 });
 
-router.post('/save', function(req, res, next) {
+router.put('/save', function(req, res, next) {
   if(!req.body.id) {
     var meet = Meet.build(req.body);
     meet.save().then(function(result) {

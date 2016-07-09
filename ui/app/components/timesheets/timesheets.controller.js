@@ -1,7 +1,6 @@
 angular
   .module('SwimResultinator')
   .controller('TimesheetCtrl', TimesheetCtrl)
-  .factory('TimesheetFactory', TimesheetFactory)
   .config(function(appRouteProvider) {
     appRouteProvider.setName('timesheets', 'timesheet', TimesheetCtrl);
   })
@@ -33,8 +32,8 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.getAll = function() {
-    TimesheetFactory.getAll().then(function(result) {
-      $scope.timesheets = result.data;
+    TimesheetFactory.loadTimesheets().then(function(result) {
+      $scope.timesheets = result;
     });
   };
 
@@ -43,8 +42,13 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.save = function() {
-    TimesheetFactory.save($scope.timesheet).then(function(response) {
-      $scope.timesheet = response.data;
+    $scope.status_message = "";
+    $scope.timesheet.update().then(function(response) {
+      if(response.status == 200) {
+        $scope.status_message = "Timesheet saved";
+      } else {
+        $scope.status_message = "Error saving timesheet";
+      }
     })
   };
 
@@ -79,8 +83,8 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   }
 
   if($routeParams.id) {
-    TimesheetFactory.get($routeParams.id).then(function(response) {
-      $scope.timesheet = response.data;
+    TimesheetFactory.getTimesheet($routeParams.id).then(function(response) {
+      $scope.timesheet = response;
       $scope.menu.title = "Edit timesheet";
     });
   };
@@ -90,30 +94,4 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   } else if($scope.status == 'edit') {
     $scope.menu.title = "Create new timesheet";
   }
-}
-
-function TimesheetFactory($http, UrlService) {
-  var factory = {};
-
-  factory.getAll = function() {
-    return $http.get(UrlService.baseUrl + '/api/timesheets');
-  }
-
-  factory.get = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/timesheets/' + id);
-  }
-
-  factory.save = function(timesheet) {
-    delete timesheet.entry_groups;
-    delete timesheet.race_types;
-    delete timesheet.genders;
-    delete timesheet.timesheet_data;
-    return $http.post(UrlService.baseUrl + '/api/timesheets/save', timesheet);
-  }
-
-  factory.delete = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/timesheets/delete/' + id);
-  }
-
-  return factory;
 }

@@ -47,7 +47,7 @@
            <md-input-container>
              <label>Timesheet</label>
              <md-select ng-model="meet.timesheet_id" flex-gt-xs>
-               <md-option ng-repeat="sheet in timesheets.rows" value="{{sheet.id}}">{{ sheet.name }}</md-option>
+               <md-option ng-repeat="sheet in timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
              </md-select>
            </md-input-container>
          </div>

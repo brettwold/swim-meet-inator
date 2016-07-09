@@ -114,7 +114,7 @@ app.factory('Swimmer', ['$http', 'UrlService', function($http, UrlService) {
 app.directive('swimmer', function ($filter) {
   return {
     replace: true,
-    templateUrl: 'partials/swimmer.html',
+    templateUrl: 'app/components/swimmers/swimmer-basic.html',
     link: function ($scope, element, attrs) {
       $scope.$watch('swimmerId', function(newVal, oldVal) {
         var SwimmerFactory = element.injector().get('SwimmerFactory');

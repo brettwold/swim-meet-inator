@@ -3,17 +3,16 @@
   <h2 class="md-toolbar-tools">
     <span>{{menu.title}}</span>
   </h2>
-  <span flex></span>
-    <div ng-if="status == 'edit'">
-      <md-button class="md-raised" aria-label="Save" ng-click="save()">
-        Save
-      </md-button>
-    </div>
-    <div ng-if="status != 'edit'">
-      <md-button class="md-raised" aria-label="Add" ng-click="add()">
-        Add
-      </md-button>
-    </div>
+  <span class="status-message">{{status_message}}</span>
+  <div ng-if="status == 'edit'">
+    <md-button class="md-raised" aria-label="Save" ng-click="save()">
+      Save
+    </md-button>
+  </div>
+  <div ng-if="status != 'edit'">
+    <md-button class="md-raised" aria-label="Add" ng-click="add()">
+      Add
+    </md-button>
   </div>
 </div>
 </md-toolbar>

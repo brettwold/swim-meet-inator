@@ -1,7 +1,6 @@
 angular
   .module('SwimResultinator')
   .controller('EntryCtrl', EntryCtrl)
-  .factory('EntryFactory', EntryFactory)
   .config(function(appRouteProvider) {
     appRouteProvider.setName('entries', 'entry', EntryCtrl);
   });
@@ -25,16 +24,16 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
   };
 
   $scope.getAll = function() {
-    EntryFactory.getAll().then(function(result) {
-      $scope.entrys = result.data;
+    EntryFactory.loadEntries().then(function(entries) {
+      $scope.entries = entries;
     });
   };
 
   if($scope.status == 'list') {
     $scope.menu.title = "Entry management";
   } else if($scope.status == 'edit') {
-    MeetFactory.getAll().then(function(result) {
-      $scope.meets = result.data.rows;
+    MeetFactory.loadMeets().then(function(meets) {
+      $scope.meets = meets;
     });
     SwimmerFactory.loadSwimmers().then(function(swimmers) {
       $scope.swimmers = swimmers;
@@ -47,41 +46,15 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
   }
 
   if($routeParams.category) {
-    MeetFactory.get($routeParams.category).then(function(response) {
-      $scope.meet = response.data;
+    MeetFactory.loadMeets($routeParams.category).then(function(response) {
+      $scope.meet = response;
       EntryFactory.getAllByMeet($scope.meet.id).then(function(result) {
         $scope.entries = result.data;
       });
     });
   } else {
-    EntryFactory.getAll().then(function(result) {
-      $scope.entries = result.data;
+    EntryFactory.loadEntries().then(function(result) {
+      $scope.entries = result;
     });
   };
-}
-
-function EntryFactory($http, UrlService) {
-  var factory = {};
-
-  factory.getAll = function() {
-    return $http.get(UrlService.baseUrl + '/api/entries');
-  }
-
-  factory.getAllByMeet = function(meetId) {
-    return $http.get(UrlService.baseUrl + '/api/entries/' + meetId);
-  }
-
-  factory.get = function(meetId, id) {
-    return $http.get(UrlService.baseUrl + '/api/entries/' + meetId + '/' + id);
-  }
-
-  factory.save = function(id) {
-    return $http.post(UrlService.baseUrl + '/api/entries/save', id);
-  }
-
-  factory.delete = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/entries/delete/' + id);
-  }
-
-  return factory;
 }

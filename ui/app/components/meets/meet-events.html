@@ -1,0 +1,17 @@
+<div>
+  <h2>Meet events: {{ meet.name }}</h2>
+  <p>Age at meet: {{ meet.ageAtMeet(swimmer) }}<p>
+  <p>Entry group: {{ meet.getGroupForSwimmer(swimmer).name }}</p>
+  <md-list class="md-dense" flex>
+    <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
+    <md-list-item ng-repeat="race_type in meet.getEntryEvents(swimmer)">
+      <div class="md-list-item-text" layout="row" flex>
+        <md-checkbox ng-model="" aria-label="" flex></md-checkbox>
+        <span flex>{{ race_type.name }}</span>
+        <span flex="10">Time</span>
+        <span flex="10">Date</span>
+        <span flex>Location</span>
+      </div>
+    </md-list-item>
+  </md-list>
+</div>

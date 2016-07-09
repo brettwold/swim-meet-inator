@@ -20,15 +20,15 @@ angular
       {name: "Age on 31st December", code: "AOD"}
     ],
     entry_groups: {
-      1: { name: "9 and under", min: 0, max: 9 },
-      2: { name: "10", min: 10, max: 10 },
-      3: { name: "11", min: 11, max: 11 },
-      4: { name: "12", min: 12, max: 12 },
-      5: { name: "13", min: 13, max: 13 },
-      6: { name: "14", min: 14, max: 14 },
-      7: { name: "15", min: 15, max: 15 },
-      8: { name: "16+", min: 16, max: 101 },
-      9: { name: "Open", min: 18, max: 101 }
+      1: { name: "9 and under", min: 0, max: 10 },
+      2: { name: "10", min: 10, max: 11 },
+      3: { name: "11", min: 11, max: 12 },
+      4: { name: "12", min: 12, max: 13 },
+      5: { name: "13", min: 13, max: 14 },
+      6: { name: "14", min: 14, max: 15 },
+      7: { name: "15", min: 15, max: 16 },
+      8: { name: "16+", min: 16, max: 1001 },
+      9: { name: "Open", min: 18, max: 1001 }
     },
     strokes: {
       "FS": "Freestyle",

@@ -3,7 +3,7 @@
 
   <div ng-init="getAll()" layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="meet in meets.rows" ng-click="navigateTo('/' + meet.id)">
+      <md-list-item class="md-2-line" ng-repeat="meet in meets" ng-click="navigateTo('/' + meet.id)">
         <div class="md-list-item-text">
           <h3>{{meet.name}}</h3>
           <h4>{{meet.meet_date | date : "d MMM yyyy"}}</h4>

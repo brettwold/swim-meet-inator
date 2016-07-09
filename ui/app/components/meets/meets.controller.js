@@ -1,12 +1,11 @@
 angular
   .module('SwimResultinator')
   .controller('MeetCtrl', MeetCtrl)
-  .factory('MeetFactory', MeetFactory)
   .config(function(appRouteProvider) {
     appRouteProvider.setName('meets', 'meet', MeetCtrl);
   });
 
-function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) {
+function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, TimesheetFactory, Config) {
 
   $scope.meet = {events: {}};
   $scope.menu = { title: "Meet management" };
@@ -18,8 +17,8 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
   };
 
   $scope.getAll = function() {
-    MeetFactory.getAll().then(function(result) {
-      $scope.meets = result.data;
+    MeetFactory.loadMeets().then(function(result) {
+      $scope.meets = result;
     });
   };
 
@@ -28,8 +27,13 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
   };
 
   $scope.save = function() {
-    MeetFactory.save($scope.meet).then(function(response) {
-      $scope.meet = response.data;
+    $scope.status_message = "";
+    $scope.meet.update().then(function(response) {
+      if(response.status == 200) {
+        $scope.status_message = "Meet saved";
+      } else {
+        $scope.status_message = "Error saving meet";
+      }
     })
   };
 
@@ -91,41 +95,11 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Config) 
   }
 
   if($routeParams.id) {
-    MeetFactory.get($routeParams.id).then(function(response) {
-      $scope.meet = response.data;
+    MeetFactory.getMeet($routeParams.id).then(function(response) {
+      $scope.meet = response;
     });
-    MeetFactory.getAllTimesheets().then(function(result){
-      $scope.timesheets = result.data;
+    TimesheetFactory.loadTimesheets().then(function(result){
+      $scope.timesheets = result;
     });
   };
-}
-
-function MeetFactory($http, UrlService) {
-  var factory = {};
-
-  factory.getAll = function() {
-    return $http.get(UrlService.baseUrl + '/api/meets');
-  }
-
-  factory.getAllTimesheets = function() {
-    return $http.get(UrlService.baseUrl + '/api/timesheets');
-  }
-
-  factory.get = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/meets/' + id);
-  }
-
-  factory.save = function(meet) {
-    delete meet.entry_groups;
-    delete meet.race_types;
-    delete meet.genders;
-    delete meet.entry_events_data;
-    return $http.post(UrlService.baseUrl + '/api/meets/save', meet);
-  }
-
-  factory.delete = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/meets/delete/' + id);
-  }
-
-  return factory;
 }
