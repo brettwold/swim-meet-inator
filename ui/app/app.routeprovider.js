@@ -16,7 +16,7 @@ angular
           controller: controller,
           status: 'list'
         }).
-        when('/' + listname + '/:id?', {
+        when('/' + listname + '/edit/:id?', {
           templateUrl: pathprefix + listname + '/' + singularname + '-edit.html',
           controller: controller,
           status: 'edit'

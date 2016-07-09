@@ -5,9 +5,8 @@ angular
     appRouteProvider.setName('meets', 'meet', MeetCtrl);
   });
 
-function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, TimesheetFactory, Config) {
+function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, TimesheetFactory, Config) {
 
-  $scope.meet = {events: {}};
   $scope.menu = { title: "Meet management" };
   $scope.status = $route.current.status;
   $scope.config = Config;
@@ -42,13 +41,6 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Timeshee
     $scope.getAll();
   };
 
-  $scope.addEvent = function(index) {
-    if(!$scope.meet.events) {
-      $scope.meet.events = new Array();
-    }
-    $scope.meet.events.push( { stroke: $scope.config.strokes[index].code } );
-  }
-
   $scope.exists = function (item, list) {
     return list.indexOf(item) > -1;
   };
@@ -59,35 +51,10 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Timeshee
     else list.push(item);
   };
 
-  $scope.addRaceType = function(type) {
-    $scope.meet.race_types_arr = addItemToArray(type, $scope.meet.race_types_arr);
-  }
-
-  $scope.addEntryGroup = function(group) {
-    $scope.meet.entry_groups_arr = addItemToArray(group, $scope.meet.entry_groups_arr);
-  }
-
-  function addItemToArray(item, arr) {
-    if(item) {
-      for(idx in arr) {
-        if(arr[idx] == item) return arr;
-      }
-
-      var new_arr = arr;
-      if(new_arr === null) {
-        new_arr = [];
-      }
-      new_arr.push(item);
-      return new_arr.sort();
-    }
-
-    return arr;
-  }
-
   if($scope.status == 'list') {
     $scope.menu.title = "Meet management";
   } else if($scope.status == 'edit') {
-    if($scope.meet.id) {
+    if($scope.meet && $scope.meet.id) {
       $scope.menu.title = "Edit meet";
     } else {
       $scope.menu.title = "Create new meet";
@@ -98,8 +65,11 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Timeshee
     MeetFactory.getMeet($routeParams.id).then(function(response) {
       $scope.meet = response;
     });
-    TimesheetFactory.loadTimesheets().then(function(result){
-      $scope.timesheets = result;
-    });
-  };
+  } else {
+    $scope.meet = new Meet({});
+  }
+
+  TimesheetFactory.loadTimesheets().then(function(result){
+    $scope.timesheets = result;
+  });
 }

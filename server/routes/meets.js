@@ -2,13 +2,17 @@ var express = require('express');
 var router = express.Router();
 
 var Meet = require('../models').Meet;
+var Timesheet = require('../models').Timesheet;
+
+var INCLUDES = [ { model: Timesheet, as: 'minimum_timesheet' }, { model: Timesheet, as: 'maximum_timesheet' } ];
 
 /* GET meets listing. */
 router.get('/', function(req, res, next) {
 
   Meet.findAndCountAll({
     offset: 0,
-    limit: 10
+    limit: 10,
+    include: INCLUDES
   })
   .then(function(result) {
     res.json(result);
@@ -16,8 +20,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  console.log(req.params.id);
-  Meet.findById(req.params.id).then(function(result) {
+  Meet.findById(req.params.id, { include: INCLUDES }).then(function(result) {
     res.json(result);
   });
 });
@@ -30,7 +33,6 @@ router.put('/save', function(req, res, next) {
     });
   } else {
     Meet.findById(req.body.id).then(function(meet) {
-      console.log("meet data: " + JSON.stringify(req.body));
       meet.updateAttributes(req.body);
 
       meet.save().then(function(){

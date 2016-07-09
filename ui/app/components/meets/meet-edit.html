@@ -45,8 +45,15 @@
              </md-select>
            </md-input-container>
            <md-input-container>
-             <label>Timesheet</label>
-             <md-select ng-model="meet.timesheet_id" flex-gt-xs>
+             <label>Minimum Times</label>
+             <md-select ng-model="meet.minimum_timesheet_id" flex-gt-xs>
+               <md-option ng-repeat="sheet in timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
+             </md-select>
+           </md-input-container>
+           <md-input-container>
+             <label>Maximum Times</label>
+             <md-select ng-model="meet.maximum_timesheet_id" flex-gt-xs>
+               <md-option value="-1">No maximum entry times</md-option>
                <md-option ng-repeat="sheet in timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
              </md-select>
            </md-input-container>
@@ -91,7 +98,7 @@
              </md-select>
            </md-input-container>
            <md-input-container flex>
-             <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+             <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="meet.addRaceType(selected_race_type)">
                Add
              </md-button>
            </md-input-container>
@@ -102,7 +109,7 @@
              </md-select>
            </md-input-container>
            <md-input-container flex>
-             <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
+             <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="meet.addEntryGroup(entry_group)">
                Add
              </md-button>
            </md-input-container>

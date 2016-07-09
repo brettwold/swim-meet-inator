@@ -5,12 +5,15 @@ var Club = require('../models').Club;
 var Swimmer = require('../models').Swimmer;
 var SwimTime = require('../models').SwimTime;
 
+var INCLUDES = [ { model: SwimTime, as: "swim_times" } ];
+
 router.get('/', function(req, res, next) {
 
   Swimmer.findAndCountAll({
     order: 'last_name ASC',
     offset: 0,
-    limit: 10
+    limit: 10,
+    include: INCLUDES
   })
   .then(function(result) {
     console.log(result.count);
@@ -19,7 +22,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  Swimmer.findById(req.params.id, { include: [ SwimTime ]}).then(function(result) {
+  Swimmer.findById(req.params.id, { include: INCLUDES } ).then(function(result) {
     res.json(result);
   });
 });

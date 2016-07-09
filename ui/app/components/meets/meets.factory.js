@@ -72,13 +72,32 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
   return MeetFactory;
 }]);
 
-app.factory('Meet', ['$http', 'UrlService', 'Config', function($http, UrlService, Config) {
+app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', function($http, UrlService, Config, TimesheetFactory) {
   function Meet(meetData) {
     if (meetData) {
       this.setData(meetData);
     }
   };
   Meet.prototype = {
+    _addItemToArray: function(item, arr) {
+      if(item) {
+        for(idx in arr) {
+          if(arr[idx] == item) return arr;
+        }
+
+        var new_arr = arr;
+        if(new_arr === null) {
+          new_arr = [];
+        }
+        new_arr.push(item);
+        return new_arr.sort();
+      }
+
+      return arr;
+    },
+    _getRaceTime: function(time) {
+      return Math.round(moment.duration('0:' + time + '0').asMilliseconds() / 10)
+    },
     setData: function(meetData) {
       angular.extend(this, meetData);
     },
@@ -105,6 +124,18 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', function($http, UrlService
       }
       return moment(this.end_date, "YYYY-MM-DD").format("D MMM YYYY");
     },
+    addEvent: function(index) {
+      if(!this.events) {
+        this.events = new Array();
+      }
+      this.events.push( { stroke: Config.strokes[index].code } );
+    },
+    addRaceType: function(type) {
+      this.race_types_arr = this._addItemToArray(type, this.race_types_arr);
+    },
+    addEntryGroup: function(group) {
+      this.entry_groups_arr = this._addItemToArray(group, this.entry_groups_arr);
+    },
     ageAtMeet: function(swimmer) {
       if (!swimmer || !swimmer.dob || !this.meet_date) {
         return false;
@@ -126,18 +157,6 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', function($http, UrlService
       }
       return false;
     },
-    getGroupIdForSwimmer: function(swimmer) {
-      var aam = this.ageAtMeet(swimmer);
-      if (aam) {
-        for(key in Config.entry_groups) {
-          var entryGroup = Config.entry_groups[key];
-          if(aam >= entryGroup.min && aam < entryGroup.max) {
-            return key;
-          }
-        }
-      }
-      return false;
-    },
     getRaceTypes: function() {
       var racetypes = [];
       this.race_types.split(',').forEach(function(type) {
@@ -147,17 +166,37 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', function($http, UrlService
       return racetypes;
     },
     getEntryEvents: function(swimmer) {
+      var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
+      var maxs = JSON.parse(this.maximum_timesheet.timesheet_data);
+      var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
       if(swimmer) {
         var events = [];
-        console.log(JSON.stringify(this.entry_events[swimmer.gender][this.getGroupIdForSwimmer(swimmer)]));
-        var types = this.entry_events[swimmer.gender][this.getGroupIdForSwimmer(swimmer)];
+        var types = this.entry_events[swimmer.gender][swimmerGroup];
         for(type in types) {
           if(types[type]) {
-            console.log("Race type " + type);
-            events.push(Config.races[type]);
+            var race = Config.races[type];
+            race.min = mins[swimmer.gender][swimmerGroup][type];
+            race.max = maxs[swimmer.gender][swimmerGroup][type];
+            var best = swimmer.getBestTime(race.id);
+            if(best && race.min) {
+              race.time_present = true;
+              var minTime = this._getRaceTime(race.min);
+              var maxTime = this._getRaceTime(race.max);
+
+              if((race.min && race.max && best.time <= minTime && best.time >= maxTime) ||
+                (race.min && !race.max && best.time <= minTime)) {
+                  console.log("qula;a;a");
+                race.qualify = true;
+              } else {
+                race.qualify = false;
+              }
+            } else {
+              race.time_present = false;
+            }
+            console.log(race);
+            events.push(race);
           }
         }
-
         return events;
       }
     }
@@ -180,4 +219,14 @@ app.directive('meetEvents', function ($filter) {
       });
     }
   };
-})
+});
+
+app.directive('yesNo', function() {
+  return {
+    template: '<span>{{ yesNo ? "Yes" : "No" }}</span>',
+    scope: {
+      yesNo: '='
+    },
+    replace: true
+  };
+});

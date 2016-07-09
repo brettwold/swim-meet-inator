@@ -85,7 +85,7 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
   return SwimmerFactory;
 }]);
 
-app.factory('Swimmer', ['$http', 'UrlService', function($http, UrlService) {
+app.factory('Swimmer', ['$http', 'UrlService', 'Config', function($http, UrlService, Config) {
   function Swimmer(swimmerData) {
     if (swimmerData) {
       this.setData(swimmerData);
@@ -106,6 +106,21 @@ app.factory('Swimmer', ['$http', 'UrlService', function($http, UrlService) {
         return false;
       }
       return moment(this.dob, "YYYY-MM-DD").format("D MMM YYYY");
+    },
+    getBestTime: function(raceType) {
+      var race = Config.races[raceType];
+
+      for(indx in this.swim_times) {
+        var time = this.swim_times[indx];
+        if(time.course_type == race.course_type &&
+          time.distance == race.distance &&
+          time.stroke == race.stroke
+        ) {
+          return time;
+        }
+      }
+
+      return "99:59.99";
     }
   };
   return Swimmer;

@@ -3,7 +3,7 @@
 
   <div ng-init="getAll()" layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="timesheet in timesheets" ng-click="navigateTo('/' + timesheet.id)">
+      <md-list-item class="md-2-line" ng-repeat="timesheet in timesheets" ng-click="navigateTo('/edit/' + timesheet.id)">
         <div class="md-list-item-text">
           <h3>{{timesheet.name}}</h3>
         </div>
