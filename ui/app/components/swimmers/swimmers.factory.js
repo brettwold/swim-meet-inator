@@ -85,7 +85,12 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
   return SwimmerFactory;
 }]);
 
-app.factory('Swimmer', ['$http', 'UrlService', 'Config', function($http, UrlService, Config) {
+app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, UrlService, ConfigData) {
+  var config;
+  ConfigData.getConfig().then(function(data) {
+    config = data;
+  });
+
   function Swimmer(swimmerData) {
     if (swimmerData) {
       this.setData(swimmerData);
@@ -118,7 +123,7 @@ app.factory('Swimmer', ['$http', 'UrlService', 'Config', function($http, UrlServ
       return times;
     },
     getBestTime: function(raceType) {
-      var race = Config.races[raceType];
+      var race = config.races[raceType];
 
       for(indx in this.swim_times) {
         var time = this.swim_times[indx];

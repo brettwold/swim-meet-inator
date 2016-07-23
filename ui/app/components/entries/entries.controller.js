@@ -5,9 +5,8 @@ angular
     appRouteProvider.setName('entries', 'entry', EntryCtrl);
   });
 
-function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFactory, SwimmerFactory, Config) {
+function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFactory, SwimmerFactory, ConfigData) {
 
-  $scope.config = Config;
   $scope.menu = { title: "Entry management" };
   $scope.status = $route.current.status;
   $scope.meet;
@@ -29,32 +28,40 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
     });
   };
 
-  if($scope.status == 'list') {
-    $scope.menu.title = "Entry management";
-  } else if($scope.status == 'edit') {
-    MeetFactory.loadMeets().then(function(meets) {
-      $scope.meets = meets;
-    });
-    SwimmerFactory.loadSwimmers().then(function(swimmers) {
-      $scope.swimmers = swimmers;
-    });
-    if($scope.entry.id) {
-      $scope.menu.title = "Edit entry";
-    } else {
-      $scope.menu.title = "Create new entry";
-    }
-  }
 
-  if($routeParams.category) {
-    MeetFactory.loadMeets($routeParams.category).then(function(response) {
-      $scope.meet = response;
-      EntryFactory.getAllByMeet($scope.meet.id).then(function(result) {
-        $scope.entries = result.data;
+  function init() {
+    ConfigData.getConfig().then(function(data) {
+      $scope.config = data;
+    });
+
+    if($scope.status == 'list') {
+      $scope.menu.title = "Entry management";
+    } else if($scope.status == 'edit') {
+      MeetFactory.loadMeets().then(function(meets) {
+        $scope.meets = meets;
       });
-    });
-  } else {
-    EntryFactory.loadEntries().then(function(result) {
-      $scope.entries = result;
-    });
-  };
+      SwimmerFactory.loadSwimmers().then(function(swimmers) {
+        $scope.swimmers = swimmers;
+      });
+      if($scope.entry.id) {
+        $scope.menu.title = "Edit entry";
+      } else {
+        $scope.menu.title = "Create new entry";
+      }
+    }
+
+    if($routeParams.category) {
+      MeetFactory.loadMeets($routeParams.category).then(function(response) {
+        $scope.meet = response;
+        EntryFactory.getAllByMeet($scope.meet.id).then(function(result) {
+          $scope.entries = result.data;
+        });
+      });
+    } else {
+      EntryFactory.loadEntries().then(function(result) {
+        $scope.entries = result;
+      });
+    };
+  }
+  init();
 }

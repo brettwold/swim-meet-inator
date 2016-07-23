@@ -6,10 +6,9 @@ angular
     appRouteProvider.setName('club', ClubCtrl);
   });
 
-function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) {
+function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigData) {
 
   $scope.club = {};
-  $scope.config = Config;
   $scope.menu = { title: "Club management" };
   $scope.status = $route.current.status;
   $scope.asanum;
@@ -60,18 +59,26 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, Config) 
     });
   }
 
-  if($routeParams.id) {
-    ClubFactory.get($routeParams.id).then(function(response) {
-      $scope.club = response.data;
-      $scope.menu.title = "Edit club";
+  function init() {
+    ConfigData.getConfig().then(function(data) {
+      $scope.config = data;
     });
-  };
 
-  if($scope.status == 'list') {
-    $scope.menu.title = "Club management";
-  } else if($scope.status == 'edit') {
-    $scope.menu.title = "Create new club";
+    if($routeParams.id) {
+      ClubFactory.get($routeParams.id).then(function(response) {
+        $scope.club = response.data;
+        $scope.menu.title = "Edit club";
+      });
+    };
+
+    if($scope.status == 'list') {
+      $scope.menu.title = "Club management";
+    } else if($scope.status == 'edit') {
+      $scope.menu.title = "Create new club";
+    }
   }
+
+  init();
 }
 
 function ClubFactory($http, UrlService) {

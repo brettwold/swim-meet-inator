@@ -5,11 +5,10 @@ angular
     appRouteProvider.setName('meets', 'meet', MeetCtrl);
   });
 
-function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, TimesheetFactory, Config) {
+function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, TimesheetFactory, ConfigData) {
 
   $scope.menu = { title: "Meet management" };
   $scope.status = $route.current.status;
-  $scope.config = Config;
 
   $scope.navigateTo = function(to, event) {
     $location.path('/meets' + to);
@@ -61,15 +60,23 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, Ti
     }
   }
 
-  if($routeParams.id) {
-    MeetFactory.getMeet($routeParams.id).then(function(response) {
-      $scope.meet = response;
+  function init() {
+    ConfigData.getConfig().then(function(data) {
+      $scope.config = data;
     });
-  } else {
-    $scope.meet = new Meet({});
+
+    if($routeParams.id) {
+      MeetFactory.getMeet($routeParams.id).then(function(response) {
+        $scope.meet = response;
+      });
+    } else {
+      $scope.meet = new Meet({});
+    }
+
+    TimesheetFactory.loadTimesheets().then(function(result){
+      $scope.timesheets = result;
+    });
   }
 
-  TimesheetFactory.loadTimesheets().then(function(result){
-    $scope.timesheets = result;
-  });
+  init();
 }

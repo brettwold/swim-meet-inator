@@ -5,17 +5,24 @@ angular
         baseUrl : 'http://' + $location.host() + ':3456'
     };
   })
-  .factory('ConfigData', function($location) {
+  .factory('ConfigData', function($http, $q) {
+    var swimdata;
     return {
-      var data = $q.defer();
-      $http.get('/javascripts/config.json')
-        .success(function (response) {
-          console.log("Got fconfig balhahah: " + response);
-          data.resolve(response);
-        })
-        .error(function (response) {
-          data.reject(response);
-        });
-      return data.promise;
+      getConfig: function() {
+        var data = $q.defer();
+        if(!swimdata) {
+          $http.get('/api/swimdata')
+            .success(function (response) {
+              swimdata = response;
+              data.resolve(response);
+            })
+            .error(function (response) {
+              data.reject(response);
+            });
+        } else {
+          data.resolve(swimdata);
+        }
+        return data.promise;
+      }
     };
   });

@@ -72,7 +72,12 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
   return MeetFactory;
 }]);
 
-app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', function($http, UrlService, Config, TimesheetFactory) {
+app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', function($http, UrlService, ConfigData, TimesheetFactory) {
+  var config;
+  ConfigData.getConfig().then(function(data) {
+    config = data;
+  });
+
   function Meet(meetData) {
     if (meetData) {
       this.setData(meetData);
@@ -97,6 +102,9 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
     },
     setData: function(meetData) {
       angular.extend(this, meetData);
+    },
+    setConfig: function(config) {
+      this.config = config;
     },
     delete: function() {
       return $http.get(UrlService.baseUrl + '/api/meets/delete/' + id);
@@ -125,7 +133,7 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
       if(!this.events) {
         this.events = new Array();
       }
-      this.events.push( { stroke: Config.strokes[index].code } );
+      this.events.push( { stroke: config.strokes[index].code } );
     },
     addRaceType: function(type) {
       this.race_types_arr = this._addItemToArray(type, this.race_types_arr);
@@ -145,8 +153,8 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
     getGroupForSwimmer: function(swimmer) {
       var aam = this.ageAtMeet(swimmer);
       if (aam) {
-        for(key in Config.entry_groups) {
-          var entryGroup = Config.entry_groups[key];
+        for(key in config.entry_groups) {
+          var entryGroup = config.entry_groups[key];
           if(aam >= entryGroup.min && aam < entryGroup.max) {
             return entryGroup;
           }
@@ -157,7 +165,7 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
     getRaceTypes: function() {
       var racetypes = [];
       this.race_types.split(',').forEach(function(type) {
-        racetypes.push(Config.races[type]);
+        racetypes.push(config.races[type]);
       });
 
       return racetypes;
@@ -171,13 +179,12 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
         var types = this.entry_events[swimmer.gender][swimmerGroup];
         for(type in types) {
           if(types[type]) {
-            var race = Config.races[type];
+            var race = config.races[type];
             race.min = mins[swimmer.gender][swimmerGroup][type];
             race.max = maxs[swimmer.gender][swimmerGroup][type];
             var best = swimmer.getBestTime(race.id);
             if(best && race.min) {
               race.time_present = true;
-              console.log("Min: " + race.min + " Max: " + race.max + " best: " + best.time);
               if((race.min && race.max && best.time <= race.min && best.time >= race.max) ||
                 (race.min && !race.max && best.time <= race.min)) {
                 race.qualify = true;

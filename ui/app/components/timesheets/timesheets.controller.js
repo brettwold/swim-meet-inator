@@ -4,7 +4,7 @@ angular
   .config(function(appRouteProvider) {
     appRouteProvider.setName('timesheets', 'timesheet', TimesheetCtrl);
   })
-  .filter('raceByCourse', function(Config) {
+  .filter('raceByCourse', function() {
     return function(input, search) {
       if (!input) return input;
       if (!search) return input;
@@ -21,9 +21,8 @@ angular
     }
   });
 
-function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory, Config) {
+function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory, ConfigData) {
 
-  $scope.config = Config;
   $scope.menu = { title: "Timesheet management" };
   $scope.status = $route.current.status;
 
@@ -82,16 +81,24 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
     return arr;
   }
 
-  if($routeParams.id) {
-    TimesheetFactory.getTimesheet($routeParams.id).then(function(response) {
-      $scope.timesheet = response;
-      $scope.menu.title = "Edit timesheet";
+  function init() {
+    ConfigData.getConfig().then(function(data) {
+      $scope.config = data;
     });
-  };
 
-  if($scope.status == 'list') {
-    $scope.menu.title = "Timesheet management";
-  } else if($scope.status == 'edit') {
-    $scope.menu.title = "Create new timesheet";
+    if($routeParams.id) {
+      TimesheetFactory.getTimesheet($routeParams.id).then(function(response) {
+        $scope.timesheet = response;
+        $scope.menu.title = "Edit timesheet";
+      });
+    };
+
+    if($scope.status == 'list') {
+      $scope.menu.title = "Timesheet management";
+    } else if($scope.status == 'edit') {
+      $scope.menu.title = "Create new timesheet";
+    }
   }
+
+  init();
 }

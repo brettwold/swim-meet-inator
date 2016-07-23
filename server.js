@@ -78,6 +78,7 @@ ApiServer.prototype.startServer = function() {
   expressApp.use(express.static(path.join(__dirname, 'ui')));
 
   expressApp.use('/', require('./server/routes/index'));
+  expressApp.use('/api/swimdata', require('./server/routes/swimdata'));
   expressApp.use('/api/results', require('./server/routes/results'));
   expressApp.use('/api/meets', require('./server/routes/meets'));
   expressApp.use('/api/entries', require('./server/routes/entries'));

@@ -5,10 +5,9 @@ angular
     appRouteProvider.setName('swimmers', 'swimmer', SwimmersCtrl);
   });
 
-function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, Config) {
+function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, ConfigData) {
 
   $scope.swimmer = {};
-  $scope.config = Config;
   $scope.menu = { title: "Swimmer management" };
   $scope.status = $route.current.status;
   $scope.asanum;
@@ -42,16 +41,23 @@ function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, C
     });
   }
 
-  if($routeParams.id) {
-    SwimmerFactory.getSwimmer($routeParams.id).then(function(swimmer) {
-      $scope.swimmer = swimmer;
-      $scope.menu.title = "Edit swimmer";
+  function init() {
+    ConfigData.getConfig().then(function(data) {
+      $scope.config = data;
     });
-  };
 
-  if($scope.status == 'list') {
-    $scope.menu.title = "Swimmer management";
-  } else if($scope.status == 'edit') {
-    $scope.menu.title = "Create new swimmer";
+    if($routeParams.id) {
+      SwimmerFactory.getSwimmer($routeParams.id).then(function(swimmer) {
+        $scope.swimmer = swimmer;
+        $scope.menu.title = "Edit swimmer";
+      });
+    };
+
+    if($scope.status == 'list') {
+      $scope.menu.title = "Swimmer management";
+    } else if($scope.status == 'edit') {
+      $scope.menu.title = "Create new swimmer";
+    }
   }
+  init();
 }

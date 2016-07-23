@@ -1,4 +1,6 @@
-{
+'use strict';
+
+var config = {
   meet_types: ["Level 1", "Level 2", "Level 3", "Level 4"],
   levels: { 1 : "Level 1", 2: "Level 2", 3: "Level 3", 4: "Level 4"},
   lanes: ["6", "8", "10"],
@@ -7,9 +9,9 @@
     "F": "Female"
   },
   meet_age_types: [
-    {name: "Age on entry", code: "AOE"},
-    {name: "Age on meet date", code: "AMD"},
-    {name: "Age on 31st December", code: "AOD"}
+  {name: "Age on entry", code: "AOE"},
+  {name: "Age on meet date", code: "AMD"},
+  {name: "Age on 31st December", code: "AOD"}
   ],
   entry_groups: {
     1: { id: 1, name: "9 and under", min: 0, max: 10, description: "9 years and under" },
@@ -85,11 +87,13 @@
     223: { id: 223, name: "4x200m Medley relay", stroke: "FR", course_type: "LC", distance: 800, lengths: 16, team: true },
   },
   event_types: [
-    {name: "Heat declared winner", code: "HDW"},
-    {name: "Final decides winner", code: "FDW"}
+  {name: "Heat declared winner", code: "HDW"},
+  {name: "Final decides winner", code: "FDW"}
   ],
   course_types: [
-    {name: "Short course (25m)", code: "SC"},
-    {name: "Long course (50m)", code: "LC"}
+  {name: "Short course (25m)", code: "SC"},
+  {name: "Long course (50m)", code: "LC"}
   ],
 }
+
+module.exports = config;
