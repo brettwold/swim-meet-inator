@@ -107,6 +107,16 @@ app.factory('Swimmer', ['$http', 'UrlService', 'Config', function($http, UrlServ
       }
       return moment(this.dob, "YYYY-MM-DD").format("D MMM YYYY");
     },
+    getTimesByCourseType: function(course_type) {
+      var times = [];
+      for(indx in this.swim_times) {
+        var time = this.swim_times[indx];
+        if(time.course_type == course_type) {
+          times.push(time);
+        }
+      }
+      return times;
+    },
     getBestTime: function(raceType) {
       var race = Config.races[raceType];
 

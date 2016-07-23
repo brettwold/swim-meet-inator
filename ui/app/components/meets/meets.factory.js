@@ -95,9 +95,6 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
 
       return arr;
     },
-    _getRaceTime: function(time) {
-      return Math.round(moment.duration('0:' + time + '0').asMilliseconds() / 10)
-    },
     setData: function(meetData) {
       angular.extend(this, meetData);
     },
@@ -180,12 +177,9 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
             var best = swimmer.getBestTime(race.id);
             if(best && race.min) {
               race.time_present = true;
-              var minTime = this._getRaceTime(race.min);
-              var maxTime = this._getRaceTime(race.max);
-
-              if((race.min && race.max && best.time <= minTime && best.time >= maxTime) ||
-                (race.min && !race.max && best.time <= minTime)) {
-                  console.log("qula;a;a");
+              console.log("Min: " + race.min + " Max: " + race.max + " best: " + best.time);
+              if((race.min && race.max && best.time <= race.min && best.time >= race.max) ||
+                (race.min && !race.max && best.time <= race.min)) {
                 race.qualify = true;
               } else {
                 race.qualify = false;
@@ -193,7 +187,6 @@ app.factory('Meet', ['$http', 'UrlService', 'Config', 'TimesheetFactory', functi
             } else {
               race.time_present = false;
             }
-            console.log(race);
             events.push(race);
           }
         }

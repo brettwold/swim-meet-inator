@@ -5,12 +5,6 @@ angular
     levels: { 1 : "Level 1", 2: "Level 2", 3: "Level 3", 4: "Level 4"},
     lanes: ["6", "8", "10"],
     genders: {
-      "B": "Boys",
-      "G": "Girls",
-      "M": "Men",
-      "W": "Women"
-    },
-    swimmer_genders: {
       "M": "Male",
       "F": "Female"
     },

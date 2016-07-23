@@ -60,7 +60,7 @@
 
   <md-content ng-if="timesheet.id">
     <div layout-padding>
-      {{ timesheet.sheet }}
+      <div>Times format: mm:ss.hh<div>
       <div ng-cloak class="md-inline-form">
         <md-list ng-repeat="gender in timesheet.genders_arr">
           <div layout="row">
@@ -70,11 +70,10 @@
           <div ng-repeat="race_type in timesheet.race_types_arr">
             <md-list-item layout="row">
               <span flex="20">{{ config.races[race_type].name }}</span>
-              <span flex ng-repeat="entry_group in timesheet.entry_groups_arr">
-                <input ng-model="timesheet.sheet[gender][entry_group][race_type]" class="timesheet-entry">
-              </span>
+              <div flex ng-repeat="entry_group in timesheet.entry_groups_arr">
+                <input ng-model="timesheet.sheet[gender][entry_group][race_type]" class="timesheet-entry" lap-time-input/>
+              </div>
             </md-list-item>
-            <md-divider></md-divider>
           </div>
         </md-list>
       </div>

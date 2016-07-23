@@ -41,7 +41,9 @@
     <div ng-if="swimmer.id">
       <md-list class="md-dense" flex>
         <md-subheader class="md-no-sticky">Individual best swim times</md-subheader>
-        <md-list-item ng-repeat="time in swimmer.swim_times">
+        <div ng-repeat="course_type in config.course_types">
+        <md-subheader class="md-no-sticky">{{course_type.name}}</md-subheader>
+        <md-list-item ng-repeat="time in swimmer.getTimesByCourseType(course_type.code)">
           <div class="md-list-item-text" layout="row" flex>
             <span flex="10">{{ time.course_type }}</span>
             <span flex="10">{{ time.distance }}</span>
@@ -51,6 +53,7 @@
             <span flex >{{ time.venue }}</span>
           </div>
         </md-list-item>
+        </div>
       </md-list>
     </div>
   </div>

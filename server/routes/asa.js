@@ -7,6 +7,7 @@ var router = express.Router();
 var Swimmer = require('../models').Swimmer;
 var SwimTime = require('../models').SwimTime;
 
+const INCLUDES = [ { model: SwimTime, as: "swim_times" } ]
 const BASE_URL = 'https://swimmingresults.org';
 const INDIVIDUAL_BEST = '/individualbest/personal_best.php?mode=A&tiref=';
 
@@ -103,10 +104,10 @@ router.get('/swimmer/:id', function(req, res, next) {
 
       processBestTimeTables($, swimmer);
 
-      Swimmer.find({where: {regno: swimmer.regno}, include: [ SwimTime ]}).then(function(storedswimmer) {
+      Swimmer.find({where: {regno: swimmer.regno}, include: INCLUDES }).then(function(storedswimmer) {
         for(sTime in swimmer.times) {
-          swimmer.times[sTime].swimmer_id = storedswimmer.id;
-          SwimTime.upsert(swimmer.times[sTime].get());
+           swimmer.times[sTime].swimmer_id = storedswimmer.id;
+           SwimTime.upsert(swimmer.times[sTime].get());
         }
       });
 

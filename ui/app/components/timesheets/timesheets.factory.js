@@ -5,7 +5,7 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', funct
     _pool: {},
     _retrieveInstance: function(timesheetId, timesheetData) {
       var instance = this._pool[timesheetId];
-      
+
       if (instance) {
         instance.setData(timesheetData);
       } else {
@@ -90,6 +90,7 @@ app.factory('Timesheet', ['$http', 'UrlService', function($http, UrlService) {
       delete this.race_types;
       delete this.genders;
       delete this.timesheet_data;
+      console.log(this);
       return $http.put(UrlService.baseUrl + '/api/timesheets/save', this);
     }
   };

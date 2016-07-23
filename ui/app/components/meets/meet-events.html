@@ -20,9 +20,9 @@
       <div class="md-list-item-text" layout="row" flex ng-init="best = swimmer.getBestTime(race_type.id)">
         <span yes-no="race_type.qualify" flex></span>
         <span flex>{{ race_type.name }}</span>
-        <span flex="10">{{ race_type.min }}</span>
-        <span flex="10">{{ race_type.max }}</span>
-        <span flex="10">{{ best.time_formatted }}</span>
+        <span flex="10" display-time="{{ race_type.min }}"></span>
+        <span flex="10" display-time="{{ race_type.max }}"></span>
+        <span flex="10" display-time="{{ best.time }}"></span>
         <span flex="10">{{ best.date }}</span>
         <span flex>{{ best.venue }}</span>
       </div>
