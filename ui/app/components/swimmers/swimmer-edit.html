@@ -45,9 +45,8 @@
         <md-subheader class="md-no-sticky">{{course_type.name}}</md-subheader>
         <md-list-item ng-repeat="time in swimmer.getTimesByCourseType(course_type.code)">
           <div class="md-list-item-text" layout="row" flex>
-            <span flex="10">{{ time.course_type }}</span>
-            <span flex="10">{{ time.distance }}</span>
-            <span flex>{{ config.strokes[time.stroke] }}</span>
+            <span flex="10">{{ config.races[time.race_type].course_type }}</span>
+            <span flex>{{ config.races[time.race_type].name }}</span>
             <span flex >{{ time.time_formatted }}</span>
             <span flex >{{ time.meet_name }}</span>
             <span flex >{{ time.venue }}</span>

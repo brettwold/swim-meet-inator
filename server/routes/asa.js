@@ -2,6 +2,7 @@ var express = require('express');
 var cheerio = require('cheerio');
 var request = require('request');
 var moment = require('moment');
+var swimData = require('../helpers/swimdata');
 var router = express.Router();
 
 var Swimmer = require('../models').Swimmer;
@@ -57,8 +58,15 @@ function processDistanceAndStroke(data, str) {
   strokeArr = str.split(" ");
 
   if(strokeArr.length >= 2) {
-    data.distance = strokeArr[0];
-    data.stroke = STROKE_LOOKUP[strokeArr[1]];
+    for(idx in swimData.races) {
+      var race = swimData.races[idx];
+      if(race.distance == strokeArr[0] &&
+        race.stroke == STROKE_LOOKUP[strokeArr[1]] &&
+        race.course_type == data.course_type) {
+          console.log("Found race: " + race.name);
+        data.race_type = idx;
+      }
+    }
   }
 }
 

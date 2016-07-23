@@ -1,12 +1,11 @@
 angular
   .module('SwimResultinator')
   .controller('ClubCtrl', ClubCtrl)
-  .factory('ClubFactory', ClubFactory)
   .config(function(appRouteProvider) {
-    appRouteProvider.setName('club', ClubCtrl);
+    appRouteProvider.setName('clubs', 'club', ClubCtrl);
   });
 
-function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigData) {
+function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, SwimmerFactory, ConfigData) {
 
   $scope.club = {};
   $scope.menu = { title: "Club management" };
@@ -18,8 +17,8 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigDa
   };
 
   $scope.getAll = function() {
-    ClubFactory.getAll().then(function(result) {
-      $scope.clubs = result.data;
+    ClubFactory.loadClubs().then(function(result) {
+      $scope.clubs = result;
     });
   };
 
@@ -29,7 +28,7 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigDa
 
   $scope.save = function() {
     ClubFactory.save($scope.club).then(function(response) {
-      $scope.club = response.data;
+      $scope.club = response;
     })
   };
 
@@ -39,8 +38,8 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigDa
   };
 
   $scope.findSwimmer = function() {
-    ClubFactory.getSwimmer($scope.asanum).then(function(response) {
-      $scope.swimmer = response.data;
+    SwimmerFactory.getSwimmer($scope.asanum).then(function(response) {
+      $scope.swimmer = response;
     });
   }
 
@@ -65,8 +64,8 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigDa
     });
 
     if($routeParams.id) {
-      ClubFactory.get($routeParams.id).then(function(response) {
-        $scope.club = response.data;
+      ClubFactory.getClub($routeParams.id).then(function(response) {
+        $scope.club = response;
         $scope.menu.title = "Edit club";
       });
     };
@@ -79,38 +78,4 @@ function ClubCtrl($scope, $location, $route, $routeParams, ClubFactory, ConfigDa
   }
 
   init();
-}
-
-function ClubFactory($http, UrlService) {
-  var factory = {};
-
-  factory.getAll = function() {
-    return $http.get(UrlService.baseUrl + '/api/clubs');
-  }
-
-  factory.get = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/clubs/' + id);
-  }
-
-  factory.getSwimmer = function(asanum) {
-    return $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum);
-  }
-
-  factory.addSwimmer = function(swimmer) {
-    return $http.post(UrlService.baseUrl + '/api/clubs/addswimmer', swimmer);
-  }
-
-  factory.deleteSwimmer = function(id) {
-    return $http.post(UrlService.baseUrl + '/api/clubs/deleteswimmer', {id: id});
-  }
-
-  factory.save = function(club) {
-    return $http.post(UrlService.baseUrl + '/api/clubs/add', club);
-  }
-
-  factory.delete = function(id) {
-    return $http.get(UrlService.baseUrl + '/api/clubs/delete/' + id);
-  }
-
-  return factory;
 }

@@ -116,7 +116,7 @@ app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, Url
       var times = [];
       for(indx in this.swim_times) {
         var time = this.swim_times[indx];
-        if(time.course_type == course_type) {
+        if(course_type == config.races[time.race_type].course_type) {
           times.push(time);
         }
       }
@@ -127,10 +127,7 @@ app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, Url
 
       for(indx in this.swim_times) {
         var time = this.swim_times[indx];
-        if(time.course_type == race.course_type &&
-          time.distance == race.distance &&
-          time.stroke == race.stroke
-        ) {
+        if(time.race_type == raceType) {
           return time;
         }
       }

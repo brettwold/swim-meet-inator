@@ -12,14 +12,11 @@ router.get('/', function(req, res, next) {
     limit: 10
   })
   .then(function(result) {
-    console.log(result.count);
-    console.log(result.rows);
     res.json(result);
   });
 });
 
 router.get('/:id', function(req, res, next) {
-  console.log(req.params.id);
   Club.findById(req.params.id).then(function(result) {
     res.json(result);
   });
@@ -32,7 +29,6 @@ router.get('/:id/swimmers', function(req, res, next) {
     where: { club_id: req.params.id }
   })
   .then(function(result) {
-    console.log(result.count);
     res.json(result);
   });
 });
@@ -50,7 +46,6 @@ router.post('/addswimmer', function(req, res, next) {
 });
 
 router.post('/deleteswimmer', function(req, res, next) {
-  console.log(req.body.id);
   Swimmer.findById(req.body.id).then(function(swimmer) {
     var club_id = swimmer.club_id;
     swimmer.destroy().then(function() {

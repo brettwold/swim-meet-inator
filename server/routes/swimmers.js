@@ -16,13 +16,12 @@ router.get('/', function(req, res, next) {
     include: INCLUDES
   })
   .then(function(result) {
-    console.log(result.count);
     res.json(result);
   });
 });
 
 router.get('/:id', function(req, res, next) {
-  Swimmer.findById(req.params.id, { include: INCLUDES } ).then(function(result) {
+  Swimmer.findById(req.params.id, { include: INCLUDES, order: [ 'race_type' ] } ).then(function(result) {
     res.json(result);
   });
 });

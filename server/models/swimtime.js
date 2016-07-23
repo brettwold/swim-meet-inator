@@ -5,9 +5,7 @@ var TimeUtils = require('../helpers/timeutils');
 module.exports = function(sequelize, DataTypes) {
   var SwimTime = sequelize.define("SwimTime", {
     source:	DataTypes.CHAR(3),
-    course_type: { type: DataTypes.CHAR(2), unique: 'swimtimeUnique' },
-    distance: { type: DataTypes.INTEGER, unique: 'swimtimeUnique' },
-    stroke: { type: DataTypes.CHAR(2), unique: 'swimtimeUnique' },
+    race_type: { type: DataTypes.INTEGER, unique: 'swimtimeUnique' },
     date: { type: DataTypes.DATEONLY, unique: 'swimtimeUnique' },
     time: { type: DataTypes.INTEGER, unique: 'swimtimeUnique' },
     time_orig: DataTypes.STRING,
