@@ -33,7 +33,7 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
     getSwimmer: function(swimmerId) {
       var deferred = $q.defer();
       var swimmer = this._search(swimmerId);
-      if (swimmer) {
+      if (swimmer && swimmer.swim_times) {
         deferred.resolve(swimmer);
       } else {
         this._load(swimmerId, deferred);

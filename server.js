@@ -84,6 +84,7 @@ ApiServer.prototype.startServer = function() {
   expressApp.use('/api/entries', require('./server/routes/entries'));
   expressApp.use('/api/clubs', require('./server/routes/clubs'));
   expressApp.use('/api/swimmers', require('./server/routes/swimmers'));
+  expressApp.use('/api/swimtimes', require('./server/routes/swimtimes'));
   expressApp.use('/api/asa', require('./server/routes/asa'));
   expressApp.use('/api/timesheets', require('./server/routes/timesheets'));
 

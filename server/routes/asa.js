@@ -11,6 +11,10 @@ var SwimTime = require('../models').SwimTime;
 const INCLUDES = [ { model: SwimTime, as: "swim_times" } ]
 const BASE_URL = 'https://swimmingresults.org';
 const INDIVIDUAL_BEST = '/individualbest/personal_best.php?mode=A&tiref=';
+const STROKE_HISTORY = '/individualbest/personal_best_time_date.php?mode=A&tiref='
+const ATTR_STOKE_TYPE = '&tstroke='
+const ATTR_COURSE_TYPE = '&tcourse='
+
 
 const STROKE_LOOKUP = {
   'Freestyle': 'FS',
@@ -99,6 +103,36 @@ function processBestTimeTables($, swimmer) {
   });
 }
 
+function processAllTimeTables($, swimmer) {
+  $('#rankTable').each(function(rankTableIndex, rankTable) {
+    $(rankTable).find('tr').each(function(i, row) {
+      var time = SwimTime.build();
+      var selectcol = $(row).find('td');
+
+      if(selectcol.eq(0).text() != "") {
+        time.source = "ASA";
+        time.time_formatted = selectcol.eq(0).text().trim();
+        time.fina_points = selectcol.eq(1).text().trim();
+        time.date = formatDate(selectcol.eq(3).text().trim());
+        time.meet_name = selectcol.eq(4).text().trim();
+        time.venue = selectcol.eq(5).text().trim();
+        time.license = selectcol.eq(6).text().trim();
+        time.level = selectcol.eq(7).text().trim();
+        time.round = selectcol.eq(2).text().trim();
+        swimmer.times.push(time);
+      }
+    });
+  });
+}
+
+function getAsaStrokeCode(stroke_type) {
+  return swimData.races[stroke_type].asa_stroke
+}
+
+function getAsaCourseCode(stroke_type) {
+  return swimData.races[stroke_type].asa_course
+}
+
 router.get('/swimmer/:id', function(req, res, next) {
   url = BASE_URL + INDIVIDUAL_BEST + req.params.id;
 
@@ -119,6 +153,32 @@ router.get('/swimmer/:id', function(req, res, next) {
         }
       });
 
+      res.json(swimmer);
+    }
+  });
+});
+
+router.get('/swimmer/:id/:stroke', function(req, res, next) {
+
+  var stroke = getAsaStrokeCode(req.params.stroke);
+  var course = getAsaCourseCode(req.params.stroke);
+
+  url = BASE_URL + STROKE_HISTORY + req.params.id + ATTR_STOKE_TYPE + stroke + ATTR_COURSE_TYPE + course;
+
+  request(url, function(error, response, html) {
+    if(!error) {
+      var $ = cheerio.load(html);
+      var swimmer = {times: []};
+
+      processAllTimeTables($, swimmer);
+
+      Swimmer.find({where: {regno: req.params.id}, include: INCLUDES }).then(function(storedswimmer) {
+        for(sTime in swimmer.times) {
+          swimmer.times[sTime].swimmer_id = storedswimmer.id;
+          swimmer.times[sTime].race_type = req.params.stroke;
+          SwimTime.upsert(swimmer.times[sTime].get());
+        }
+      });
       res.json(swimmer);
     }
   });

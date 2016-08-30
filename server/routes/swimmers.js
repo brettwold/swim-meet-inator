@@ -4,16 +4,18 @@ var router = express.Router();
 var Club = require('../models').Club;
 var Swimmer = require('../models').Swimmer;
 var SwimTime = require('../models').SwimTime;
+var sequelize = require('../models').sequelize;
 
-var INCLUDES = [ { model: SwimTime, as: "swim_times" } ];
+var INCLUDES = [{
+  model: SwimTime, as: "swim_times"
+}];
 
 router.get('/', function(req, res, next) {
 
   Swimmer.findAndCountAll({
     order: 'last_name ASC',
     offset: 0,
-    limit: 10,
-    include: INCLUDES
+    limit: 10
   })
   .then(function(result) {
     res.json(result);
@@ -21,8 +23,12 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next) {
-  Swimmer.findById(req.params.id, { include: INCLUDES, order: [ 'race_type' ] } ).then(function(result) {
-    res.json(result);
+  Swimmer.findById(req.params.id, {
+    include: INCLUDES,
+    order: [ 'race_type', sequelize.fn('min', sequelize.col('time')) ],
+    group: ['race_type']
+  }).then(function(swimmer) {
+    res.json(swimmer);
   });
 });
 

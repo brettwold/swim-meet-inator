@@ -47,7 +47,7 @@
           <div class="md-list-item-text" layout="row" flex>
             <span flex="10">{{ config.races[time.race_type].course_type }}</span>
             <span flex>{{ config.races[time.race_type].name }}</span>
-            <span flex >{{ time.time_formatted }}</span>
+            <span flex display-time="{{ time.time }}"></span>
             <span flex >{{ time.meet_name }}</span>
             <span flex >{{ time.venue }}</span>
           </div>
