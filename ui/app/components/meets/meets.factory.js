@@ -217,6 +217,14 @@ app.directive('meetEvents', function ($filter) {
           });
         }
       });
+      $scope.$watch('swimmerId', function(newVal, oldVal) {
+        var SwimmerFactory = element.injector().get('SwimmerFactory');
+        if(newVal) {
+          SwimmerFactory.getSwimmer(newVal).then(function(swimmer) {
+            $scope.swimmer = swimmer;
+          });
+        }
+      });
     }
   };
 });

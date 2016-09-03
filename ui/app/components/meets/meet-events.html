@@ -1,31 +1,38 @@
-<div>
-  <h2>Meet events: {{ meet.name }}</h2>
-  <p>Meet type: {{ meet.level }} {{ meet.course_type }} {{ meet.lanes }}
-  <p>Age at meet: {{ meet.ageAtMeet(swimmer) }}<p>
-  <p>Entry group: {{ meet.getGroupForSwimmer(swimmer).description }}</p>
-  <md-list class="md-dense" flex>
-    <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
-    <md-list-item>
-      <div class="md-list-item-text" layout="row" flex>
-        <span flex>Qualify</span>
-        <span flex>Race</span>
-        <span flex="10">Min</span>
-        <span flex="10">Max</span>
-        <span flex="10">PB</span>
-        <span flex="10">PB Date</span>
-        <span flex>PB Location</span>
-      </div>
-    </md-list-item>
-    <md-list-item ng-repeat="race_type in meet.getEntryEvents(swimmer)">
-      <div class="md-list-item-text" layout="row" flex ng-init="best = swimmer.getBestTime(race_type.id)">
-        <span yes-no="race_type.qualify" flex></span>
-        <span flex>{{ race_type.name }}</span>
-        <span flex="10" display-time="{{ race_type.min }}"></span>
-        <span flex="10" display-time="{{ race_type.max }}"></span>
-        <span flex="10" display-time="{{ best.time }}"></span>
-        <span flex="10">{{ best.date }}</span>
-        <span flex>{{ best.venue }}</span>
-      </div>
-    </md-list-item>
-  </md-list>
-</div>
+<md-card>
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">Meet events: {{ meet.name }}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content>
+    <p>{{ config.levels }} {{ meet.level }}</p>
+    <p>Meet type: {{ config.levels[meet.level] }}, {{ meet.course_type }}, {{ meet.lanes }} Lanes</p>
+    <p>Age at meet: {{ meet.ageAtMeet(swimmer) }}<p>
+    <p>Entry group: {{ meet.getGroupForSwimmer(swimmer).description }}</p>
+    <md-list class="md-dense" flex>
+      <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
+      <md-list-item>
+        <div class="md-list-item-text" layout="row" flex>
+          <span flex>Qualify</span>
+          <span flex>Race</span>
+          <span flex="10">Min</span>
+          <span flex="10">Max</span>
+          <span flex="10">PB</span>
+          <span flex="10">PB Date</span>
+          <span flex>PB Location</span>
+        </div>
+      </md-list-item>
+      <md-list-item ng-repeat="race_type in meet.getEntryEvents(swimmer)">
+        <div class="md-list-item-text" layout="row" flex ng-init="best = swimmer.getBestTime(race_type.id)">
+          <span yes-no="race_type.qualify" flex></span>
+          <span flex>{{ race_type.name }}</span>
+          <span flex="10" display-time="{{ race_type.min }}"></span>
+          <span flex="10" display-time="{{ race_type.max }}"></span>
+          <span flex="10" display-time="{{ best.time }}"></span>
+          <span flex="10">{{ best.date }}</span>
+          <span flex>{{ best.venue }}</span>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>

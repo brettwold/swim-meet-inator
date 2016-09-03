@@ -18,17 +18,33 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
     _search: function(swimmerId) {
       return this._pool[swimmerId];
     },
-    _load: function(swimmerId, deferred) {
+    _searchByRegNo: function(regno) {
+      for(swimmer in this._pool) {
+        if(swimmer.regno == regno) {
+          return swimmer;
+        }
+      }
+    },
+    _load: function(swimmerId, deferred, byRegno) {
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/swimmers/' + swimmerId)
-      .success(function(swimmerData) {
-        var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
-        deferred.resolve(swimmer);
-      })
-      .error(function() {
-        deferred.reject();
-      });
+      var getUrl = UrlService.baseUrl + '/api/swimmers/' + swimmerId;
+
+      if(byRegno) {
+        getUrl = UrlService.baseUrl + '/api/swimmers/regno/' + swimmerId;
+      }
+
+      $http.get(getUrl)
+        .success(function(swimmerData) {
+          if(swimmerData) {
+            var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
+            deferred.resolve(swimmer);
+          } else {
+            deferred.reject("No swimmer data found");
+          }
+        }).catch(function(e) {
+          deferred.reject(e.statusText);
+        });
     },
     getSwimmer: function(swimmerId) {
       var deferred = $q.defer();
@@ -37,6 +53,16 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
         deferred.resolve(swimmer);
       } else {
         this._load(swimmerId, deferred);
+      }
+      return deferred.promise;
+    },
+    getSwimmerByRegNo: function(regno) {
+      var deferred = $q.defer();
+      var swimmer = this._searchByRegNo(regno);
+      if (swimmer && swimmer.swim_times) {
+        deferred.resolve(swimmer);
+      } else {
+        this._load(regno, deferred, true);
       }
       return deferred.promise;
     },

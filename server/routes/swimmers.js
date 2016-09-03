@@ -28,7 +28,25 @@ router.get('/:id', function(req, res, next) {
     order: [ 'race_type', sequelize.fn('min', sequelize.col('time')) ],
     group: ['race_type']
   }).then(function(swimmer) {
-    res.json(swimmer);
+    if(swimmer) {
+      res.json(swimmer);
+    } else {
+      res.status(404).send('Swimmer not found');
+    }
+  });
+});
+
+router.get('/regno/:regno', function(req, res, next) {
+  Swimmer.find({where: {regno: req.params.regno}}, {
+    include: INCLUDES,
+    order: [ 'race_type', sequelize.fn('min', sequelize.col('time')) ],
+    group: ['race_type']
+  }).then(function(swimmer) {
+    if(swimmer) {
+      res.json(swimmer);
+    } else {
+      res.status(404).send('Swimmer not found');
+    }
   });
 });
 

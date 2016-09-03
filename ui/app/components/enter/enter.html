@@ -1,0 +1,33 @@
+<div ng-controller="EnterCtrl">
+  <div ng-include="'partials/section-menu.html'"></div>
+
+  <div layout-padding>
+    <h1>Enter Meet</h1>
+    <p>Enter your ASA number below</p>
+    <div layout="column">
+      <md-input-container class="md-block" flex="75">
+        <label>ASA Number</label>
+        <input ng-model="asaregno">
+      </md-input-container>
+
+      <div ng-show="swimmer" layout="column">
+        <swimmer swimmer-id="swimmer.swimmer_id"></swimmer>
+        <md-input-container>
+          <label>Select meet</label>
+          <md-select ng-model="meetId" flex-gt-xs>
+            <md-option ng-repeat="meet in meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <div ng-show="meetId">
+        <meet-events meet-id="meetId" swimmer-id="swimmer.swimmer-id"></meet-events>
+      </div>
+
+      <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="moveToNext()">
+        Next
+      </md-button>
+      <p class="error">{{ message }}</p>
+    </div>
+  </div>
+</div>

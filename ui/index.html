@@ -24,6 +24,8 @@
       <md-content layout-padding ng-controller="LeftCtrl">
         <div>
           <md-list ng-controller="MenuListCtrl" ng-cloak>
+            <md-list-item class="md-clickable" ng-click="navigateTo('/enter')">Enter meet</md-list-item>
+            <md-divider></md-divider>
             <md-list-item class="md-clickable" ng-click="navigateTo('/home')">Home</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/clubs')">Clubs</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/swimmers')">Swimmers</md-list-item>
@@ -71,6 +73,7 @@
   <script src="app/components/entries/entries.controller.js"></script>
   <script src="app/components/results/results.controller.js"></script>
   <script src="app/components/results/results.routes.js"></script>
+  <script src="app/components/enter/enter.controller.js"></script>
 
 
 </body>
