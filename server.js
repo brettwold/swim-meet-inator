@@ -1,15 +1,39 @@
 'use strict';
 
+var dotenv = require('dotenv');
 var express = require('express');
+var session = require('express-session');
 var http = require('http');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+dotenv.load();
 
 let server;
 let expressApp = express();
+
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3456/auth/google/callback"
+},
+  function(accessToken, refreshToken, profile, cb) {
+    return cb(null, profile);
+  }
+));
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 const port = normalizePort(process.env.PORT || '3456');
 
@@ -69,24 +93,52 @@ var ApiServer = function() {
 
 ApiServer.prototype.startServer = function() {
 
-  // uncomment after placing your favicon in /public
+  var auth = function(req, res, next) {
+    if (!req.isAuthenticated()) {
+      res.send(401);
+    } else {
+      next();
+    }
+  };
+
   expressApp.use(favicon(path.join(__dirname, 'ui/public', 'favicon.ico')));
   expressApp.use(logger('dev'));
   expressApp.use(bodyParser.json());
   expressApp.use(bodyParser.urlencoded({ extended: false }));
   expressApp.use(cookieParser());
+  expressApp.use(session({
+    secret: 'dkdksdkiwikdkkdialalal737373',
+    resave: true,
+    saveUninitialized: true
+  }));
   expressApp.use(express.static(path.join(__dirname, 'ui')));
 
-  expressApp.use('/', require('./server/routes/index'));
-  expressApp.use('/api/swimdata', require('./server/routes/swimdata'));
-  expressApp.use('/api/results', require('./server/routes/results'));
-  expressApp.use('/api/meets', require('./server/routes/meets'));
-  expressApp.use('/api/entries', require('./server/routes/entries'));
-  expressApp.use('/api/clubs', require('./server/routes/clubs'));
-  expressApp.use('/api/swimmers', require('./server/routes/swimmers'));
-  expressApp.use('/api/swimtimes', require('./server/routes/swimtimes'));
-  expressApp.use('/api/asa', require('./server/routes/asa'));
-  expressApp.use('/api/timesheets', require('./server/routes/timesheets'));
+  expressApp.use(passport.initialize());
+  expressApp.use(passport.session());
+
+  expressApp.use('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+  });
+  expressApp.use('/api/swimdata', auth, require('./server/routes/swimdata'));
+  expressApp.use('/api/results', auth, require('./server/routes/results'));
+  expressApp.use('/api/meets', auth, require('./server/routes/meets'));
+  expressApp.use('/api/entries', auth, require('./server/routes/entries'));
+  expressApp.use('/api/clubs', auth, require('./server/routes/clubs'));
+  expressApp.use('/api/swimmers', auth, require('./server/routes/swimmers'));
+  expressApp.use('/api/swimtimes', auth, require('./server/routes/swimtimes'));
+  expressApp.use('/api/asa', auth, require('./server/routes/asa'));
+  expressApp.use('/api/timesheets', auth, require('./server/routes/timesheets'));
+  expressApp.use('/api', function(req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0');
+  });
+  
+  expressApp.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+  expressApp.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/api' }),
+    function(req, res) {
+      console.log(req.user);
+      res.redirect('/');
+    });
 
   // catch 404 and forward to error handler
   expressApp.use(function(req, res, next) {
