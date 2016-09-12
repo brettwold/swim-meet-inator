@@ -20,7 +20,6 @@ angular
           $http({ method: 'GET', url: '/api' })
             .success(function(data, status, headers, config) {
               SessionService.authenticated = true;
-              console.log("Got user: " + data);
               SessionService.user = data;
               if (typeof(callback) === typeof(Function)) callback();
             })

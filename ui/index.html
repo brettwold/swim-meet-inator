@@ -18,7 +18,7 @@
         md-is-locked-open="true"
         md-disable-backdrop
         md-whiteframe="4"
-        ng-if="session.user">
+        ng-if="session.authenticated">
       <md-toolbar class="md-theme-indigo">
         <h1 class="md-toolbar-tools">{{ session.user.displayName }}</h1>
       </md-toolbar>

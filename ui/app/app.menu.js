@@ -4,10 +4,15 @@ angular
   .controller('LeftCtrl', LeftCtrl)
   .controller('MenuListCtrl', MenuListCtrl);
 
-function AppCtrl($scope, $http, SessionService, AuthService) {
+function AppCtrl($scope, $http, $location, SessionService, AuthService) {
   AuthService.login(function() {
     $scope.session = SessionService;
-    console.log(SessionService);
+    $scope.menu = { title: "SwimResultinator" };
+    $scope.status = "index";
+    console.log($scope.session.user);
+    if(!$scope.session.authenticated) {
+      $location.path('/login');
+    }
   });
 }
 

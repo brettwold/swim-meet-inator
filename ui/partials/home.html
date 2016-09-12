@@ -1,9 +1,10 @@
-<md-toolbar>
-  <div layout="row" class="md-toolbar-tools">
-    <h2 class="md-toolbar-tools">Swim Resultinator</h2>
-  </div>
-</md-toolbar>
+<div>
+  <div ng-include="'partials/section-menu.html'"></div>
 
-<md-content>
-  {{ greeting }}
-</md-content>
+  <md-content layout-padding>
+
+    <h1>Swim Resultinator</h1>
+    <h2>Hi, {{ session.user.displayName }}</h2>
+
+  </md-content>
+</div>

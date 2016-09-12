@@ -11,22 +11,46 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var request = require('request');
 
 dotenv.load();
 
 let server;
 let expressApp = express();
 
+function isTeamMember() {
+  return true;
+}
+
 
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3456/auth/google/callback"
+  callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3456/auth/google/callback",
+  scope: ['email']
 },
-  function(accessToken, refreshToken, profile, cb) {
-    return cb(null, profile);
+  function(accessToken, refreshToken, profile, done) {
+    request({
+      url: 'https://www.googleapis.com/plus/v1/people/me',
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      }
+    }, function (error, response, body) {
+      console.log("got code: " + response.statusCode);
+      if (!error && response.statusCode == 200) {
+        var json = JSON.parse(body);
+        console.log("bobobo" + body);
+        console.log(json);
+        if(isTeamMember()) {
+          done(null, profile);
+        } else {
+          done(null, false, { message: 'You are not a member of the required team' });
+        }
+      }
+    });
   }
 ));
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -95,7 +119,7 @@ ApiServer.prototype.startServer = function() {
 
   var auth = function(req, res, next) {
     if (!req.isAuthenticated()) {
-      res.send(401);
+      res.sendStatus(401);
     } else {
       next();
     }
@@ -130,9 +154,13 @@ ApiServer.prototype.startServer = function() {
   expressApp.use('/api/asa', auth, require('./server/routes/asa'));
   expressApp.use('/api/timesheets', auth, require('./server/routes/timesheets'));
   expressApp.use('/api', function(req, res) {
-    res.send(req.isAuthenticated() ? req.user : '0');
+    if(req.isAuthenticated()) {
+      res.send(req.user);
+    } else {
+      res.sendStatus(401);
+    }
   });
-  
+
   expressApp.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
   expressApp.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/api' }),
     function(req, res) {

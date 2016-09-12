@@ -4,6 +4,9 @@
 body {
   padding-top: 50px;
 }
+.img-circle {
+  border-radius: 50%;
+}
 .swim-resultinator {
   padding: 40px 15px;
   text-align: center;

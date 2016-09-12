@@ -1,18 +1,18 @@
 <md-toolbar>
-<div layout="row" class="md-toolbar-tools">
-  <h2 class="md-toolbar-tools">
+<div class="md-toolbar-tools">
+  <h2>
     <span>{{menu.title}}</span>
   </h2>
+  <span flex></span>
   <span class="status-message">{{status_message}}</span>
-  <div ng-if="status == 'edit'">
-    <md-button class="md-raised" aria-label="Save" ng-click="save()">
-      Save
-    </md-button>
-  </div>
-  <div ng-if="status != 'edit'">
-    <md-button class="md-raised" aria-label="Add" ng-click="add()">
-      Add
-    </md-button>
-  </div>
+  <md-button class="md-raised" aria-label="Save" ng-click="save()" ng-if="status == 'edit'">
+    Save
+  </md-button>
+  <md-button class="md-raised" aria-label="Add" ng-click="add()" ng-if="status != 'index'">
+    Add
+  </md-button>
+  <a ng-href="/logout" ng-if="session.authenticated">
+    <img alt="{{ session.user.displayName }}" ng-src="{{ session.user.photos[0].value }}" class="img-circle"/>
+  </a>
 </div>
 </md-toolbar>
