@@ -11,16 +11,16 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-  }).factory('AuthService', ['$http', 'SessionService',
+  }).factory('AuthService', ['$http', 'SessionService', 'User',
 
-    function($http, SessionService) {
+    function($http, SessionService, User) {
       var AuthService = {
 
         login: function(callback) {
           $http({ method: 'GET', url: '/api' })
             .success(function(data, status, headers, config) {
               SessionService.authenticated = true;
-              SessionService.user = data;
+              SessionService.user = new User(data);
               if (typeof(callback) === typeof(Function)) callback();
             })
             .error(function(data, status, headers, config) {

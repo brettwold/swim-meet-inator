@@ -94,6 +94,11 @@ var config = {
   {name: "Short course (25m)", code: "SC" },
   {name: "Long course (50m)", code: "LC" }
   ],
+  user_roles: {
+    "user": { name: "User" },
+    "admin": { name: "Administrator" },
+    "superAdmin": { name: "Super Admin" }
+  }
 }
 
 module.exports = config;

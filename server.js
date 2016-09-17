@@ -12,52 +12,12 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var request = require('request');
+var auth = require('./server/helpers/authorisation');
 
 dotenv.load();
 
 let server;
 let expressApp = express();
-
-function isTeamMember() {
-  return true;
-}
-
-
-passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3456/auth/google/callback",
-  scope: ['email']
-},
-  function(accessToken, refreshToken, profile, done) {
-    request({
-      url: 'https://www.googleapis.com/plus/v1/people/me',
-      headers: {
-        'Authorization': 'Bearer ' + accessToken
-      }
-    }, function (error, response, body) {
-      console.log("got code: " + response.statusCode);
-      if (!error && response.statusCode == 200) {
-        var json = JSON.parse(body);
-        console.log("bobobo" + body);
-        console.log(json);
-        if(isTeamMember()) {
-          done(null, profile);
-        } else {
-          done(null, false, { message: 'You are not a member of the required team' });
-        }
-      }
-    });
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
 
 const port = normalizePort(process.env.PORT || '3456');
 
@@ -117,14 +77,6 @@ var ApiServer = function() {
 
 ApiServer.prototype.startServer = function() {
 
-  var auth = function(req, res, next) {
-    if (!req.isAuthenticated()) {
-      res.sendStatus(401);
-    } else {
-      next();
-    }
-  };
-
   expressApp.use(favicon(path.join(__dirname, 'ui/public', 'favicon.ico')));
   expressApp.use(logger('dev'));
   expressApp.use(bodyParser.json());
@@ -144,15 +96,16 @@ ApiServer.prototype.startServer = function() {
     req.logout();
     res.redirect('/');
   });
-  expressApp.use('/api/swimdata', auth, require('./server/routes/swimdata'));
-  expressApp.use('/api/results', auth, require('./server/routes/results'));
-  expressApp.use('/api/meets', auth, require('./server/routes/meets'));
-  expressApp.use('/api/entries', auth, require('./server/routes/entries'));
-  expressApp.use('/api/clubs', auth, require('./server/routes/clubs'));
-  expressApp.use('/api/swimmers', auth, require('./server/routes/swimmers'));
-  expressApp.use('/api/swimtimes', auth, require('./server/routes/swimtimes'));
-  expressApp.use('/api/asa', auth, require('./server/routes/asa'));
-  expressApp.use('/api/timesheets', auth, require('./server/routes/timesheets'));
+  expressApp.use('/api/swimdata', auth.isAuth, require('./server/routes/swimdata'));
+  expressApp.use('/api/results', auth.isAuth, require('./server/routes/results'));
+  expressApp.use('/api/meets', auth.isAuth, require('./server/routes/meets'));
+  expressApp.use('/api/entries', auth.isAuth, require('./server/routes/entries'));
+  expressApp.use('/api/clubs', auth.isAdmin, require('./server/routes/clubs'));
+  expressApp.use('/api/swimmers', auth.isAuth, require('./server/routes/swimmers'));
+  expressApp.use('/api/swimtimes', auth.isAuth, require('./server/routes/swimtimes'));
+  expressApp.use('/api/asa', auth.isAuth, require('./server/routes/asa'));
+  expressApp.use('/api/timesheets', auth.isAuth, require('./server/routes/timesheets'));
+  expressApp.use('/api/users', auth.isAdmin, require('./server/routes/users'));
   expressApp.use('/api', function(req, res) {
     if(req.isAuthenticated()) {
       res.send(req.user);
