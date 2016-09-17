@@ -11,8 +11,6 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
   $scope.status = $route.current.status;
   $scope.meet;
   $scope.swimmer;
-  $scope.swimmerId;
-  $scope.entry = {};
 
   $scope.navigateTo = function(to, event) {
     $location.path('/entries' + to);
@@ -22,12 +20,25 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
     $scope.navigateTo('/edit');
   };
 
+  $scope.save = function() {
+    $scope.status_message = "";
+    if($scope.swimmer_id && $scope.meet_id) {
+      var newEntry = EntryFactoyr.setEntry({swimmer_id: $scope.swimmer_id, meet_id: $scope.meet_id});
+      newEntry.update().then(function(response) {
+        if(response.status == 200) {
+          $scope.status_message = "Entry saved";
+        } else {
+          $scope.status_message = "Error saving entry";
+        }
+      });
+    }
+  };
+
   $scope.getAll = function() {
     EntryFactory.loadEntries().then(function(entries) {
       $scope.entries = entries;
     });
   };
-
 
   function init() {
     ConfigData.getConfig().then(function(data) {
@@ -43,7 +54,7 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       SwimmerFactory.loadSwimmers().then(function(swimmers) {
         $scope.swimmers = swimmers;
       });
-      if($scope.entry.id) {
+      if($scope.entry) {
         $scope.menu.title = "Edit entry";
       } else {
         $scope.menu.title = "Create new entry";

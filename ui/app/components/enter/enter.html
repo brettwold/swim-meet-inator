@@ -11,7 +11,7 @@
       </md-input-container>
 
       <div ng-show="swimmer" layout="column">
-        <swimmer swimmer-id="swimmer.swimmer_id"></swimmer>
+        <swimmer swimmer-id="swimmer.id"></swimmer>
         <md-input-container>
           <label>Select meet</label>
           <md-select ng-model="meetId" flex-gt-xs>
@@ -21,7 +21,7 @@
       </div>
 
       <div ng-show="meetId">
-        <meet-events meet-id="meetId" swimmer-id="swimmer.swimmer-id"></meet-events>
+        <meet-events meet-id="meetId" swimmer-id="swimmer.id"></meet-events>
       </div>
 
       <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="moveToNext()">

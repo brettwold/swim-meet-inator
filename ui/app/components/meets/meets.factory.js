@@ -208,6 +208,10 @@ app.directive('meetEvents', function ($filter) {
   return {
     replace: true,
     templateUrl: 'app/components/meets/meet-events.html',
+    scope: {
+      'meetId' : '=',
+      'swimmerId' : '='
+    },
     link: function ($scope, element, attrs) {
       $scope.$watch('meetId', function(newVal, oldVal) {
         var MeetFactory = element.injector().get('MeetFactory');

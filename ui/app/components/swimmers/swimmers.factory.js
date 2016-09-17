@@ -168,6 +168,9 @@ app.directive('swimmer', function ($filter) {
   return {
     replace: true,
     templateUrl: 'app/components/swimmers/swimmer-basic.html',
+    scope: {
+      'swimmerId' : '='
+    },
     link: function ($scope, element, attrs) {
       $scope.$watch('swimmerId', function(newVal, oldVal) {
         var SwimmerFactory = element.injector().get('SwimmerFactory');
