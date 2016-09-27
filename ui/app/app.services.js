@@ -26,3 +26,9 @@ angular
       }
     };
   });
+
+  angular.module('SwimResultinator').config(function($mdDateLocaleProvider) {
+    $mdDateLocaleProvider.formatDate = function(date) {
+      return moment(date).format('DD-MMM-YYYY');
+    };
+  });

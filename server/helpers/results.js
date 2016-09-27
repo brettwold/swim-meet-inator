@@ -3,6 +3,7 @@ var path = require('path');
 var readline = require('readline');
 var models = require('../models');
 var parse = require('csv-parse');
+var Utils = require('../helpers/utils');
 
 const RESULTS_FILE = 'lstrslt.txt';
 const SWIMMERS_FILE = 'lstconc.txt';
@@ -11,11 +12,13 @@ const SWIM_FILE = 'lststart.txt';
 const STROKE_FILE = 'lststyle.txt';
 const LENGTH_FILE = 'lstlong.txt';
 const GROUPS_FILE = 'lstcat.txt';
+const EVENTS_FILE = 'lstrace.txt';
 
 var Results = function () {
   this.strokes = {};
   this.lengths = {};
   this.groups = {};
+  this.events = {};
 };
 
 function isNumeric(n) {
@@ -24,31 +27,51 @@ function isNumeric(n) {
 
 Results.prototype.setupStaticData = function(dir) {
   var self = this;
-  this.readStatic(dir, this.getFilenameCase(dir, STROKE_FILE), function(strokes) {
+  this._readStatic(dir, this.getFilenameCase(dir, STROKE_FILE), function(strokes) {
     for(i = 0; i < strokes.length; i++) {
       if (!isNaN(strokes[i][0])) {
-        self.strokes[strokes[i][0]] = { name: strokes[i][1], code: strokes[i][2] };
+        self.strokes[Utils.trimQuotes(strokes[i][0])] = {
+          name: Utils.trimQuotes(strokes[i][1]),
+          code: Utils.trimQuotes(strokes[i][2])
+        };
       }
     }
   });
-  this.readStatic(dir, this.getFilenameCase(dir, LENGTH_FILE), function(lengths) {
+  this._readStatic(dir, this.getFilenameCase(dir, LENGTH_FILE), function(lengths) {
     for(i = 0; i < lengths.length; i++) {
       if (!isNaN(lengths[i][0])) {
-        self.lengths[lengths[i][0]] = { name: lengths[i][1], distance: lengths[i][2] };
+        self.lengths[Utils.trimQuotes(lengths[i][0])] = {
+          name: Utils.trimQuotes(lengths[i][1]),
+          distance: Utils.trimQuotes(lengths[i][2])
+        };
       }
     }
   });
-  this.readStatic(dir, this.getFilenameCase(dir, GROUPS_FILE), function(groups) {
+  this._readStatic(dir, this.getFilenameCase(dir, GROUPS_FILE), function(groups) {
     for(i = 0; i < groups.length; i++) {
-      self.groups[groups[i][1]] = { name: groups[i][0] };
+      if (groups[i][1]) {
+        self.groups[Utils.trimQuotes(groups[i][1])] = { name: Utils.trimQuotes(groups[i][0]) };
+      }
+    }
+  });
+  this._readStatic(dir, this.getFilenameCase(dir, EVENTS_FILE), function(events) {
+    // event;round;nbHeat;idLen;idStyle;abCat;date;time
+    for(i = 0; i < events.length; i++) {
+      self.events[Utils.trimQuotes(events[i][0])] = {
+        round: Utils.trimQuotes(events[i][1]),
+        heat: Utils.trimQuotes(events[i][2]),
+        length: Utils.trimQuotes(events[i][3]),
+        stroke: Utils.trimQuotes(events[i][4]),
+        group: Utils.trimQuotes(events[i][5])
+      };
     }
   });
 }
 
-Results.prototype.readStatic = function(dir, filename, callback) {
+Results.prototype._readStatic = function(dir, filename, callback) {
 
   var output = [];
-  var parser = parse({delimiter: ';', relax: true});
+  var parser = parse({delimiter: ';', relax: true, relax_column_count: true });
   parser.on('readable', function(){
     while(record = parser.read()){
       output.push(record);
@@ -76,12 +99,49 @@ Results.prototype.getFilenameCase = function(dir, filename) {
 }
 
 Results.prototype.results = function(dir, callback) {
+  var self = this;
   if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
   }
   this.setupStaticData(dir);
 
-  this.readAresFile(dir, this.getFilenameCase(dir, RESULTS_FILE), models.ResultLine, callback);
+  this.readAresFile(dir, this.getFilenameCase(dir, RESULTS_FILE), models.ResultLine, function(resultLines) {
+    var eventResults = {};
+    eventResults.resultLineCount = resultLines.results.length;
+    eventResults.events = self.events;
+    for(i = 0; i < resultLines.results.length; i++) {
+      var eventId = resultLines.results[i].external_event_id;
+      if(resultLines.results[i].lap == self.lengths[self.events[eventId].length].distance) {
+        var event = eventResults[eventId];
+        if (!event) {
+          event = {
+            id: eventId,
+            stroke: self.events[eventId].stroke,
+            length: self.events[eventId].length,
+            group: self.events[eventId].group,
+            title: self.groups[self.events[eventId].group].name + " " +
+                self.lengths[self.events[eventId].length].name + " " +
+                self.strokes[self.events[eventId].stroke].name,
+            results: []
+          };
+        }
+
+        var result = resultLines.results[i];
+        event.results.push({
+          lane: result.lane,
+          rank: result.rank,
+          time: result.time,
+          result: result.result,
+          backup_time: result.backup_time,
+          backup_result: result.backup_result
+        });
+
+        eventResults[eventId] = event;
+      }
+    }
+    console.log(eventResults);
+    callback(eventResults);
+  });
 };
 
 Results.prototype.swimmers = function(dir, callback) {
@@ -116,8 +176,9 @@ Results.prototype.readAresFile = function(dir, filename, model, callback) {
       response.results = resultData;
       response.strokes = self.strokes;
       response.lengths = self.lengths;
-      response.groups = self.strogroupskes;
-			callback(response);
+      response.groups = self.strokes;
+      response.events = self.events;
+      callback(response);
 		});
 	} else {
 		callback();

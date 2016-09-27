@@ -52,6 +52,19 @@ input.form-time-control.ng-invalid {
   border-color: red;
   border-width: 2px;
 }
+.result-table {
+  width: 100%;
+  max-width: 480px;
+  border-collapse: collapse;
+}
+
+.result-table, .result-table th, .result-table td {
+  border: 1px solid black;
+}
+.result-table td {
+  text-align: right;
+  padding: 2px 4px;
+}
 
 .error {
   color: red;

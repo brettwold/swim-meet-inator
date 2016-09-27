@@ -23,17 +23,18 @@
          <div layout-gt-sm="row" class="form_dates">
            <div layout="column">
              <label>Start date</label>
-             <md-datepicker ng-model="meet.meet_date" utc-parser md-placeholder="Meet date">
+             {{ meet.meet_date }}
+             <md-datepicker ng-model="meet.meet_date" md-placeholder="Meet date">
              </md-datepicker>
            </div>
            <div layout="column">
              <label>End date</label>
-             <md-datepicker ng-model="meet.end_date" utc-parser md-placeholder="End date">
+             <md-datepicker ng-model="meet.end_date" md-placeholder="End date">
              </md-datepicker>
            </div>
            <div layout="column">
              <label>Qualification date</label>
-             <md-datepicker ng-model="meet.qual_date" utc-parser md-placeholder="Qualification date">
+             <md-datepicker ng-model="meet.qual_date" md-placeholder="Qualification date">
              </md-datepicker>
            </div>
          </div>
