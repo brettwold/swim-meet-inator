@@ -2,17 +2,68 @@ var fs = require('fs');
 var path = require('path');
 var readline = require('readline');
 var models = require('../models');
+var parse = require('csv-parse');
 
 const RESULTS_FILE = 'lstrslt.txt';
 const SWIMMERS_FILE = 'lstconc.txt';
 const SWIM_FILE = 'lststart.txt';
 
-var Results = function () {
+const STROKE_FILE = 'lststyle.txt';
+const LENGTH_FILE = 'lstlong.txt';
+const GROUPS_FILE = 'lstcat.txt';
 
+var Results = function () {
+  this.strokes = {};
+  this.lengths = {};
+  this.groups = {};
 };
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+Results.prototype.setupStaticData = function(dir) {
+  var self = this;
+  this.readStatic(dir, this.getFilenameCase(dir, STROKE_FILE), function(strokes) {
+    for(i = 0; i < strokes.length; i++) {
+      if (!isNaN(strokes[i][0])) {
+        self.strokes[strokes[i][0]] = { name: strokes[i][1], code: strokes[i][2] };
+      }
+    }
+  });
+  this.readStatic(dir, this.getFilenameCase(dir, LENGTH_FILE), function(lengths) {
+    for(i = 0; i < lengths.length; i++) {
+      if (!isNaN(lengths[i][0])) {
+        self.lengths[lengths[i][0]] = { name: lengths[i][1], distance: lengths[i][2] };
+      }
+    }
+  });
+  this.readStatic(dir, this.getFilenameCase(dir, GROUPS_FILE), function(groups) {
+    for(i = 0; i < groups.length; i++) {
+      self.groups[groups[i][1]] = { name: groups[i][0] };
+    }
+  });
+}
+
+Results.prototype.readStatic = function(dir, filename, callback) {
+
+  var output = [];
+  var parser = parse({delimiter: ';', relax: true});
+  parser.on('readable', function(){
+    while(record = parser.read()){
+      output.push(record);
+    }
+  });
+  parser.on('error', function(err){
+    console.log(err.message);
+  });
+  parser.on('finish', function(){
+    callback(output);
+  });
+
+  var filePath = path.join(dir, filename);
+  var input = fs.createReadStream(filePath);
+  input.pipe(parser)
 }
 
 Results.prototype.getFilenameCase = function(dir, filename) {
@@ -25,7 +76,12 @@ Results.prototype.getFilenameCase = function(dir, filename) {
 }
 
 Results.prototype.results = function(dir, callback) {
-	this.readAresFile(dir, this.getFilenameCase(dir, RESULTS_FILE), models.ResultLine, callback);
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  this.setupStaticData(dir);
+
+  this.readAresFile(dir, this.getFilenameCase(dir, RESULTS_FILE), models.ResultLine, callback);
 };
 
 Results.prototype.swimmers = function(dir, callback) {
@@ -42,14 +98,13 @@ Results.prototype.readAresFile = function(dir, filename, model, callback) {
 		var self = this;
 		var resultData = new Array();
 		var filePath = path.join(dir, filename);
-
 		var lineReader = readline.createInterface({
 			input: fs.createReadStream(filePath)
 		});
 
 		lineReader.on('line', function (line) {
 			var lineData = model.build({fromData: line});
-			lineData.validate().then(function(errs) {
+      lineData.validate().then(function(errs) {
 				if(!errs) {
 					resultData.push(lineData);
 				}
@@ -57,7 +112,12 @@ Results.prototype.readAresFile = function(dir, filename, model, callback) {
 		});
 
 		lineReader.on('close', function() {
-			callback(resultData);
+      var response = {};
+      response.results = resultData;
+      response.strokes = self.strokes;
+      response.lengths = self.lengths;
+      response.groups = self.strogroupskes;
+			callback(response);
 		});
 	} else {
 		callback();

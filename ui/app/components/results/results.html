@@ -1,40 +1,61 @@
 <div ng-controller="ResultCtrl" ng-cloak>
 	<div ng-include="'app/components/results/results-menu.html'"></div>
 
-	<div layout-padding>
-		<h2>Showing ({{results.length}}) Results</h2>
+	<md-card>
+		<md-card-title>
+			<md-card-title-text>
+				<span class="md-headline">Select meet</span>
+			</md-card-title-text>
+		</md-card-title>
+		<md-card-content>
+			<md-input-container>
+				<label>Select meet</label>
+				<md-select ng-model="meetId" ng-change="readResults()" flex-gt-xs>
+					<md-option ng-repeat="meet in meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
+				</md-select>
+			</md-input-container>
+		</md-card-content>
+	</md-card>
 
-		<table>
-			<tr>
-				<th>Event</th>
-				<th>Round</th>
-				<th>Heat</th>
-				<th>Lap</th>
-				<th>Lane</th>
-				<th>Status</th>
-				<th>Rank</th>
-				<th>Time</th>
-				<th>Result</th>
-				<th>Mod</th>
-				<th>Backup Time</th>
-				<th>Backup Result</th>
-				<th>Backup Mod</th>
-			</tr>
-		  <tr ng-repeat="result in results">
-				<td>{{result.event_id}}</td>
-				<td>{{result.round}}</td>
-				<td>{{result.heat}}</td>
-				<td>{{result.lap}}</td>
-				<td>{{result.lane}}</td>
-				<td>{{result.status}}</td>
-				<td>{{result.rank}}</td>
-				<td>{{result.time}}</td>
-				<td>{{result.result}}</td>
-				<td>{{result.mod}}</td>
-				<td>{{result.backup_time}}</td>
-				<td>{{result.backup_result}}</td>
-				<td>{{result.backup_mod}}</td>
-			</tr>
-		</table>
-	</div>
+	<md-card ng-if="meetId">
+		<md-card-title>
+			<md-card-title-text>
+				<span class="md-headline">Showing ({{data.results.length}}) Results</span>
+			</md-card-title-text>
+		</md-card-title>
+		<md-card-content>
+			<table>
+				<tr>
+					<th>Event</th>
+					<th>Round</th>
+					<th>Heat</th>
+					<th>Lap</th>
+					<th>Lane</th>
+					<th>Status</th>
+					<th>Rank</th>
+					<th>Time</th>
+					<th>Result</th>
+					<th>Mod</th>
+					<th>Backup Time</th>
+					<th>Backup Result</th>
+					<th>Backup Mod</th>
+				</tr>
+			  <tr ng-repeat="result in data.results">
+					<td>{{result.external_event_id}}</td>
+					<td>{{result.round}}</td>
+					<td>{{result.heat}}</td>
+					<td>{{result.lap}}</td>
+					<td>{{result.lane}}</td>
+					<td>{{result.status}}</td>
+					<td>{{result.rank}}</td>
+					<td>{{result.time}}</td>
+					<td>{{result.result}}</td>
+					<td>{{result.mod}}</td>
+					<td>{{result.backup_time}}</td>
+					<td>{{result.backup_result}}</td>
+					<td>{{result.backup_mod}}</td>
+				</tr>
+			</table>
+		</md-card-content>
+	</md-card>
 </div>

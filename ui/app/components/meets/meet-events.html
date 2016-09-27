@@ -27,6 +27,7 @@
           <span yes-no="race_type.qualify" flex></span>
           <span flex>
             <md-checkbox
+              ng-if="race_type.qualify"
               ng-model="data.cb2"
               aria-label="Checkbox 2"
               ng-true-value="'yup'"

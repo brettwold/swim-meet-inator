@@ -1,14 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
+var Meet = require('../models').Meet;
 var Results = require('../helpers/results');
 
-/* GET results listing. */
-router.get('/', function(req, res, next) {
+const BASE_DIR = process.cwd() + '/data';
+const MEET_RESULT_DIR = BASE_DIR + '/meet/';
 
-  var results = new Results();
-  results.results(process.cwd() + '/data', function() {
-    res.json(results.resultData);
+router.get('/:meetId', function(req, res, next) {
+  Meet.findById(req.params.meetId).then(function(meet) {
+    if (meet) {
+      var results = new Results();
+      results.results(MEET_RESULT_DIR + meet.id, function(resultData) {
+        res.json(resultData);
+      });
+    } else {
+      res.status(404).send('Meet not found');
+    }
   });
 });
 
