@@ -13,21 +13,25 @@ const STROKE_FILE = 'lststyle.txt';
 const LENGTH_FILE = 'lstlong.txt';
 const GROUPS_FILE = 'lstcat.txt';
 const EVENTS_FILE = 'lstrace.txt';
+const SWIMMER_FILE = 'lstconc.txt';
+const START_FILE = 'lststart.txt';
 
 var Results = function () {
   this.strokes = {};
   this.lengths = {};
   this.groups = {};
   this.events = {};
+  this.startlist = {};
+  this.swimmers = {};
 };
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-Results.prototype.setupStaticData = function(dir) {
+Results.prototype._setupStaticData = function(dir) {
   var self = this;
-  this._readStatic(dir, this.getFilenameCase(dir, STROKE_FILE), function(strokes) {
+  this._readStatic(dir, this._getFilenameCase(dir, STROKE_FILE), function(strokes) {
     for(i = 0; i < strokes.length; i++) {
       if (!isNaN(strokes[i][0])) {
         self.strokes[Utils.trimQuotes(strokes[i][0])] = {
@@ -37,7 +41,7 @@ Results.prototype.setupStaticData = function(dir) {
       }
     }
   });
-  this._readStatic(dir, this.getFilenameCase(dir, LENGTH_FILE), function(lengths) {
+  this._readStatic(dir, this._getFilenameCase(dir, LENGTH_FILE), function(lengths) {
     for(i = 0; i < lengths.length; i++) {
       if (!isNaN(lengths[i][0])) {
         self.lengths[Utils.trimQuotes(lengths[i][0])] = {
@@ -47,14 +51,14 @@ Results.prototype.setupStaticData = function(dir) {
       }
     }
   });
-  this._readStatic(dir, this.getFilenameCase(dir, GROUPS_FILE), function(groups) {
+  this._readStatic(dir, this._getFilenameCase(dir, GROUPS_FILE), function(groups) {
     for(i = 0; i < groups.length; i++) {
       if (groups[i][1]) {
         self.groups[Utils.trimQuotes(groups[i][1])] = { name: Utils.trimQuotes(groups[i][0]) };
       }
     }
   });
-  this._readStatic(dir, this.getFilenameCase(dir, EVENTS_FILE), function(events) {
+  this._readStatic(dir, this._getFilenameCase(dir, EVENTS_FILE), function(events) {
     // event;round;nbHeat;idLen;idStyle;abCat;date;time
     for(i = 0; i < events.length; i++) {
       self.events[Utils.trimQuotes(events[i][0])] = {
@@ -66,93 +70,67 @@ Results.prototype.setupStaticData = function(dir) {
       };
     }
   });
+  this._readStatic(dir, this._getFilenameCase(dir, START_FILE), function(startlist) {
+    // event; round;heat;lane;relais;idBib;
+    for(i = 0; i < startlist.length; i++) {
+      var key = self._getStartListKey(Utils.trimQuotes(startlist[i][0]),
+                              Utils.trimQuotes(startlist[i][1]),
+                              Utils.trimQuotes(startlist[i][2]),
+                              Utils.trimQuotes(startlist[i][3]));
+      self.startlist[key] = Utils.trimQuotes(startlist[i][5]);
+    }
+  });
+  this._readStatic(dir, this._getFilenameCase(dir, SWIMMER_FILE), function(swimmers) {
+    // id;bib;lastname;firstname;birthyear;abNat;abCat
+    for(i = 0; i < swimmers.length; i++) {
+      self.swimmers[Utils.trimQuotes(swimmers[i][0])] = {
+        bib: Utils.trimQuotes(swimmers[i][1]),
+        lastname: Utils.trimQuotes(swimmers[i][2]),
+        firstname: Utils.trimQuotes(swimmers[i][3]),
+        dob: Utils.trimQuotes(swimmers[i][4]),
+        club: Utils.trimQuotes(swimmers[i][5]),
+        group: Utils.trimQuotes(swimmers[i][6])
+      };
+    }
+  });
+}
+
+Results.prototype._getStartListKey = function(eventid, round, heat, lane) {
+  return eventid + "-" + round + "-" + heat + "-" + lane;
 }
 
 Results.prototype._readStatic = function(dir, filename, callback) {
+  if(dir && filename && this._exists(dir, filename)) {
+    var output = [];
+    var parser = parse({delimiter: ';', relax: true, relax_column_count: true });
+    parser.on('readable', function(){
+      while(record = parser.read()){
+        output.push(record);
+      }
+    });
+    parser.on('error', function(err){
+      console.log(err.message);
+    });
+    parser.on('finish', function(){
+      callback(output);
+    });
 
-  var output = [];
-  var parser = parse({delimiter: ';', relax: true, relax_column_count: true });
-  parser.on('readable', function(){
-    while(record = parser.read()){
-      output.push(record);
-    }
-  });
-  parser.on('error', function(err){
-    console.log(err.message);
-  });
-  parser.on('finish', function(){
-    callback(output);
-  });
-
-  var filePath = path.join(dir, filename);
-  var input = fs.createReadStream(filePath);
-  input.pipe(parser)
+    var filePath = path.join(dir, filename);
+    var input = fs.createReadStream(filePath);
+    input.pipe(parser);
+  }
 }
 
-Results.prototype.getFilenameCase = function(dir, filename) {
-	if(this.exists(dir, filename.toLowerCase())) {
+Results.prototype._getFilenameCase = function(dir, filename) {
+	if(this._exists(dir, filename.toLowerCase())) {
 		return filename.toLowerCase();
-	} else if(this.exists(dir, filename.toUpperCase())) {
+	} else if(this._exists(dir, filename.toUpperCase())) {
 		return filename.toUpperCase();
 	}
 	return;
 }
 
-Results.prototype.results = function(dir, callback) {
-  var self = this;
-  if (!fs.existsSync(dir)){
-    fs.mkdirSync(dir);
-  }
-  this.setupStaticData(dir);
-
-  this.readAresFile(dir, this.getFilenameCase(dir, RESULTS_FILE), models.ResultLine, function(resultLines) {
-    var eventResults = {};
-    eventResults.resultLineCount = resultLines.results.length;
-    eventResults.events = self.events;
-    for(i = 0; i < resultLines.results.length; i++) {
-      var eventId = resultLines.results[i].external_event_id;
-      if(resultLines.results[i].lap == self.lengths[self.events[eventId].length].distance) {
-        var event = eventResults[eventId];
-        if (!event) {
-          event = {
-            id: eventId,
-            stroke: self.events[eventId].stroke,
-            length: self.events[eventId].length,
-            group: self.events[eventId].group,
-            title: self.groups[self.events[eventId].group].name + " " +
-                self.lengths[self.events[eventId].length].name + " " +
-                self.strokes[self.events[eventId].stroke].name,
-            results: []
-          };
-        }
-
-        var result = resultLines.results[i];
-        event.results.push({
-          lane: result.lane,
-          rank: result.rank,
-          time: result.time,
-          result: result.result,
-          backup_time: result.backup_time,
-          backup_result: result.backup_result
-        });
-
-        eventResults[eventId] = event;
-      }
-    }
-    console.log(eventResults);
-    callback(eventResults);
-  });
-};
-
-Results.prototype.swimmers = function(dir, callback) {
-	this.readAresFile(dir, this.getFilenameCase(dir, SWIMMERS_FILE), models.Swimmer, callback);
-};
-
-Results.prototype.swims = function(dir, callback) {
-	this.readAresFile(dir, this.getFilenameCase(dir, SWIM_FILE), models.Swim, callback);
-};
-
-Results.prototype.readAresFile = function(dir, filename, model, callback) {
+Results.prototype._readAresFile = function(dir, filename, model, callback) {
 
 	if(filename) {
 		var self = this;
@@ -185,44 +163,7 @@ Results.prototype.readAresFile = function(dir, filename, model, callback) {
 	}
 };
 
-Results.prototype.detectAresResults = function(dir, done) {
-	var self = this;
-	var results = [];
-	fs.readdir(dir, function(err, list) {
-		if (err) return done(err);
-		var pending = list.length;
-		if (!pending) return done(null, results);
-		list.forEach(function(file) {
-			file = path.resolve(dir, file);
-			fs.stat(file, function(err, stat) {
-				if (stat && stat.isDirectory()) {
-					self.detectAresResults(file, function(err, res) {
-						results = results.concat(res);
-						if (!--pending) done(null, results);
-					});
-				} else {
-					if(file.endsWith(RESULTS_FILE.toLowerCase()) || file.endsWith(RESULTS_FILE.toUpperCase())) {
-						results.push(dir);
-					}
-					if (!--pending) done(null, results);
-				}
-			});
-		});
-	});
-};
-
-Results.prototype.walk = function(root, callback) {
-
-	var self = this;
-	var meetResults = {meets: []};
-
-	self.detectAresResults(root, function(err, results) {
-		if (err) throw err;
-    callback(results);
-	});
-}
-
-Results.prototype.exists = function(dir, filename) {
+Results.prototype._exists = function(dir, filename) {
 	var resFile = path.join(dir, filename);
 	try {
 		fs.accessSync(resFile, fs.F_OK);
@@ -232,17 +173,61 @@ Results.prototype.exists = function(dir, filename) {
 	}
 }
 
-Results.prototype.meet = function(dir, callback) {
+Results.prototype.results = function(dir, session, callback) {
+  var self = this;
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  this._setupStaticData(dir);
 
-	var self = this;
+  this._readAresFile(dir, this._getFilenameCase(dir, RESULTS_FILE), models.ResultLine, function(resultLines) {
+    var eventResults = {};
+    if (resultLines) {
+      console.log("Read " + resultLines.results.length + " lines in " + dir);
+      eventResults.resultLineCount = resultLines.results.length;
+      for(i = 0; i < resultLines.results.length; i++) {
+        var eventId = resultLines.results[i].external_event_id;
+        if(resultLines.results[i].lap == self.lengths[self.events[eventId].length].distance) {
+          var event = eventResults[eventId];
+          if (!event) {
+            event = {
+              id: eventId,
+              stroke: self.events[eventId].stroke,
+              length: self.events[eventId].length,
+              group: self.events[eventId].group,
+              title: self.groups[self.events[eventId].group].name + " " +
+                  self.lengths[self.events[eventId].length].name + " " +
+                  self.strokes[self.events[eventId].stroke].name,
+              results: []
+            };
+          }
 
-	self.results(dir, function(results) {
-		self.swimmers(dir, function(swimmers) {
-			self.swims(dir, function(swims) {
-				callback({name: dir, results: results, swimmers: swimmers, swims: swims});
-			});
-		});
-	});
-}
+          var result = resultLines.results[i];
+          var heat = event.results[result.heat];
+          if (!heat) {
+            heat = new Array();
+          }
+
+          var swimmer = self.swimmers[self.startlist[self._getStartListKey(event.id, result.round, result.heat, result.lane)]];
+
+          heat.push({
+            lane: result.lane,
+            rank: result.rank,
+            time: result.time,
+            result: result.result,
+            backup_time: result.backup_time,
+            backup_result: result.backup_result,
+            swimmer: swimmer
+          });
+
+          event.results[result.heat] = heat;
+
+          eventResults[eventId] = event;
+        }
+      }
+    }
+    callback(eventResults, session);
+  });
+};
 
 module.exports = Results;

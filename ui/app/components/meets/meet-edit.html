@@ -3,11 +3,11 @@
   <div layout-padding>
     <div ng-cloak class="md-inline-form">
       <md-content layout="column">
-        <form name="userForm" flex>
+        <form name="userForm" flex layout-padding>
          <div layout="row">
            <md-input-container class="md-block" flex-gt-xs>
              <label>Name</label>
-             <input ng-model="meet.name">
+             <input ng-model="meet.name" required>
            </md-input-container>
            <md-input-container class="md-block" flex-gt-xs>
              <label>Venue</label>
@@ -20,23 +20,28 @@
              <input ng-model="meet.promoter">
            </md-input-container>
          </div>
-         <div layout-gt-sm="row" class="form_dates">
-           <div layout="column">
-             <label>Start date</label>
-             {{ meet.meet_date }}
-             <md-datepicker ng-model="meet.meet_date" md-placeholder="Meet date">
-             </md-datepicker>
-           </div>
-           <div layout="column">
-             <label>End date</label>
-             <md-datepicker ng-model="meet.end_date" md-placeholder="End date">
-             </md-datepicker>
-           </div>
-           <div layout="column">
-             <label>Qualification date</label>
-             <md-datepicker ng-model="meet.qual_date" md-placeholder="Qualification date">
-             </md-datepicker>
-           </div>
+         <div layout-gt-sm="row">
+           <md-input-container flex="20">
+             <label>Start date (yyyy-mm-dd)</label>
+             <input ng-model="meet.meet_date" md-placeholder="Meet date" required>
+           </md-input-container>
+           <md-input-container flex="20">
+             <label>End date (yyyy-mm-dd)</label>
+             <input ng-model="meet.end_date" md-placeholder="End date">
+           </md-input-container>
+           <md-input-container flex="20">
+             <label>Qualification date (yyyy-mm-dd)</label>
+             <input ng-model="meet.qual_date" md-placeholder="Qualification date">
+           </md-input-container>
+         </div>
+         <div layout-gt-sm="row">
+           <md-switch ng-model="meet.multi_session" aria-label="Multi-session" flex="20">
+             Multi session
+           </md-switch>
+           <md-input-container ng-if="meet.multi_session">
+             <label>Number of sessions</label>
+             <input ng-model="meet.num_sessions" md-placeholder="Number of sessions" ng-pattern="/^[1-9]|[1-9][0-9]$/">
+           </md-input-container>
          </div>
          <div layout-gt-sm="row">
            <md-input-container>
@@ -60,7 +65,7 @@
            </md-input-container>
          </div>
          <div>
-           <md-input-container class="md-block" flex-gt-xs>
+           <md-input-container>
              <label>Cost per race</label>
              <input ng-model="meet.cost_per_race">
            </md-input-container>

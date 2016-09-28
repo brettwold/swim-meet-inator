@@ -54,7 +54,7 @@ input.form-time-control.ng-invalid {
 }
 .result-table {
   width: 100%;
-  max-width: 480px;
+  max-width: 540px;
   border-collapse: collapse;
 }
 
@@ -62,8 +62,11 @@ input.form-time-control.ng-invalid {
   border: 1px solid black;
 }
 .result-table td {
-  text-align: right;
+  text-align: left;
   padding: 2px 4px;
+}
+.result-table td.time {
+  text-align: right;
 }
 
 .error {

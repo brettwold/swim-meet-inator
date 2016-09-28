@@ -1,4 +1,7 @@
 "use strict";
+var moment = require('moment');
+var path = require('path');
+var slugify = require('slugify')
 
 module.exports = function(sequelize, DataTypes) {
   var Meet = sequelize.define("Meet", {
@@ -32,7 +35,8 @@ module.exports = function(sequelize, DataTypes) {
   	all_heats: { type: DataTypes.BOOLEAN, defaultValue: true },
   	next_competitor_number: DataTypes.INTEGER,
   	meet_specific: { type: DataTypes.BOOLEAN, defaultValue: false },
-  	multi_session: { type: DataTypes.BOOLEAN, defaultValue: true },
+  	multi_session: { type: DataTypes.BOOLEAN, defaultValue: false },
+    num_sessions: { type: DataTypes.INTEGER, defaultValue: 0 },
   	print_times: { type: DataTypes.BOOLEAN, defaultValue: false },
   	split_last_heats: { type: DataTypes.BOOLEAN, defaultValue: false },
   	www_directory: DataTypes.STRING,
@@ -66,6 +70,11 @@ module.exports = function(sequelize, DataTypes) {
         },
         entry_events: function() {
           return this.getDataValue('entry_events_data') !== null ? JSON.parse(this.getDataValue('entry_events_data')) : null;
+        },
+        results_dir: function() {
+          var startDate = moment(this.getDataValue('meet_date'));
+          var name = slugify(this.getDataValue('name')).toLowerCase();
+          return path.join(startDate.format("YYYY"), startDate.format("MM"), startDate.format("DD"), name);
         }
       },
       setterMethods: {

@@ -16,30 +16,43 @@
 			</md-input-container>
 		</md-card-content>
 	</md-card>
-
-	<md-card ng-repeat="result in data">
-		<md-card-title>
-			<md-card-title-text>
-				<span class="md-headline">
-					{{ result.id }} {{ result.title }}
-				</span>
-			</md-card-title-text>
-		</md-card-title>
-		<md-card-content>
-			<table class="result-table">
-				<tr>
-					<th>Lane</th>
-					<th>Rank</th>
-					<th>Result</th>
-					<th>Backup Result</th>
-				</tr>
-			  <tr ng-repeat="time in result.results">
-					<td>{{time.lane}}</td>
-					<td>{{time.rank}}</td>
-					<td>{{time.result}}</td>
-					<td>{{time.backup_result}}</td>
-				</tr>
-			</table>
-		</md-card-content>
-	</md-card>
+	<md-content class="md-padding">
+		<md-tabs md-selected="selectedIndex" md-dynamic-height>
+	 		<md-tab ng-repeat="(num, session) in data.sessions" label="Session {{ num }}">
+				<md-card ng-repeat="result in session">
+					<md-card-title>
+						<md-card-title-text>
+							<span class="md-headline">
+								{{ result.id }} {{ result.title }}
+							</span>
+						</md-card-title-text>
+					</md-card-title>
+					<md-card-content>
+						<div ng-repeat="(heatNum, heat) in result.results">
+							<h3>Heat {{ heatNum + 1 }}</h2>
+							<table class="result-table">
+								<tr>
+									<th>Lane</th>
+									<th>Rank</th>
+									<th>Swimmer</th>
+									<th>Club</th>
+									<th>Result</th>
+									<th>Backup Result</th>
+								</tr>
+							  <tr ng-repeat="time in heat">
+									<td class="time">{{time.lane}}</td>
+									<td class="time">{{time.rank}}</td>
+									<td>{{time.swimmer.firstname}} {{time.swimmer.lastname}}</td>
+									<td>{{time.swimmer.club}}</td>
+									<td class="time">{{time.result}}</td>
+									<td class="time">{{time.backup_result}}</td>
+								</tr>
+							</table>
+						</div>
+					</md-card-content>
+				</md-card>
+			</md-tab>
+		</md-tabs>
+	</md-content>
+</div>
 </div>
