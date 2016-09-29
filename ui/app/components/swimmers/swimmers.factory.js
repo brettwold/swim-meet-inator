@@ -106,6 +106,9 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
         swimmer = scope._retrieveInstance(swimmerData);
       }
       return swimmer;
+    },
+    removeSwimmer: function(swimmer) {
+      delete this._pool[swimmer.id];
     }
   };
   return SwimmerFactory;
@@ -127,7 +130,7 @@ app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, Url
       angular.extend(this, swimmerData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/swimmers/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/swimmers/delete/' + this.id);
     },
     update: function() {
       return $http.put(UrlService.baseUrl + '/api/swimmers/save', this);

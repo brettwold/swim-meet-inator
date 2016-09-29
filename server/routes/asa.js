@@ -147,6 +147,7 @@ router.get('/swimmer/:id', function(req, res, next) {
       processBestTimeTables($, swimmer);
 
       Swimmer.find({where: {regno: swimmer.regno}, include: INCLUDES }).then(function(storedswimmer) {
+
         for(sTime in swimmer.times) {
            swimmer.times[sTime].swimmer_id = storedswimmer.id;
            SwimTime.upsert(swimmer.times[sTime].get());
@@ -154,6 +155,9 @@ router.get('/swimmer/:id', function(req, res, next) {
       });
 
       res.json(swimmer);
+    } else {
+      console.log("Failed to get data from ASA: " + response);
+      console.log(error);
     }
   });
 });

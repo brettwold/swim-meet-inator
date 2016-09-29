@@ -5,7 +5,7 @@ angular
     appRouteProvider.setName('swimmers', 'swimmer', SwimmersCtrl);
   });
 
-function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, ConfigData) {
+function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, Swimmer, ConfigData) {
 
   $scope.swimmer = {};
   $scope.menu = { title: "Swimmer management" };
@@ -31,13 +31,18 @@ function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, C
   };
 
   $scope.delete = function(id) {
-    SwimmerFactory.delete(id);
-    $scope.getAll();
+    var swimmer = SwimmerFactory.getSwimmer(id).then(function(swimmer) {
+      swimmer.delete();
+      SwimmerFactory.removeSwimmer(swimmer);
+      $scope.getAll();
+    });
   };
 
   $scope.lookupTimes = function() {
+    $scope.swimmer.update();
     SwimmerFactory.lookupTimes($scope.swimmer.regno).then(function(times) {
       $scope.swimmer.SwimTimes = times;
+      SwimmerFactory.setSwimmer($scope.swimmer);
     });
   }
 
@@ -51,7 +56,9 @@ function SwimmersCtrl($scope, $location, $route, $routeParams, SwimmerFactory, C
         $scope.swimmer = swimmer;
         $scope.menu.title = "Edit swimmer";
       });
-    };
+    } else {
+      $scope.swimmer = new Swimmer({});
+    }
 
     if($scope.status == 'list') {
       $scope.menu.title = "Swimmer management";
