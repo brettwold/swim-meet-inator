@@ -38,7 +38,8 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       $scope.config = data;
     });
 
-    MeetFactory.loadMeets().then(function(meets) {
+    MeetFactory.loadCurrentMeets().then(function(meets) {
+      console.log(meets);
       $scope.meets = meets;
     });
 

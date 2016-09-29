@@ -9,10 +9,27 @@ var INCLUDES = [ { model: Timesheet, as: 'minimum_timesheet' }, { model: Timeshe
 /* GET meets listing. */
 router.get('/', function(req, res, next) {
 
-  Meet.findAndCountAll({
+  Meet.findAll({
     offset: 0,
     limit: 10,
-    include: INCLUDES
+    include: INCLUDES,
+    order: [['meet_date', 'DESC']]
+  })
+  .then(function(result) {
+    res.json(result);
+  });
+});
+
+router.get('/current', function(req, res, next) {
+
+  Meet.findAll({
+    where: {
+      is_complete: 0
+    },
+    offset: 0,
+    limit: 10,
+    include: INCLUDES,
+    order: [['meet_date', 'DESC']]
   })
   .then(function(result) {
     res.json(result);

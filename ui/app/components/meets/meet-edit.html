@@ -20,6 +20,7 @@
              <input ng-model="meet.promoter">
            </md-input-container>
          </div>
+
          <div layout-gt-sm="row">
            <md-input-container flex="20">
              <label>Start date (yyyy-mm-dd)</label>
@@ -33,6 +34,14 @@
              <label>Qualification date (yyyy-mm-dd)</label>
              <input ng-model="meet.qual_date" md-placeholder="Qualification date">
            </md-input-container>
+         </div>
+         <div layout="row">
+           <md-switch ng-model="meet.is_open" aria-label="Open" flex="20">
+             Open for entries
+           </md-switch>
+           <md-switch ng-model="meet.is_complete" aria-label="Complete" flex="20">
+             Completed
+           </md-switch>
          </div>
          <div layout-gt-sm="row">
            <md-switch ng-model="meet.multi_session" aria-label="Multi-session" flex="20">

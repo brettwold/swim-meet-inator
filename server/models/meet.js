@@ -47,7 +47,8 @@ module.exports = function(sequelize, DataTypes) {
   	gala_directory: DataTypes.STRING,
   	work_directory: DataTypes.STRING,
   	notes: DataTypes.STRING,
-    is_open: DataTypes.BOOLEAN,
+    is_open: { type: DataTypes.BOOLEAN, defaultValue: false },
+    is_complete: { type: DataTypes.BOOLEAN, defaultValue: false },
     entry_events_data: DataTypes.STRING
     }, {
       classMethods: {

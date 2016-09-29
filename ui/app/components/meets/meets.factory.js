@@ -30,6 +30,28 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
         deferred.reject();
       });
     },
+    _loadFromUri: function(uri) {
+      var deferred = $q.defer();
+      var scope = this;
+
+      $http.get(UrlService.baseUrl + uri).success(function(meetsArray) {
+        if(meetsArray) {
+          var meets = [];
+          meetsArray.forEach(function(meetData) {
+            var meet = scope._retrieveInstance(meetData.id, meetData);
+            meets.push(meet);
+          });
+
+          deferred.resolve(meets);
+        } else {
+          deferred.reject();
+        }
+      })
+      .error(function() {
+        deferred.reject();
+      });
+      return deferred.promise;
+    },
     getMeet: function(meetId) {
       var deferred = $q.defer();
       var meet = this._search(meetId);
@@ -40,23 +62,11 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
       }
       return deferred.promise;
     },
+    loadCurrentMeets: function() {
+      return this._loadFromUri('/api/meets/current');
+    },
     loadMeets: function() {
-      var deferred = $q.defer();
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/meets').success(function(meetsArray) {
-        var meets = [];
-        meetsArray.rows.forEach(function(meetData) {
-          var meet = scope._retrieveInstance(meetData.id, meetData);
-          meets.push(meet);
-        });
-
-        deferred.resolve(meets);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-      return deferred.promise;
+      return this._loadFromUri('/api/meets');
     },
     setMeet: function(meetData) {
       var scope = this;
