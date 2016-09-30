@@ -100,7 +100,6 @@ angular.module('SwimResultinator')
                 newVal.hundreths = 99;
               }
 
-              console.log(newVal);
               var val = newVal.minutes*60*100 + newVal.seconds*100 + newVal.hundreths;
               updateModel(val);
           }

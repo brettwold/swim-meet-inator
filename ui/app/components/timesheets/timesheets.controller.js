@@ -30,6 +30,17 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
     $location.path('/timesheets' + to);
   };
 
+  $scope.parseImport = function() {
+    var lines = $scope.importData.split('\n');
+    console.log("Found " + lines.length + " lines");
+    for (i = 0; i < lines.length; i++) {
+      var cols = lines[i].split(',');
+      if (cols.length > 1) {
+        console.log(cols);
+      }
+    }
+  }
+
   $scope.getAll = function() {
     TimesheetFactory.loadTimesheets().then(function(result) {
       $scope.timesheets = result;
