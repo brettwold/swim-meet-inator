@@ -8,6 +8,10 @@ var config = {
     "M": "Male",
     "F": "Female"
   },
+  gender_aliases: {
+    "M": ["male", "boys", "men", "m", "b"],
+    "F": ["female", "girls", "women", "f", "g"]
+  },
   meet_age_types: [
   {name: "Age on entry", code: "AOE"},
   {name: "Age on meet date", code: "AMD"},
@@ -15,14 +19,33 @@ var config = {
   ],
   entry_groups: {
     1: { id: 1, name: "9 and under", min: 0, max: 10, description: "9 years and under" },
-    2: { id: 2, name: "10", min: 10, max: 11, description: "10 - 11 year olds"  },
-    3: { id: 3, name: "11", min: 11, max: 12, description: "11 - 12 year olds"  },
-    4: { id: 4, name: "12", min: 12, max: 13, description: "12 - 13 year olds"  },
-    5: { id: 5, name: "13", min: 13, max: 14, description: "13 - 14 year olds"  },
-    6: { id: 6, name: "14", min: 14, max: 15, description: "14 - 15 year olds"  },
-    7: { id: 7, name: "15", min: 15, max: 16, description: "15 - 16 year olds"  },
-    8: { id: 8, name: "16+", min: 16, max: 1001, description: "Over 16s"  },
-    9: { id: 9, name: "Open", min: 18, max: 1001, description: "Open"  }
+    2: { id: 2, name: "10", min: 10, max: 11, description: "10 - 11 year olds" },
+    3: { id: 3, name: "11", min: 11, max: 12, description: "11 - 12 year olds" },
+    4: { id: 4, name: "12", min: 12, max: 13, description: "12 - 13 year olds" },
+    5: { id: 5, name: "13", min: 13, max: 14, description: "13 - 14 year olds" },
+    6: { id: 6, name: "14", min: 14, max: 15, description: "14 - 15 year olds" },
+    7: { id: 7, name: "15", min: 15, max: 16, description: "15 - 16 year olds" },
+    8: { id: 8, name: "16+", min: 16, max: 1001, description: "Over 16s" },
+    9: { id: 9, name: "Open", min: 17, max: 1001, description: "Open (17+)" },
+    10: { id: 10, name: "9/10", min: 9, max: 11, description: "9 - 10 year olds" },
+    11: { id: 11, name: "11/12", min: 11, max: 13, description: "11 - 12 year olds" },
+    12: { id: 12, name: "13/14", min: 13, max: 15, description: "13 - 14 year olds" },
+    13: { id: 13, name: "15/16", min: 15, max: 17, description: "15 - 16 year olds" }
+  },
+  group_aliases: {
+    1: ["9", "9 and under", "under 9s"],
+    2: ["10", "10 and under", "under 10s"],
+    3: ["11", "11 and under", "under 11s"],
+    4: ["10", "10 and under", "under 12s"],
+    5: ["10", "10 and under", "under 13s"],
+    6: ["10", "10 and under", "under 14s"],
+    7: ["10", "10 and under", "under 15s"],
+    8: ["16", "16 and over", "over 16s"],
+    9: ["open", "17 and over", "17+", "over 17s", "17/over"],
+    10: ["9/10", "9 to 10"],
+    11: ["11/12", "11 to 12"],
+    12: ["13/14", "13 to 14"],
+    13: ["15/16", "15 to 16"]
   },
   strokes: {
     "FS": "Freestyle",

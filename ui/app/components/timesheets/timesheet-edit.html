@@ -58,17 +58,9 @@
     </div>
   </md-content>
 
-  <md-content class="md-padding">
-    <md-input-container class="md-block">
-      <label>Import</label>
-      <textarea ng-model="importData" rows="5" md-select-on-focus></textarea>
-    </md-input-container>
-    <md-button class="md-raised md-primary" aria-label="Import" ng-click="parseImport()">
-      Import
-    </md-button>
-  </md-content>
-
   <md-content ng-if="timesheet.id">
+{{ timesheet.sheet }}
+
     <div layout-padding>
       <div>Times format: mm:ss.hh<div>
       <div ng-cloak class="md-inline-form">

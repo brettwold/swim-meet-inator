@@ -1,6 +1,8 @@
 <div ng-controller="TimesheetCtrl">
   <div ng-include="'partials/section-menu.html'"></div>
 
+  <md-button ng-click="navigateTo('/import')" class="md-secondary">Import</md-button>
+
   <div ng-init="getAll()" layout-padding>
     <md-list>
       <md-list-item class="md-2-line" ng-repeat="timesheet in timesheets" ng-click="navigateTo('/edit/' + timesheet.id)">

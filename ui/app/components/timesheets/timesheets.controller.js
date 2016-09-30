@@ -4,6 +4,12 @@ angular
   .config(function(appRouteProvider) {
     appRouteProvider.setName('timesheets', 'timesheet', TimesheetCtrl);
   })
+   .config(['$routeProvider', function($routeProvider) {
+      $routeProvider.when('/timesheets/import', {
+        templateUrl: '/app/components/timesheets/import.html',
+        controller: TimesheetCtrl
+      });
+  }])
   .filter('raceByCourse', function() {
     return function(input, search) {
       if (!input) return input;
@@ -31,14 +37,7 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.parseImport = function() {
-    var lines = $scope.importData.split('\n');
-    console.log("Found " + lines.length + " lines");
-    for (i = 0; i < lines.length; i++) {
-      var cols = lines[i].split(',');
-      if (cols.length > 1) {
-        console.log(cols);
-      }
-    }
+    $scope.parseData = TimesheetFactory.parseTimesheet($scope.importData);
   }
 
   $scope.getAll = function() {
