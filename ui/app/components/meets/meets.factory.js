@@ -77,6 +77,9 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
         meet = scope._retrieveInstance(meetData);
       }
       return meet;
+    },
+    removeMeet: function(meet) {
+      delete this._pool[meet.id];
     }
   };
   return MeetFactory;
@@ -117,7 +120,7 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
       this.config = config;
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/meets/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/meets/delete/' + this.id);
     },
     update: function() {
 
@@ -180,13 +183,46 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
 
       return racetypes;
     },
-    getEntryEvents: function(swimmer) {
+    checkEventsAndGroups: function() {
+      var self = this;
+      if(this.minimum_timesheet_id) {
+        TimesheetFactory.getTimesheet(this.minimum_timesheet_id).then(function(timesheet) {
+          self.entry_groups_arr = new Array();
+          self.race_types_arr = new Array();
+          self.genders_arr = new Array();
+          self.entry_events = {};
+
+          for(group in timesheet.entry_groups_arr) {
+            self.entry_groups_arr.push(timesheet.entry_groups_arr[group]);
+          }
+
+          for(race_type in timesheet.race_types_arr) {
+            self.race_types_arr.push(timesheet.race_types_arr[race_type]);
+          }
+
+          for(gender in timesheet.genders_arr) {
+            self.genders_arr.push(timesheet.genders_arr[gender]);
+          }
+
+          for(i = 0; i < self.genders_arr.length; i++) {
+            self.entry_events[self.genders_arr[i]] = {};
+            for(j = 0; j < self.entry_groups_arr.length; j++) {
+              self.entry_events[self.genders_arr[i]][self.entry_groups_arr[j]] = {};
+              for(k = 0; k < self.race_types_arr.length; k++) {
+                self.entry_events[self.genders_arr[i]][self.entry_groups_arr[j]][self.race_types_arr[k]] = true;
+              }
+            }
+          }
+        });
+      }
+    },
+    _processMinAndMax: function(swimmer) {
       var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
       var maxs = JSON.parse(this.maximum_timesheet.timesheet_data);
       var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
+      var events = [];
+      var types = this.entry_events[swimmer.gender][swimmerGroup];
       if(swimmer) {
-        var events = [];
-        var types = this.entry_events[swimmer.gender][swimmerGroup];
         for(type in types) {
           if(types[type]) {
             var race = config.races[type];
@@ -197,7 +233,7 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
               race.time_present = true;
               if((race.min && race.max && best.time <= race.min && best.time >= race.max) ||
                 (race.min && !race.max && best.time <= race.min)) {
-                race.qualify = true;
+                  race.qualify = true;
               } else {
                 race.qualify = false;
               }
@@ -207,8 +243,49 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
             events.push(race);
           }
         }
-        return events;
       }
+      return events;
+    },
+    _processMinimumOnly: function(swimmer) {
+      var events = [];
+      var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
+      var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
+      if(swimmer) {
+        console.log(this.entry_events);
+        var types = this.entry_events[swimmer.gender][swimmerGroup];
+        for(type in types) {
+          if(types[type]) {
+            var race = config.races[type];
+            race.min = mins[swimmer.gender][swimmerGroup][type];
+            var best = swimmer.getBestTime(race.id);
+            if(best && race.min) {
+              race.time_present = true;
+              if(race.min && best.time <= race.min) {
+                  race.qualify = true;
+              } else {
+                race.qualify = false;
+              }
+            } else {
+              race.time_present = false;
+            }
+            events.push(race);
+          }
+        }
+      }
+      return events;
+    },
+    _processEvents: function(swimmer) {
+
+    },
+    getEntryEvents: function(swimmer) {
+      if (this.minimum_timesheet && this.maximum_timesheet) {
+        return this._processMinAndMax(swimmer);
+      } else if (this.minimum_timesheet && !this.maximum_timesheet) {
+        return this._processMinimumOnly(swimmer);
+      } else {
+        return this._processEvents(swimmer);
+      }
+
     }
   };
   return Meet;

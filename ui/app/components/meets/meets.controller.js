@@ -36,7 +36,10 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, Ti
   };
 
   $scope.delete = function(id) {
-    MeetFactory.delete(id);
+    MeetFactory.getMeet(id).then(function(meet) {
+      meet.delete();
+      MeetFactory.removeMeet(meet);
+    });
     $scope.getAll();
   };
 
@@ -49,6 +52,10 @@ function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, Ti
     if (idx > -1) list.splice(idx, 1);
     else list.push(item);
   };
+
+  $scope.checkEventsAndGroups = function() {
+    $scope.meet.checkEventsAndGroups();
+  }
 
   if($scope.status == 'list') {
     $scope.menu.title = "Meet management";

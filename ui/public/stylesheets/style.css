@@ -37,10 +37,7 @@ input.form-time-control  {
   border-width: 1px;
   border-color: rgb(208,208,208);
   text-align: right;
-  width: 20px;
-}
-.lap-time-sep {
-  margin: -4px;
+  width: 80px;
 }
 .form-time-control:focus {
   outline: 0;

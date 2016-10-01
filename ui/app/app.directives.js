@@ -27,13 +27,9 @@ angular.module('SwimResultinator')
   });
 
 angular.module('SwimResultinator')
-  .directive('lapTimeInput', function() {
+  .directive('lapTimeInput', ['TimesheetFactory', function(TimesheetFactory) {
     var tpl = '<div class="lap-time-input"> \
-    <input ng-model="lap_time.minutes" type="number" class="form-time-control minutes" name="minutes" placeholder="00" min="0" max="30" step="1" size="2"> \
-    <span class="form-time-control lap-time-sep">:</span> \
-    <input ng-model="lap_time.seconds" type="number" class="form-time-control seconds" placeholder="00" min="0" max="59" step="1" size="2"> \
-    <span class="form-time-control lap-time-sep">.</span> \
-    <input ng-model="lap_time.hundreths" type="number" class="form-time-control hundreths" placeholder="00" min="0" max="99" step="1" size="2"> \
+    <input ng-model="lap_time.parsed" class="form-time-control lap-time-sep"/> \
     </div>';
 
     return {
@@ -53,7 +49,8 @@ angular.module('SwimResultinator')
           scope.lap_time = {
             minutes: duration.minutes(),
             seconds: duration.seconds(),
-            hundreths: Math.round(duration.milliseconds()/10)
+            hundreths: Math.round(duration.milliseconds()/10),
+            parsed: zeroPad(duration.minutes(),2) + ":" + zeroPad(duration.seconds(),2) + "." + zeroPad(Math.round(duration.milliseconds()/10), 2)
           };
         };
 
@@ -72,6 +69,12 @@ angular.module('SwimResultinator')
           return true;
         };
 
+        function zeroPad(n, length) {
+          var s = n+"",needed = length - s.length;
+          if (needed > 0) s = (Math.pow(10,needed)+"").slice(1) + s;
+          return s;
+        }
+
         function updateView(value) {
           ngModel.$viewValue = value;
           ngModel.$render();
@@ -84,29 +87,24 @@ angular.module('SwimResultinator')
 
         scope.$watchCollection('lap_time', function(newVal) {
 
+
+          var time = TimesheetFactory.parseTime(newVal.parsed);
+          updateModel(time);
+          var duration = moment.duration(time*10);
           if(newVal && newVal.minutes !== undefined &&
-             newVal.seconds !== undefined &&
-              newVal.hundreths !== undefined) {
-
-              if(newVal.minutes > 30) {
-                newVal.minutes = 30;
-              }
-
-              if(newVal.seconds > 59) {
-                newVal.seconds = 59;
-              }
-
-              if(newVal.hundreths > 99) {
-                newVal.hundreths = 99;
-              }
-
-              var val = newVal.minutes*60*100 + newVal.seconds*100 + newVal.hundreths;
-              updateModel(val);
-          }
+            newVal.seconds !== undefined &&
+            newVal.hundreths !== undefined) {
+              newVal = {
+                minutes: duration.minutes(),
+                seconds: duration.seconds(),
+                hundreths: Math.round(duration.milliseconds()/10),
+                parsed: zeroPad(duration.minutes(),2) + ":" + zeroPad(duration.seconds(),2) + "." + zeroPad(Math.round(duration.milliseconds()/10), 2)
+              };
+            }
         });
       }
     };
-  });
+  }]);
 
 angular.module('SwimResultinator')
   .directive('displayTime', function() {

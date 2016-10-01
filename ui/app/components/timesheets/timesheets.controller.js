@@ -37,7 +37,7 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.parseImport = function() {
-    $scope.parseData = TimesheetFactory.parseTimesheet($scope.importData);
+    $scope.timesheet = TimesheetFactory.parseTimesheet($scope.importData);
   }
 
   $scope.getAll = function() {

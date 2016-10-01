@@ -1,0 +1,7 @@
+"Category";"AbrevCat"
+"Men";"M"
+"Women";"W"
+"Boys";"B"
+"Girls";"G"
+"Mixed";"X"
+

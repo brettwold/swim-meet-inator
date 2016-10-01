@@ -61,16 +61,16 @@ module.exports = function(sequelize, DataTypes) {
       },
       getterMethods: {
         genders_arr: function() {
-          return this.getDataValue('genders') !== null ? this.getDataValue('genders').split(',') : null;
+          return this.getDataValue('genders') ? this.getDataValue('genders').split(',') : null;
         },
         entry_groups_arr: function() {
-          return this.getDataValue('entry_groups') !== null ? this.getDataValue('entry_groups').split(',') : null;
+          return this.getDataValue('entry_groups') ? this.getDataValue('entry_groups').split(',') : null;
         },
         race_types_arr: function() {
-          return this.getDataValue('race_types') !== null ? this.getDataValue('race_types').split(',') : null;
+          return this.getDataValue('race_types') ? this.getDataValue('race_types').split(',') : null;
         },
         entry_events: function() {
-          return this.getDataValue('entry_events_data') !== null ? JSON.parse(this.getDataValue('entry_events_data')) : null;
+          return this.getDataValue('entry_events_data') ? JSON.parse(this.getDataValue('entry_events_data')) : null;
         },
         results_dir: function() {
           var startDate = moment(this.getDataValue('meet_date'));

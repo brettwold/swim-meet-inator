@@ -1,0 +1,52 @@
+<md-card>
+  <md-card-title>
+    <md-card-title-text layout="row">
+      <span class="md-headline" flex>Timesheet
+      </span>
+      <md-button ng-click="save()" class="md-primary md-raised" layout-align="right">Save</md-button>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-content ng-if="timesheet">
+    <md-input-container class="md-block" flex-gt-xs>
+      <label>Name</label>
+      <input ng-model="timesheet.name">
+    </md-input-container>
+    <div layout="row">
+      <md-input-container flex>
+        <label>Course type</label>
+        <md-select ng-model="timesheet.course_type">
+          <md-option ng-repeat="course_type in config.course_types" value="{{course_type.code}}">{{course_type.name}}</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex>
+        <label>Level</label>
+        <md-select ng-model="timesheet.level">
+          <md-option ng-repeat="(key, level) in config.levels" value="{{key}}">{{level}}</md-option>
+        </md-select>
+      </md-input-container>
+      <md-input-container flex>
+        <label>Entrants</label>
+        <md-select multiple="true" ng-model="timesheet.genders_arr">
+          <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{ gender }}</md-option>
+        </md-select>
+      </md-input-container>
+    </div>
+    <div>Times format: mm:ss.hh<div>
+    <div ng-cloak class="md-inline-form">
+      <md-list ng-repeat="gender in timesheet.genders_arr">
+        <div layout="row">
+          <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
+          <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in timesheet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
+        </div>
+        <div ng-repeat="race_type in timesheet.race_types_arr">
+          <md-list-item layout="row">
+            <span flex="20">{{ config.races[race_type].name }}</span>
+            <div flex ng-repeat="entry_group in timesheet.entry_groups_arr">
+              <input ng-model="timesheet.sheet[gender][entry_group][race_type]" class="timesheet-entry" lap-time-input/>
+            </div>
+          </md-list-item>
+        </div>
+      </md-list>
+    </div>
+  </md-card-content>
+</md-card>

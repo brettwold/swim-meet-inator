@@ -1,84 +1,35 @@
 <div ng-controller="TimesheetCtrl" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
 
-  <md-content class="md-padding">
-    <div layout-padding>
-      <div ng-cloak class="md-inline-form">
-        <div layout="column">
-          <md-input-container class="md-block" flex-gt-xs>
-            <label>Name</label>
-            <input ng-model="timesheet.name">
-          </md-input-container>
-          <div layout="row">
-            <md-input-container flex>
-              <label>Course type</label>
-              <md-select ng-model="timesheet.course_type">
-                <md-option ng-repeat="course_type in config.course_types" value="{{course_type.code}}">{{course_type.name}}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container flex>
-              <label>Level</label>
-              <md-select ng-model="timesheet.level">
-                <md-option ng-repeat="(key, level) in config.levels" value="{{key}}">{{level}}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container flex>
-              <label>Entrants</label>
-              <md-select multiple="true" ng-model="timesheet.genders_arr">
-                <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{ gender }}</md-option>
-              </md-select>
-            </md-input-container>
-          </div>
-          <div layout="row">
-            <md-input-container flex="20">
-              <label>Add race type</label>
-              <md-select ng-model="selected_race_type">
-                <md-option ng-repeat="(key, race) in config.races | raceByCourse:timesheet.course_type" value="{{key}}">{{ race.name }}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container flex>
-              <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
-                Add
-              </md-button>
-            </md-input-container>
-            <md-input-container flex="20">
-              <label>Add group</label>
-              <md-select ng-model="entry_group">
-                <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container flex>
-              <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
-                Add
-              </md-button>
-            </md-input-container>
-          </div>
-        </div>
+  <md-card>
+    <md-card-content>
+      <div layout="row">
+        <md-input-container flex="20">
+          <label>Add race type</label>
+          <md-select ng-model="selected_race_type">
+            <md-option ng-repeat="(key, race) in config.races | raceByCourse:timesheet.course_type" value="{{key}}">{{ race.name }}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex>
+          <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+            Add
+          </md-button>
+        </md-input-container>
+        <md-input-container flex="20">
+          <label>Add group</label>
+          <md-select ng-model="entry_group">
+            <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
+          </md-select>
+        </md-input-container>
+        <md-input-container flex>
+          <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
+            Add
+          </md-button>
+        </md-input-container>
       </div>
-    </div>
-  </md-content>
+    </md-card-content>
+  </md-card>
 
-  <md-content ng-if="timesheet.id">
-{{ timesheet.sheet }}
+  <ng-include src="'/app/components/timesheets/_timesheetedit.html'"/>
 
-    <div layout-padding>
-      <div>Times format: mm:ss.hh<div>
-      <div ng-cloak class="md-inline-form">
-        <md-list ng-repeat="gender in timesheet.genders_arr">
-          <div layout="row">
-            <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
-            <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in timesheet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
-          </div>
-          <div ng-repeat="race_type in timesheet.race_types_arr">
-            <md-list-item layout="row">
-              <span flex="20">{{ config.races[race_type].name }}</span>
-              <div flex ng-repeat="entry_group in timesheet.entry_groups_arr">
-                <input ng-model="timesheet.sheet[gender][entry_group][race_type]" class="timesheet-entry" lap-time-input/>
-              </div>
-            </md-list-item>
-          </div>
-        </md-list>
-      </div>
-    </div>
-  </md-content>
 </div>
