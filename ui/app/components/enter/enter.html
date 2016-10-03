@@ -2,25 +2,38 @@
   <div ng-include="'partials/section-menu.html'"></div>
 
   <div layout-padding>
-    <h1>Enter Meet</h1>
-    <p>Enter your ASA number below</p>
     <div layout="column">
-      <md-input-container class="md-block" flex="75">
-        <label>ASA Number</label>
-        <input ng-model="app.asaregno">
-      </md-input-container>
+      <md-card ng-if="!app.swimmer">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Enter Meet</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+          <p>Enter your ASA number below</p>
+          <md-input-container class="md-block" flex="75">
+            <label>ASA Number</label>
+            <input ng-model="app.asaregno">
+          </md-input-container>
+        </md-card-content>
+      </md-card>
 
-      <div ng-show="app.swimmer" layout="column">
+      <div ng-if="app.swimmer && !app.entry" layout="column">
         <swimmer swimmer-id="app.swimmer.id"></swimmer>
-        <md-input-container>
-          <label>Select meet</label>
-          <md-select ng-model="app.meetId" flex-gt-xs>
-            <md-option ng-repeat="meet in app.meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
-          </md-select>
-        </md-input-container>
+
+        <md-card>
+          <md-card-content>
+            <md-input-container>
+              <label>Select meet</label>
+              <md-select ng-model="app.meetId" flex-gt-xs ng-change="app.selectMeet()">
+                <md-option ng-repeat="meet in app.meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
+              </md-select>
+            </md-input-container>
+          </md-card-content>
+        </md-card>
       </div>
 
-      <div ng-show="app.meetId">
+      <div ng-if="app.meetId && !app.entry">
         <meet-events meet-id="app.meetId" swimmer-id="app.swimmer.id" race-entries="app.raceEntries"></meet-events>
       </div>
 

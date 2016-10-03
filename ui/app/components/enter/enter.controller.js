@@ -1,76 +1,90 @@
 const enterpathprefix = '/app/components/enter';
 const enterbase = '/enter';
+const confirm = '/enter/confirm';
 angular
   .module('SwimResultinator')
   .controller('EnterCtrl', EnterCtrl)
   .config(function($routeProvider) {
     $routeProvider
-    .when(enterbase, {
-      templateUrl: enterpathprefix + "/enter.html",
-      controller: EnterCtrl
-    });
+      .when(enterbase, {
+        templateUrl: enterpathprefix + "/enter.html",
+        controller: EnterCtrl
+      });
   });
 
 function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry, MeetFactory, SwimmerFactory, ConfigData) {
 
-  var ctrl = this;
-  ctrl.menu = { title: "Enter a Meet" };
-  ctrl.swimmer;
-  ctrl.meetId;
-  ctrl.raceEntries;
+  var menu = { title: "Enter a Meet" };
+  var swimmer, meets, config;
+  var meetId;
+  var raceEntries;
+  var asaregno;
 
-  ctrl.navigateTo = function(to, event) {
-    $location.path('/enter' + to);
-  };
-
-  ctrl.moveToNext = function() {
-    ctrl.message = '';
-    // console.log(ctrl.swimmer);
-    // console.log(ctrl.meetId);
-    console.log(ctrl.raceEntries);
-    if(!ctrl.swimmer && ctrl.asaregno) {
-      SwimmerFactory.getSwimmerByRegNo(ctrl.asaregno).then(function(swimmer) {
-        ctrl.swimmer = swimmer;
-      }, function(error) {
-        ctrl.message = 'Failed to find swimmer: ' + error;
+  angular.extend(this, {
+    menu: menu,
+    swimmer: swimmer,
+    meets: meets,
+    config: config,
+    meetId: meetId,
+    asaregno: asaregno,
+    raceEntries: raceEntries,
+    init: function() {
+      var self = this;
+      ConfigData.getConfig().then(function(data) {
+        self.config = data;
       });
-    } else if(ctrl.swimmer && ctrl.meetId && ctrl.raceEntries) {
-      var entry = new Entry();
-      entry.swimmer = ctrl.swimmer;
-      entry.meet = ctrl.meet;
-      entry.race_types_arr = ctrl.raceEntries;
-      for(i = 0; i < entry.race_types_arr; i++) {
-        var time = ctrl.swimmer.getBestTime(entry.race_types_arr[i]);
-        entry.addEntryTime(time);
-      }
 
-      ctrl.entry = entry;
-    }
-  }
+      MeetFactory.loadCurrentMeets().then(function(meets) {
+        self.meets = meets;
+      });
 
-  $scope.$watch(
-    function watchMeet(scope) {
-        return( ctrl.meetId );
+      self.raceEntries = new Array();
     },
-    function handleMeetChange(newVal, oldVal) {
-      if(newVal) {
-        MeetFactory.getMeet(newVal).then(function(meet) {
-          ctrl.meet = meet;
+    navigateTo: function(to, event) {
+      $location.path('/enter' + to);
+    },
+    selectMeet: function() {
+      var self = this;
+      MeetFactory.getMeet(self.meetId).then(function(meet) {
+        self.meet = meet;
+      });
+    },
+    confirm: function() {
+
+    },
+    moveToNext: function() {
+      var self = this;
+      message = '';
+
+      if (!self.swimmer && self.asaregno) {
+        SwimmerFactory.getSwimmerByRegNo(self.asaregno).then(function(swimmer) {
+          self.swimmer = swimmer;
+        }, function(error) {
+          self.message = 'Failed to find swimmer: ' + error;
+        });
+      } else if (self.swimmer && self.meetId && self.raceEntries && !self.entry) {
+        var entry = new Entry();
+        entry.swimmer_id = self.swimmer.id;
+        entry.meet_id = self.meet.id;
+        entry.race_types_arr = self.raceEntries;
+        for(i = 0; i < entry.race_types_arr; i++) {
+          var time = swimmer.getBestTime(entry.race_types_arr[i]);
+          entry.addEntryTime(time);
+        }
+
+        self.entry = entry;
+      } else if (self.entry) {
+        console.log("Sending entry");
+        self.entry.update().then(function(response) {
+          if(response.status == 200) {
+            self.status_message = "Entry saved";
+          } else {
+            self.status_message = "Error saving meet";
+          }
         });
       }
     }
-  );
+  });
 
-  function init() {
-    ConfigData.getConfig().then(function(data) {
-      ctrl.config = data;
-    });
-
-    MeetFactory.loadCurrentMeets().then(function(meets) {
-      ctrl.meets = meets;
-    });
-
-    ctrl.raceEntries = new Array()
-  }
-  init();
+  this.init();
 }

@@ -1,9 +1,9 @@
-<div ng-controller="EntryCtrl">
+<div ng-controller="EntryCtrl as app">
   <div ng-include="'partials/section-menu.html'"></div>
 
-  <div ng-init="getAll()" layout-padding>
+  <div layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="entry in entries" ng-click="navigateTo('/ + meet.id)">
+      <md-list-item class="md-2-line" ng-repeat="entry in app.entries" ng-click="navigateTo('/ + meet.id)">
         <div class="md-list-item-text">
           <h3>{{entry.name}}</h3>
         </div>
