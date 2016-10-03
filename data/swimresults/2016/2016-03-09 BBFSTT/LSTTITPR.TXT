@@ -1,0 +1,19 @@
+event;round;text
+10 ;0 ;"Girls A B C and Club 200m Freestyle";"" ;"" ;
+20 ;0 ;"Boys A B C and Club 200m Individual Medley";"" ;"" ;
+30 ;0 ;"Girls Academy Jun Club and Dev 1 50m Breaststroke";"" ;"" ;
+40 ;0 ;"Boys Academy Jun Club Dev 1 and Sharks 50m Backstroke";"" ;"" ;
+50 ;0 ;"Girls Sharks 25m Freestyle";"" ;"" ;
+60 ;0 ;"Girls A B C Club and Academy 100m Breaststroke";"" ;"" ;
+70 ;0 ;"Boys A B C Club and Academy 100m Backstroke";"" ;"" ;
+80 ;0 ;"Girls Academy Jun Club and Dev 1 50m Butterfly";"" ;"" ;
+90 ;0 ;"Boys Academy Jun Club Dev 1 and Sharks 50m Freestyle";"" ;"" ;
+110 ;0 ;"Boys A B C and Club 200m Freestyle";"" ;"" ;
+120 ;0 ;"Girls A B C and Club 200m Individual Medley";"" ;"" ;
+130 ;0 ;"Boys Academy Jun Club and Dev 1 50m Breaststroke";"" ;"" ;
+140 ;0 ;"Girls Academy Jun Club Dev 1 and Sharks 50m Backstroke";"" ;"" ;
+150 ;0 ;"Boys Sharks 25m Backstroke";"" ;"" ;
+160 ;0 ;"Boys A B C Club and Academy 100m Breaststroke";"" ;"" ;
+170 ;0 ;"Girls A B C Club and Academy 100m Backstroke";"" ;"" ;
+180 ;0 ;"Boys Academy Jun Club and Dev 1 50m Butterfly";"" ;"" ;
+190 ;0 ;"Girls Academy Jun Club Dev 1 and Sharks 50m Freestyle";"" ;"" ;

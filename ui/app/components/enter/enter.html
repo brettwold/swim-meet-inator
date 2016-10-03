@@ -1,4 +1,4 @@
-<div ng-controller="EnterCtrl">
+<div ng-controller="EnterCtrl as app">
   <div ng-include="'partials/section-menu.html'"></div>
 
   <div layout-padding>
@@ -7,24 +7,56 @@
     <div layout="column">
       <md-input-container class="md-block" flex="75">
         <label>ASA Number</label>
-        <input ng-model="asaregno">
+        <input ng-model="app.asaregno">
       </md-input-container>
 
-      <div ng-show="swimmer" layout="column">
-        <swimmer swimmer-id="swimmer.id"></swimmer>
+      <div ng-show="app.swimmer" layout="column">
+        <swimmer swimmer-id="app.swimmer.id"></swimmer>
         <md-input-container>
           <label>Select meet</label>
-          <md-select ng-model="meetId" flex-gt-xs>
-            <md-option ng-repeat="meet in meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
+          <md-select ng-model="app.meetId" flex-gt-xs>
+            <md-option ng-repeat="meet in app.meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
           </md-select>
         </md-input-container>
       </div>
 
-      <div ng-show="meetId">
-        <meet-events meet-id="meetId" swimmer-id="swimmer.id"></meet-events>
+      <div ng-show="app.meetId">
+        <meet-events meet-id="app.meetId" swimmer-id="app.swimmer.id" race-entries="app.raceEntries"></meet-events>
       </div>
 
-      <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="moveToNext()">
+      <md-card ng-if="app.entry">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Confirm entries</span>
+            <span class="md-subhead">{{ app.swimmer.full_name }} at {{ app.meet.name }} on {{ app.meet.meet_date }}</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-list class="md-dense" flex>
+              <md-list-item>
+                <div class="md-list-item-text" layout="row" flex>
+                  <span flex>Race</span>
+                  <span flex="10">PB</span>
+                  <span flex="10">Cost</span>
+                </div>
+              </md-list-item>
+              <md-list-item ng-repeat="race_type in app.raceEntries">
+                  <div class="md-list-item-text" layout="row" flex>
+                    <span flex>{{ app.config.races[race_type].name }}</span>
+                    <span flex="10" display-time="{{ app.swimmer.getBestTime(race_type).time }}"></span>
+                    <span flex="10">{{ app.meet.cost_per_race }}</span>
+                  </div>
+              </md-list-item>
+              <md-list-item>
+                  <span flex>TOTAL</span>
+                  <span flex="10"></span>
+                  <span flex="10">{{ app.meet.getTotalCostForEntries(app.raceEntries) }}</span>
+              </md-list-item>
+            </md-list>
+        </md-card-content>
+      </md-card>
+
+      <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="app.moveToNext()">
         Next
       </md-button>
       <p class="error">{{ message }}</p>

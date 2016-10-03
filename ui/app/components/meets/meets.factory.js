@@ -166,8 +166,8 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
     getGroupForSwimmer: function(swimmer) {
       var aam = this.ageAtMeet(swimmer);
       if (aam) {
-        for(key in config.entry_groups) {
-          var entryGroup = config.entry_groups[key];
+        for(i = 0; i < this.entry_groups_arr.length; i++) {
+          var entryGroup = config.entry_groups[this.entry_groups_arr[i]];
           if(aam >= entryGroup.min && aam < entryGroup.max) {
             return entryGroup;
           }
@@ -251,7 +251,6 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
       var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
       var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
       if(swimmer) {
-        console.log(this.entry_events);
         var types = this.entry_events[swimmer.gender][swimmerGroup];
         for(type in types) {
           if(types[type]) {
@@ -274,12 +273,25 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
       }
       return events;
     },
+    _processMaximumOnly: function(swimmer) {
+
+    },
     _processEvents: function(swimmer) {
 
+    },
+    getTotalCostForEntries(raceEntries) {
+      var total = 0;
+      if(raceEntries) {
+        total += raceEntries.length * this.cost_per_race;
+        total += this.admin_fee;
+      }
+      return total;
     },
     getEntryEvents: function(swimmer) {
       if (this.minimum_timesheet && this.maximum_timesheet) {
         return this._processMinAndMax(swimmer);
+      } else if (!this.minimum_timesheet && this.maximum_timesheet) {
+        return this._processMaximumOnly(swimmer);
       } else if (this.minimum_timesheet && !this.maximum_timesheet) {
         return this._processMinimumOnly(swimmer);
       } else {
@@ -291,16 +303,34 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
   return Meet;
 }]);
 
-app.directive('meetEvents', function ($filter) {
+app.directive('meetEvents', function () {
   return {
     replace: true,
     templateUrl: 'app/components/meets/meet-events.html',
     scope: {
       'meetId' : '=',
-      'swimmerId' : '='
+      'swimmerId' : '=',
+      'raceEntries': '='
     },
-    link: function ($scope, element, attrs) {
-      $scope.$watch('meetId', function(newVal, oldVal) {
+    controller: EntryCtrl,
+    controllerAs: 'ctrl',
+    bindToController: true,
+    link: function ($scope, element, attrs, ctrl) {
+
+      $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+          list.splice(idx, 1);
+        } else {
+          list.push(item);
+        }
+      };
+
+      $scope.exists = function (item, list) {
+        return list.indexOf(item) > -1;
+      };
+
+      $scope.$watch('ctrl.meetId', function(newVal, oldVal) {
         var MeetFactory = element.injector().get('MeetFactory');
         if(newVal) {
           MeetFactory.getMeet(newVal).then(function(meet) {
@@ -308,7 +338,7 @@ app.directive('meetEvents', function ($filter) {
           });
         }
       });
-      $scope.$watch('swimmerId', function(newVal, oldVal) {
+      $scope.$watch('ctrl.swimmerId', function(newVal, oldVal) {
         var SwimmerFactory = element.injector().get('SwimmerFactory');
         if(newVal) {
           SwimmerFactory.getSwimmer(newVal).then(function(swimmer) {

@@ -1,0 +1,7 @@
+event;round;text
+301 ;0 ;"Girls 12 Years and Under 100m Individual Medley";"" ;"" ;
+302 ;0 ;"Boys 12 Years and Under 100m Individual Medley";"" ;"" ;
+303 ;0 ;"Girls 14 Years and Older 200m Individual Medley";"" ;"" ;
+304 ;0 ;"Boys 14 Years and Older 200m Individual Medley";"" ;"" ;
+305 ;0 ;"Girls 10-13 Years 200m Individual Medley";"" ;"" ;
+306 ;0 ;"Boys 10-13 Years 200m Individual Medley";"" ;"" ;

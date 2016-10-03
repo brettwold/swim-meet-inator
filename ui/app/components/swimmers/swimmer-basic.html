@@ -2,10 +2,8 @@
   <md-card-title>
     <md-card-title-text>
       <span class="md-headline">{{ swimmer.first_name }} {{ swimmer.last_name }}</span>
-      <span class="md-subhead">{{ swimmer.dateOfBirth() }}</span>
+      <div class="md-subhead">Date of Birth: {{ swimmer.dateOfBirth() }}</div>
+      <div class="md-subhead">Gender: {{ config.genders[swimmer.gender] }}</div>
     </md-card-title-text>
   </md-card-title>
-  <md-card-content>
-    <p><span>Gender:</span> <span>{{ config.genders[swimmer.gender] }}</span></p>
-  </md-card-content>
 </md-card>

@@ -1,0 +1,3 @@
+event;round;text
+601 ;0 ;"Girls 10 Years and Over 800m Freestyle" ;"" ;"" ;
+602 ;0 ;"Boys 10 Years and Over 1500m Freestyle" ;"" ;"" ;

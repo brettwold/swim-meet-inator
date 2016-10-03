@@ -1,0 +1,8 @@
+event;round;text
+101 ;0 ;"Boys 13/Under 200m Backstroke";"" ;"" ;
+102 ;0 ;"Girls 13/Under 200m Freestyle";"" ;"" ;
+103 ;0 ;"Boys 14/Over 200m Freestyle";"" ;"" ;
+104 ;0 ;"Girls 14/Over 200m Breaststroke";"" ;"" ;
+105 ;0 ;"Boys 13/Under 200m Individual Medley";"" ;"" ;
+106 ;0 ;"Girls 13/Under 200m Butterfly";"" ;"" ;
+107 ;0 ;"Boys 14/Over 200m Butterfly";"" ;"" ;

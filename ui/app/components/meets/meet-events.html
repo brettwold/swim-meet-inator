@@ -28,10 +28,9 @@
           <span flex>
             <md-checkbox
               ng-if="race_type.qualify"
-              ng-model="data.cb2"
-              aria-label="Checkbox 2"
-              ng-true-value="'yup'"
-              ng-false-value="'nope'"
+              aria-label="{{race_type.name}}"
+              ng-checked="exists(race_type.id, ctrl.raceEntries)"
+              ng-click="toggle(race_type.id, ctrl.raceEntries)"
               class="md-warn md-align-top-left">
           </span>
           <span flex>{{ race_type.name }}</span>
