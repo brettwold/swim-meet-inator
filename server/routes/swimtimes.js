@@ -11,6 +11,18 @@ router.get('/best/:swimmerid', function(req, res, next) {
   });
 });
 
+router.get('/best/:swimmerid/:qualdate', function(req, res, next) {
+  SwimTime.findAll({
+    where: {
+    swimmer_id: req.params.swimmerid,
+    date: {
+      $gt: new Date(req.params.qualdate)
+    }
+  }, order: [ 'race_type' ], group: 'race_type' } ).then(function(result) {
+    res.json(result);
+  });
+});
+
 router.get('/:swimmerid/:racetype', function(req, res, next) {
   SwimTime.findAll({ where: { swimmer_id: req.params.swimmerid, race_type: req.params.racetype }, order: [ 'time' ] } ).then(function(result) {
     res.json(result);

@@ -114,7 +114,7 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
   return SwimmerFactory;
 }]);
 
-app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, UrlService, ConfigData) {
+app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($http, $q, UrlService, ConfigData) {
   var config;
   ConfigData.getConfig().then(function(data) {
     config = data;
@@ -151,17 +151,24 @@ app.factory('Swimmer', ['$http', 'UrlService', 'ConfigData', function($http, Url
       }
       return times;
     },
-    getBestTime: function(raceType) {
-      var race = config.races[raceType];
-
-      for(indx in this.swim_times) {
-        var time = this.swim_times[indx];
-        if(time.race_type == raceType) {
-          return time;
-        }
+    getBestTimes: function(qualDate) {
+      var deferred = $q.defer();
+      if(qualDate) {
+        $http.get(UrlService.baseUrl + '/api/swimtimes/best/' + this.id + '/' + qualDate)
+          .success(function(swimTimes) {
+            if(swimTimes) {
+              deferred.resolve(swimTimes);
+            } else {
+              deferred.reject("No swimmer times found");
+            }
+          }).catch(function(e) {
+            deferred.reject(e.statusText);
+          });
+      } else {
+        deferred.resolve(this.swim_times);
       }
 
-      return "99:59.99";
+      return deferred.promise;
     }
   };
   return Swimmer;

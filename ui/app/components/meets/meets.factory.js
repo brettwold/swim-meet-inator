@@ -85,7 +85,7 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
   return MeetFactory;
 }]);
 
-app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', function($http, UrlService, ConfigData, TimesheetFactory) {
+app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactory', function($http, $q, UrlService, ConfigData, TimesheetFactory) {
   var config;
   ConfigData.getConfig().then(function(data) {
     config = data;
@@ -158,10 +158,23 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
       if (!swimmer || !swimmer.dob || !this.meet_date) {
         return false;
       }
-      var meetDate = new moment(this.meet_date, "YYYY-MM-DD");
       var dob = new moment(swimmer.dob, "YYYY-MM-DD");
-      var duration = moment.duration(meetDate.diff(dob));
-      return Math.floor(duration.asYears());
+
+      if (this.age_type == 'AOD') {
+        var endDecDate = new moment(this.meet_date, "YYYY-MM-DD");
+        endDecDate.date(31);
+        endDecDate.month(11);
+        var duration = moment.duration(endDecDate.diff(dob));
+        return Math.floor(duration.asYears());
+      } else if (this.age_type == 'AOE') {
+        var now = moment();
+        var duration = moment.duration(now.diff(dob));
+        return Math.floor(duration.asYears());
+      } else {
+        var meetDate = new moment(this.meet_date, "YYYY-MM-DD");
+        var duration = moment.duration(meetDate.diff(dob));
+        return Math.floor(duration.asYears());
+      }
     },
     getGroupForSwimmer: function(swimmer) {
       var aam = this.ageAtMeet(swimmer);
@@ -216,68 +229,88 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
         });
       }
     },
-    _processMinAndMax: function(swimmer) {
-      var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
-      var maxs = JSON.parse(this.maximum_timesheet.timesheet_data);
-      var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
-      var events = [];
-      var types = this.entry_events[swimmer.gender][swimmerGroup];
+    _processMinAndMax: function(swimmer, deferred) {
+      var self = this;
       if(swimmer) {
-        for(type in types) {
-          if(types[type]) {
-            var race = config.races[type];
-            race.min = mins[swimmer.gender][swimmerGroup][type];
-            race.max = maxs[swimmer.gender][swimmerGroup][type];
-            var best = swimmer.getBestTime(race.id);
-            if(best && race.min) {
-              race.time_present = true;
-              if((race.min && race.max && best.time <= race.min && best.time >= race.max) ||
-                (race.min && !race.max && best.time <= race.min)) {
-                  race.qualify = true;
+        swimmer.getBestTimes(race.id, this.qual_date).then(function(bestTimes) {
+          var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
+          var maxs = JSON.parse(this.maximum_timesheet.timesheet_data);
+          var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
+          var events = [];
+          var types = this.entry_events[swimmer.gender][swimmerGroup];
+          for(type in types) {
+            if(types[type]) {
+              var race = config.races[type];
+              race.min = mins[swimmer.gender][swimmerGroup][type];
+              race.max = maxs[swimmer.gender][swimmerGroup][type];
+
+              var best = self._getBestTimeForRaceType(bestTimes, race.id);
+              if(best && race.min) {
+                race.best = best;
+                race.time_present = true;
+                if((race.min && race.max && best.time <= race.min && best.time >= race.max) ||
+                  (race.min && !race.max && best.time <= race.min)) {
+                    race.qualify = true;
+                } else {
+                  race.qualify = false;
+                }
               } else {
-                race.qualify = false;
+                race.time_present = false;
               }
-            } else {
-              race.time_present = false;
+              events.push(race);
             }
-            events.push(race);
           }
-        }
+          deferred.resolve(events);
+        });
       }
-      return events;
     },
-    _processMinimumOnly: function(swimmer) {
-      var events = [];
-      var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
-      var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
+    _processMinimumOnly: function(swimmer, deferred) {
+      var self = this;
       if(swimmer) {
-        var types = this.entry_events[swimmer.gender][swimmerGroup];
-        for(type in types) {
-          if(types[type]) {
-            var race = config.races[type];
-            race.min = mins[swimmer.gender][swimmerGroup][type];
-            var best = swimmer.getBestTime(race.id);
-            if(best && race.min) {
-              race.time_present = true;
-              if(race.min && best.time <= race.min) {
-                  race.qualify = true;
+        swimmer.getBestTimes(self.qual_date).then(function(bestTimes) {
+          var events = [];
+          var mins = JSON.parse(self.minimum_timesheet.timesheet_data);
+          var swimmerGroup = self.getGroupForSwimmer(swimmer).id;
+          var types = self.entry_events[swimmer.gender][swimmerGroup];
+
+          for(type in types) {
+            if(types[type]) {
+              var race = config.races[type];
+              race.min = mins[swimmer.gender][swimmerGroup][type];
+              var best = self._getBestTimeForRaceType(bestTimes, race.id);
+              if(best && race.min) {
+                race.best = best;
+                race.time_present = true;
+                if(race.min && best.time <= race.min) {
+                    race.qualify = true;
+                } else {
+                  race.qualify = false;
+                }
               } else {
-                race.qualify = false;
+                race.time_present = false;
               }
-            } else {
-              race.time_present = false;
+              events.push(race);
             }
-            events.push(race);
           }
-        }
+
+          console.log(events);
+
+          deferred.resolve(events);
+        });
       }
-      return events;
     },
-    _processMaximumOnly: function(swimmer) {
+    _processMaximumOnly: function(swimmer, deferred) {
 
     },
-    _processEvents: function(swimmer) {
+    _processEvents: function(swimmer, deferred) {
 
+    },
+    _getBestTimeForRaceType: function(bestTimes, raceType) {
+      for(i = 0; i < bestTimes.length; i++) {
+        if(bestTimes[i].race_type == raceType) {
+          return bestTimes[i];
+        }
+      }
     },
     getTotalCostForEntries(raceEntries) {
       var total = 0;
@@ -288,16 +321,19 @@ app.factory('Meet', ['$http', 'UrlService', 'ConfigData', 'TimesheetFactory', fu
       return total;
     },
     getEntryEvents: function(swimmer) {
+      var deferred = $q.defer();
+
       if (this.minimum_timesheet && this.maximum_timesheet) {
-        return this._processMinAndMax(swimmer);
+        this._processMinAndMax(swimmer, deferred);
       } else if (!this.minimum_timesheet && this.maximum_timesheet) {
-        return this._processMaximumOnly(swimmer);
+        this._processMaximumOnly(swimmer, deferred);
       } else if (this.minimum_timesheet && !this.maximum_timesheet) {
-        return this._processMinimumOnly(swimmer);
+        this._processMinimumOnly(swimmer, deferred);
       } else {
-        return this._processEvents(swimmer);
+        this._processEvents(swimmer, deferred);
       }
 
+      return deferred.promise;
     }
   };
   return Meet;
@@ -310,6 +346,7 @@ app.directive('meetEvents', function () {
     scope: {
       'meetId' : '=',
       'swimmerId' : '=',
+      'entryEvents': '=',
       'raceEntries': '='
     },
     controller: EntryCtrl,
@@ -346,6 +383,8 @@ app.directive('meetEvents', function () {
           });
         }
       });
+
+
     }
   };
 });

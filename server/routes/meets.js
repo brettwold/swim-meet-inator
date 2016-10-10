@@ -4,7 +4,11 @@ var router = express.Router();
 var Meet = require('../models').Meet;
 var Timesheet = require('../models').Timesheet;
 
-var INCLUDES = [ { model: Timesheet, as: 'minimum_timesheet' }, { model: Timesheet, as: 'maximum_timesheet' } ];
+var INCLUDES = [
+  { model: Timesheet, as: 'minimum_timesheet' },
+  { model: Timesheet, as: 'maximum_timesheet' },
+  { model: Timesheet, as: 'auto_timesheet' }
+];
 
 /* GET meets listing. */
 router.get('/', function(req, res, next) {

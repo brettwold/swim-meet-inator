@@ -17,7 +17,7 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
   var menu = { title: "Enter a Meet" };
   var swimmer, meets, config;
   var meetId;
-  var raceEntries;
+  var raceEntries, entryEvents;
   var asaregno;
 
   angular.extend(this, {
@@ -27,6 +27,7 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
     config: config,
     meetId: meetId,
     asaregno: asaregno,
+    entryEvents: entryEvents,
     raceEntries: raceEntries,
     init: function() {
       var self = this;
@@ -47,6 +48,10 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
       var self = this;
       MeetFactory.getMeet(self.meetId).then(function(meet) {
         self.meet = meet;
+        meet.getEntryEvents(self.swimmer).then(function(entryEvents) {
+          console.log(entryEvents);
+          self.entryEvents = entryEvents;
+        });
       });
     },
     confirm: function() {

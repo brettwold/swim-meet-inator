@@ -8,7 +8,7 @@
     <p>Meet type: {{ meet.meet_type }}, {{ meet.course_type }}, {{ meet.lanes }} Lanes</p>
     <p>Age at meet: {{ meet.ageAtMeet(swimmer) }}<p>
     <p>Entry group: {{ meet.getGroupForSwimmer(swimmer).description }}</p>
-    <md-list class="md-dense" flex>
+    <md-list class="md-dense" flex ng-if="ctrl.entryEvents">
       <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
       <md-list-item>
         <div class="md-list-item-text" layout="row" flex>
@@ -22,21 +22,21 @@
           <span flex>PB Location</span>
         </div>
       </md-list-item>
-      <md-list-item ng-repeat="race_type in meet.getEntryEvents(swimmer)">
-        <div class="md-list-item-text" layout="row" flex ng-init="best = swimmer.getBestTime(race_type.id)">
-          <span yes-no="race_type.qualify" flex></span>
+      <md-list-item ng-repeat="race in ctrl.entryEvents">
+        <div class="md-list-item-text" layout="row" flex>
+          <span yes-no="race.qualify" flex></span>
           <span flex>
             <md-checkbox
-              ng-if="race_type.qualify"
-              aria-label="{{race_type.name}}"
-              ng-checked="exists(race_type.id, ctrl.raceEntries)"
-              ng-click="toggle(race_type.id, ctrl.raceEntries)"
+              ng-if="race.qualify"
+              aria-label="{{ race.name }}"
+              ng-checked="exists(race.race_type, ctrl.raceEntries)"
+              ng-click="toggle(race.race_type, ctrl.raceEntries)"
               class="md-warn md-align-top-left">
           </span>
-          <span flex>{{ race_type.name }}</span>
-          <span flex="10" display-time="{{ race_type.min }}"></span>
-          <span flex="10" display-time="{{ race_type.max }}"></span>
-          <span flex="10" display-time="{{ best.time }}"></span>
+          <span flex>{{ race.name }}</span>
+          <span flex="10" display-time="{{ race.min }}"></span>
+          <span flex="10" display-time="{{ race.max }}"></span>
+          <span flex="10" display-time="{{ race.best }}"></span>
           <span flex="10">{{ best.date }}</span>
           <span flex>{{ best.venue }}</span>
         </div>

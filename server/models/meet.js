@@ -58,6 +58,7 @@ module.exports = function(sequelize, DataTypes) {
           Meet.hasMany(models.Entry);
           Meet.belongsTo(models.Timesheet, {as: 'minimum_timesheet'});
           Meet.belongsTo(models.Timesheet, {as: 'maximum_timesheet'});
+          Meet.belongsTo(models.Timesheet, {as: 'auto_timesheet'});
         }
       },
       getterMethods: {
