@@ -73,6 +73,9 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
       }
       return timesheet;
     },
+    removeTimesheet: function(timesheet) {
+      delete this._pool[timesheet.id];
+    },
     _getAliasMatch: function(chk, aliases) {
       for(key in aliases) {
         var aliasGroup = aliases[key];
@@ -216,7 +219,7 @@ app.factory('Timesheet', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, timesheetData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/timesheets/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/timesheets/delete/' + this.id);
     },
     update: function() {
       delete this.entry_groups;

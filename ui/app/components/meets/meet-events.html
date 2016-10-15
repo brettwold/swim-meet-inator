@@ -12,33 +12,35 @@
       <md-subheader class="md-no-sticky">Showing all potential events for this swimmer</md-subheader>
       <md-list-item>
         <div class="md-list-item-text" layout="row" flex>
-          <span flex>Qualify</span>
-          <span flex>Enter</span>
+          <span flex="10">Qualify</span>
+          <span flex="10">Enter</span>
           <span flex>Race</span>
           <span flex="10">Min</span>
+          <span flex="10">Auto</span>
           <span flex="10">Max</span>
-          <span flex="10">PB</span>
-          <span flex="10">PB Date</span>
-          <span flex>PB Location</span>
+          <span flex="25">Best Time</span>
         </div>
       </md-list-item>
       <md-list-item ng-repeat="race in ctrl.entryEvents">
         <div class="md-list-item-text" layout="row" flex>
-          <span yes-no="race.qualify" flex></span>
-          <span flex>
+          <span yes-no="race.qualify" flex="10"></span>
+          <span flex="10">
             <md-checkbox
               ng-if="race.qualify"
               aria-label="{{ race.name }}"
               ng-checked="exists(race.race_type, ctrl.raceEntries)"
               ng-click="toggle(race.race_type, ctrl.raceEntries)"
               class="md-warn md-align-top-left">
+              <span ng-if="race.qualify_auto">(Auto)</span>
           </span>
           <span flex>{{ race.name }}</span>
           <span flex="10" display-time="{{ race.min }}"></span>
+          <span flex="10" display-time="{{ race.auto }}"></span>
           <span flex="10" display-time="{{ race.max }}"></span>
-          <span flex="10" display-time="{{ race.best }}"></span>
-          <span flex="10">{{ best.date }}</span>
-          <span flex>{{ best.venue }}</span>
+          <span flex="25">
+            <span display-time="{{ race.best.time }}"></span>
+            <i>{{ race.best.date }}<br/> {{ race.best.meet_name }}</i>
+          </span>
         </div>
       </md-list-item>
     </md-list>

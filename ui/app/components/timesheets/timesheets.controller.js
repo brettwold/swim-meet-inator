@@ -62,8 +62,11 @@ function TimesheetCtrl($scope, $location, $route, $routeParams, TimesheetFactory
   };
 
   $scope.delete = function(id) {
-    TimesheetFactory.delete(id);
-    $scope.getAll();
+    TimesheetFactory.getTimesheet(id).then(function(timesheet) {
+      timesheet.delete();
+      TimesheetFactory.removeTimesheet(timesheet);
+      $scope.getAll();
+    });
   };
 
   $scope.addRaceType = function(type) {

@@ -270,6 +270,11 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
         swimmer.getBestTimes(self.qual_date).then(function(bestTimes) {
           var events = [];
           var mins = JSON.parse(self.minimum_timesheet.timesheet_data);
+          var hasAutos = false;
+          if(self.auto_timesheet) {
+            var autos = JSON.parse(self.auto_timesheet.timesheet_data);
+            hasAutos = true;
+          }
           var swimmerGroup = self.getGroupForSwimmer(swimmer).id;
           var types = self.entry_events[swimmer.gender][swimmerGroup];
 
@@ -277,12 +282,23 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
             if(types[type]) {
               var race = config.races[type];
               race.min = mins[swimmer.gender][swimmerGroup][type];
+              if(hasAutos) {
+                race.auto = autos[swimmer.gender][swimmerGroup][type];
+              }
               var best = self._getBestTimeForRaceType(bestTimes, race.id);
               if(best && race.min) {
                 race.best = best;
                 race.time_present = true;
                 if(race.min && best.time <= race.min) {
-                    race.qualify = true;
+                  if(hasAutos) {
+                    if(best.time <= race.auto) {
+                      race.qualify_auto = true;
+                    } else {
+                      race.qualify_auto = false;
+                    }
+                  }
+
+                  race.qualify = true;
                 } else {
                   race.qualify = false;
                 }
@@ -292,9 +308,6 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
               events.push(race);
             }
           }
-
-          console.log(events);
-
           deferred.resolve(events);
         });
       }
