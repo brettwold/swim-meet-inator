@@ -2,23 +2,37 @@ var express = require('express');
 var router = express.Router();
 
 var Entry = require('../models').Entry;
+var Swimmer = require('../models').Swimmer;
+var SwimTime = require('../models').SwimTime;
 
-/* GET meets listing. */
-router.get('/', function(req, res, next) {
-
-  Entry.findAndCountAll({
-    offset: 0,
-    limit: 10
-  })
-  .then(function(result) {
-    res.json(result);
-  });
-});
+var INCLUDES = [
+  { model: Swimmer, as: 'swimmer' },
+  { model: SwimTime, as: 'entry_times'}
+];
 
 router.get('/:id', function(req, res, next) {
   console.log(req.params.id);
   Entry.findById(req.params.id).then(function(result) {
     res.json(result);
+  });
+});
+
+router.get('/meet/:meetId', function(req, res, next) {
+
+  Entry.findAll({
+    where: {
+      meet_id: req.params.meetId
+    },
+    offset: 0,
+    limit: 10,
+    include: INCLUDES,
+    order: [['updated_at', 'DESC']]
+  }).then(function(result) {
+    console.log(result);
+    res.json(result);
+  }).catch(function(err) {
+    console.log(err);
+    res.status(404).send('Entries not found');
   });
 });
 

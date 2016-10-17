@@ -1,11 +1,22 @@
 <div ng-controller="EntryCtrl as app">
   <div ng-include="'partials/section-menu.html'"></div>
 
+  <md-card>
+    <md-card-content>
+      <md-input-container>
+        <label>Select meet</label>
+        <md-select ng-model="app.meetId" flex-gt-xs ng-change="app.selectMeet()">
+          <md-option ng-repeat="meet in app.meets" value="{{ meet.id }}">{{ meet.name }}, {{ meet.venue }} - {{ meet.startDate() }}</md-option>
+        </md-select>
+      </md-input-container>
+    </md-card-content>
+  </md-card>
+
   <div layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="entry in app.entries" ng-click="navigateTo('/ + meet.id)">
+      <md-list-item class="md-2-line" ng-repeat="entry in app.entries" ng-click="app.navigateTo('/edit/' + entry.id)">
         <div class="md-list-item-text">
-          <h3>{{entry.name}}</h3>
+          <h3>{{entry.swimmer.full_name}}</h3>
         </div>
         <span flex></span>
         <md-button ng-click="delete(entry.id)" class="md-secondary">Delete</md-button>

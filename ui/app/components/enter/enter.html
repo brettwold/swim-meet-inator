@@ -53,10 +53,10 @@
                   <span flex="10">Cost</span>
                 </div>
               </md-list-item>
-              <md-list-item ng-repeat="race_type in app.raceEntries">
+              <md-list-item ng-repeat="entry_time in app.entry.entry_times">
                   <div class="md-list-item-text" layout="row" flex>
-                    <span flex>{{ app.config.races[race_type].name }}</span>
-                    <span flex="10" display-time="{{ app.swimmer.getBestTime(race_type).time }}"></span>
+                    <span flex>{{ app.config.races[entry_time.race_type].name }}</span>
+                    <span flex="10" display-time="{{ entry_time.time }}"></span>
                     <span flex="10">{{ app.meet.cost_per_race }}</span>
                   </div>
               </md-list-item>

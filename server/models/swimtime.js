@@ -19,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
     	associate: function(models) {
         SwimTime.belongsTo(models.Swimmer);
+        SwimTime.belongsToMany(models.Entry, { as:'entry_times', through: 'EntryTimes'} );
     	}
     },
     getterMethods: {

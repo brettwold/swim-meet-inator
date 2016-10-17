@@ -28,8 +28,8 @@
             <md-checkbox
               ng-if="race.qualify"
               aria-label="{{ race.name }}"
-              ng-checked="exists(race.race_type, ctrl.raceEntries)"
-              ng-click="toggle(race.race_type, ctrl.raceEntries)"
+              ng-checked="exists(race.id, ctrl.raceEntries)"
+              ng-click="toggle(race.id, ctrl.raceEntries)"
               class="md-warn md-align-top-left">
               <span ng-if="race.qualify_auto">(Auto)</span>
           </span>

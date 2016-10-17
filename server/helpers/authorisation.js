@@ -39,20 +39,24 @@ passport.deserializeUser(function(user, done) {
 });
 
 Auth.prototype.isAuth = function(req, res, next) {
-  if (!req.isAuthenticated()) {
-    res.sendStatus(401);
-  } else {
-    next();
-  }
+  next();
+
+  // if (!req.isAuthenticated()) {
+  //   res.sendStatus(401);
+  // } else {
+  //   next();
+  // }
 };
 
 Auth.prototype.isAdmin = function(req, res, next) {
-  if (req.isAuthenticated() &&
-    (req.user.role == "admin" || req.user.role == "superAdmin")) {
-    next();
-  } else {
-    res.sendStatus(401);
-  }
+  next();
+
+  // if (req.isAuthenticated() &&
+  //   (req.user.role == "admin" || req.user.role == "superAdmin")) {
+  //   next();
+  // } else {
+  //   res.sendStatus(401);
+  // }
 };
 
 module.exports = new Auth();

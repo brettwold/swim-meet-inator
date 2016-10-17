@@ -20,11 +20,31 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
         self.config = data;
       });
 
-      EntryFactory.loadEntries().then(function(entries) {
-        console.log(entries);
-        self.entries = entries;
+      MeetFactory.loadCurrentMeets().then(function(meets) {
+        self.meets = meets;
       });
-    }
+
+      if($routeParams.id) {
+        EntryFactory.getEntry($routeParams.id).then(function(entry) {
+          console.log(entry);
+          self.entry = entry;
+        });
+      }
+    },
+    navigateTo: function(to, event) {
+      $location.path('/entries' + to);
+    },
+    selectMeet: function() {
+      var self = this;
+      MeetFactory.getMeet(self.meetId).then(function(meet) {
+        self.meet = meet;
+
+        EntryFactory.loadEntries(meet.id).then(function(entries) {
+          console.log(entries);
+          self.entries = entries;
+        });
+      });
+    },
   });
 
   this.init();

@@ -1,27 +1,11 @@
-<div ng-controller="EntryCtrl" layout="column">
+<div ng-controller="EntryCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
   <div layout-padding>
     <div ng-cloak class="md-inline-form">
       <md-content layout="column">
-        <form name="userForm" flex>
-          <div layout="column">
-            <md-input-container>
-              <label>Select meet</label>
-              <md-select ng-model="meet_id">
-                <md-option ng-repeat="meet in meets" value="{{ meet.id }}">{{ meet.name }}</md-option>
-              </md-select>
-            </md-input-container>
-            <md-input-container>
-              <label>Select swimmer</label>
-              <md-select ng-model="swimmer_id">
-                <md-option ng-repeat="swimmer in swimmers" value="{{ swimmer.id }}">{{ swimmer.full_name }}</md-option>
-              </md-select>
-            </md-input-container>
+        <swimmer swimmer-id="app.entry.swimmer_id"></swimmer>
 
-            <swimmer swimmer-id="swimmer_id"></swimmer>
-
-            <meet-events swimmer-id="swimmer_id" meet-id="meet_id"></meet-events>
-        </form>
+        <meet-events swimmer-id="app.entry.swimmer_id" meet-id="app.entry.meet_id"></meet-events>
       </md-content>
     </div>
   </div>
