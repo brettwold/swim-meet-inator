@@ -8,11 +8,11 @@ module.exports = function(sequelize, DataTypes) {
     payment_method: DataTypes.STRING
   }, {
     classMethods: {
-    	associate: function(models) {
+      associate: function(models) {
         Entry.belongsTo(models.Swimmer, {as: 'swimmer'});
         Entry.belongsTo(models.Meet, {as: 'meet'});
-        Entry.belongsToMany(models.SwimTime, {as: 'entry_times', through: 'EntryTimes'});
-    	}
+        Entry.belongsToMany(models.SwimTime, { through: 'entrytime', as: 'entrytimes' });
+      }
     },
     getterMethods: {
       race_types_arr: function() {

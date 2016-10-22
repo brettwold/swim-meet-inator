@@ -72,18 +72,16 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
         entry.swimmer_id = self.swimmer.id;
         entry.meet_id = self.meet.id;
         entry.race_types_arr = self.raceEntries;
-        entry.entry_times = new Array();
+        entry.entrytimes = new Array();
         for(var i = 0; i < self.raceEntries.length; i++) {
           for(var j = 0; j < self.entryEvents.length; j++) {
             if(self.entryEvents[j].id == entry.race_types_arr[i]) {
-              entry.entry_times.push(self.entryEvents[j].best);
+              entry.entrytimes.push(self.entryEvents[j].best);
             }
           }
         }
         self.entry = entry;
       } else if (self.entry) {
-        console.log("Sending entry");
-        console.log(self.entry);
         self.entry.update().then(function(response) {
           if(response.status == 200) {
             self.status_message = "Entry saved";

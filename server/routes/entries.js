@@ -3,17 +3,24 @@ var router = express.Router();
 
 var Entry = require('../models').Entry;
 var Swimmer = require('../models').Swimmer;
+var Meet = require('../models').Meet;
 var SwimTime = require('../models').SwimTime;
 
 var INCLUDES = [
   { model: Swimmer, as: 'swimmer' },
-  { model: SwimTime, as: 'entry_times'}
+  { model: SwimTime, through: 'entrytime', as: 'entrytimes' }
 ];
 
 router.get('/:id', function(req, res, next) {
   console.log(req.params.id);
-  Entry.findById(req.params.id).then(function(result) {
+  Entry.findOne({
+    where: { id: req.params.id },
+    include: INCLUDES
+  }).then(function(result) {
     res.json(result);
+  }).catch(function(err) {
+    console.log(err);
+    res.status(404).send('Entry not found');
   });
 });
 
@@ -28,7 +35,6 @@ router.get('/meet/:meetId', function(req, res, next) {
     include: INCLUDES,
     order: [['updated_at', 'DESC']]
   }).then(function(result) {
-    console.log(result);
     res.json(result);
   }).catch(function(err) {
     console.log(err);
@@ -37,19 +43,27 @@ router.get('/meet/:meetId', function(req, res, next) {
 });
 
 router.put('/save', function(req, res, next) {
-  if(!req.body.id) {
-    var entry = Entry.build(req.body);
-    entry.save().then(function(result) {
-      res.json(result);
+  var entryData = req.body;
+
+  if(!entryData.id) {
+    Entry.create(entryData).then(function(entry) {
+      entry.setEntrytimes(SwimTime.build(entryData.entrytimes));
+      entry.save().then(function(entry) {
+        res.json(entry);
+      }).catch(function(error) {
+        next(error);
+      });
+    }).catch(function(error) {
+      next(error);
     });
   } else {
-    Entry.findById(req.body.id).then(function(entry) {
-      entry.updateAttributes(req.body);
-
+    Entry.findById(entryData.id).then(function(entry) {
+      entry.updateAttributes(entryData);
+      entry.setEntrytimes(SwimTime.build(entryData.entrytimes));
       entry.save().then(function(){
         res.json(entry);
       }).catch(function(error) {
-        console.log(error);
+        next(error);
       });
     });
   }
@@ -61,6 +75,8 @@ router.get('/delete/:id', function(req, res, next) {
   Entry.findById(req.params.id).then(function(result) {
     result.destroy();
     res.json({status: "ok"});
+  }).catch(function(error) {
+    next(error);
   });
 });
 

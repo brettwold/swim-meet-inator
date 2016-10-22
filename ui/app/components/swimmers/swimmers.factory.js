@@ -178,6 +178,7 @@ app.directive('swimmer', ['ConfigData', function (ConfigData) {
 
   return {
     replace: true,
+    restrict: 'E',
     templateUrl: 'app/components/swimmers/swimmer-basic.html',
     scope: {
       'swimmerId' : '='

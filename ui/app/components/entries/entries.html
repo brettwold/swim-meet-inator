@@ -12,13 +12,15 @@
     </md-card-content>
   </md-card>
 
+
   <div layout-padding>
     <md-list>
       <md-list-item class="md-2-line" ng-repeat="entry in app.entries" ng-click="app.navigateTo('/edit/' + entry.id)">
         <div class="md-list-item-text">
           <h3>{{entry.swimmer.full_name}}</h3>
         </div>
-        <span flex></span>
+        <span flex>{{ entry.entry_times }}
+        </span>
         <md-button ng-click="delete(entry.id)" class="md-secondary">Delete</md-button>
         <md-divider></md-divider>
       </md-list-item>
