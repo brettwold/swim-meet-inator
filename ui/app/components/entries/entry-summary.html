@@ -1,9 +1,8 @@
 <md-card>
-  {{ ctrl.meet }}
   <md-card-title>
     <md-card-title-text>
       <span class="md-headline">Entry summary</span>
-      <span class="md-subhead">{{ ctrl.swimmer.full_name }} at {{ ctrl.meet.name }} on {{ ctrl.meet.meet_date }}</span>
+      <span class="md-subhead">{{ swimmer.full_name }} at {{ meet.name }} on {{ meet.meet_date }}</span>
     </md-card-title-text>
   </md-card-title>
   <md-card-content>
@@ -15,17 +14,27 @@
           <span flex="10">Cost</span>
         </div>
       </md-list-item>
-      <md-list-item ng-repeat="entrytime in ctrl.entry.entrytimes">
+      <md-list-item ng-repeat="entrytime in entry.entrytimes">
         <div class="md-list-item-text" layout="row" flex>
-          <span flex>{{ ctrl.config.races[entrytime.race_type].name }}</span>
+          <span flex>{{ config.races[entrytime.race_type].name }}</span>
           <span flex="10" display-time="{{ entrytime.time }}"></span>
-          <span flex="10">{{ ctrl.meet.cost_per_race }}</span>
+          <span flex="10">{{ entry.cost_per_race  | currency : '£' }}</span>
         </div>
+      </md-list-item>
+      <md-list-item>
+        <span flex>Admin fee</span>
+        <span flex="10"></span>
+        <span flex="10">{{ entry.admin_fee | currency : '£' }}</span>
       </md-list-item>
       <md-list-item>
         <span flex>TOTAL</span>
         <span flex="10"></span>
-        <span flex="10">{{ ctrl.meet.getTotalCostForEntries(ctrl.raceEntries) }}</span>
+        <span flex="10">{{ entry.payment_total | currency : '£' }}</span>
+      </md-list-item>
+      <md-list-item>
+        <span flex>PAID</span>
+        <span flex="10"></span>
+        <span flex="10">{{ entry.paid ? "Yes" : "No" }}</span>
       </md-list-item>
     </md-list>
   </md-card-content>

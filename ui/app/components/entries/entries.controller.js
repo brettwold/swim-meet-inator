@@ -5,16 +5,15 @@ angular
     appRouteProvider.setName('entries', 'entry', EntryCtrl);
   });
 
-function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFactory, SwimmerFactory, ConfigData) {
+function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFactory, SwimmerFactory, Swimmer, ConfigData) {
 
   var menu = { title: "Entry management" };
   var status = $route.current.status;
-  var config, entries, meet;
+  var config, entries;
 
   angular.extend(this, {
     config: config,
     entries: entries,
-    meet: meet,
     init: function() {
       var self = this;
       ConfigData.getConfig().then(function(data) {
@@ -27,8 +26,12 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
 
       if($routeParams.id) {
         EntryFactory.getEntry($routeParams.id).then(function(entry) {
-          console.log(entry);
           self.entry = entry;
+          self.entry.swimmer = new Swimmer(self.entry.swimmer);
+          self.meetId = entry.meet_id;
+          MeetFactory.getMeet(self.meetId).then(function(meet) {
+            self.meet = meet;
+          });
         });
       }
     },
@@ -39,8 +42,6 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       var self = this;
       MeetFactory.getMeet(self.meetId).then(function(meet) {
         self.meet = meet;
-        console.log(meet);
-
         EntryFactory.loadEntries(meet.id).then(function(entries) {
           console.log(entries);
           self.entries = entries;

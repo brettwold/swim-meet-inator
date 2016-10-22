@@ -3,13 +3,11 @@
   <div layout-padding>
     <div ng-cloak class="md-inline-form">
       <md-content layout="column">
-        <swimmer swimmer-id="app.entry.swimmer_id"></swimmer>
+        <swimmer swimmer="app.entry.swimmer"></swimmer>
 
-        <meet-events swimmer-id="app.entry.swimmer_id" meet-id="app.entry.meet_id"></meet-events>
+        <meet-events swimmer="app.entry.swimmer" meet="app.meet"></meet-events>
 
-        {{ app.meet }}
-
-        <entry-summary entry="app.entry" meet="app.meet"></entry>
+        <entry-summary entry="app.entry" swimmer="app.entry.swimmer" meet="app.meet"></entry>
 
       </md-content>
     </div>

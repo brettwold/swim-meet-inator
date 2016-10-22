@@ -57,6 +57,25 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
     confirm: function() {
 
     },
+    _createEntry: function() {
+      var self = this;
+      var entry = new Entry();
+      entry.swimmer_id = self.swimmer.id;
+      entry.meet_id = self.meet.id;
+      entry.race_types_arr = self.raceEntries;
+      entry.entrytimes = new Array();
+      entry.cost_per_race = self.meet.cost_per_race;
+      entry.admin_fee = self.meet.admin_fee;
+      entry.payment_total = self.meet.getTotalCostForEntries(self.raceEntries);
+      for(var i = 0; i < self.raceEntries.length; i++) {
+        for(var j = 0; j < self.entryEvents.length; j++) {
+          if(self.entryEvents[j].id == entry.race_types_arr[i]) {
+            entry.entrytimes.push(self.entryEvents[j].best);
+          }
+        }
+      }
+      self.entry = entry;
+    },
     moveToNext: function() {
       var self = this;
       message = '';
@@ -68,19 +87,7 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
           self.message = 'Failed to find swimmer: ' + error;
         });
       } else if (self.swimmer && self.meetId && self.raceEntries && !self.entry) {
-        var entry = new Entry();
-        entry.swimmer_id = self.swimmer.id;
-        entry.meet_id = self.meet.id;
-        entry.race_types_arr = self.raceEntries;
-        entry.entrytimes = new Array();
-        for(var i = 0; i < self.raceEntries.length; i++) {
-          for(var j = 0; j < self.entryEvents.length; j++) {
-            if(self.entryEvents[j].id == entry.race_types_arr[i]) {
-              entry.entrytimes.push(self.entryEvents[j].best);
-            }
-          }
-        }
-        self.entry = entry;
+        self._createEntry();
       } else if (self.entry) {
         self.entry.update().then(function(response) {
           if(response.status == 200) {

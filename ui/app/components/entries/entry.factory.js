@@ -96,7 +96,7 @@ app.factory('Entry', ['$http', 'UrlService', function($http, UrlService) {
   return Entry;
 }]);
 
-app.directive('entrySummary', function ($filter) {
+app.directive('entrySummary', function ($filter, ConfigData) {
   return {
     replace: true,
     templateUrl: 'app/components/entries/entry-summary.html',
@@ -105,18 +105,10 @@ app.directive('entrySummary', function ($filter) {
       'meet' : '=',
       'swimmer' : '='
     },
-    controller: EntryCtrl,
-    controllerAs: 'ctrl',
-    bindToController: true,
     link: function ($scope, element, attrs, ctrl) {
-      // $scope.$watch('entryId', function(newVal, oldVal) {
-      //   var EntryFactory = element.injector().get('EntryFactory');
-      //   if(newVal) {
-      //     EntryFactory.getEntry(newVal).then(function(entry) {
-      //       $scope.entry = entry;
-      //     });
-      //   }
-      // });
+      ConfigData.getConfig().then(function(data) {
+        $scope.config = data;
+      });
     }
   };
 })

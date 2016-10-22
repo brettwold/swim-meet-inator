@@ -44,31 +44,13 @@ router.get('/meet/:meetId', function(req, res, next) {
 
 router.put('/save', function(req, res, next) {
   var entryData = req.body;
-
-  if(!entryData.id) {
-    Entry.create(entryData).then(function(entry) {
-      entry.setEntrytimes(SwimTime.build(entryData.entrytimes));
-      entry.save().then(function(entry) {
-        res.json(entry);
-      }).catch(function(error) {
-        next(error);
-      });
-    }).catch(function(error) {
-      next(error);
-    });
-  } else {
-    Entry.findById(entryData.id).then(function(entry) {
-      entry.updateAttributes(entryData);
-      entry.setEntrytimes(SwimTime.build(entryData.entrytimes));
-      entry.save().then(function(){
-        res.json(entry);
-      }).catch(function(error) {
-        next(error);
-      });
-    });
-  }
-
-  Entry.upsert(req.body);
+  var entry = Entry.build(entryData);
+  entry.setEntrytimes(SwimTime.build(entryData.entrytimes));
+  entry.save().then(function(entry) {
+    res.json(entry);
+  }).catch(function(error) {
+    next(error);
+  });
 });
 
 router.get('/delete/:id', function(req, res, next) {

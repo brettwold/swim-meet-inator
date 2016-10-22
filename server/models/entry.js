@@ -4,7 +4,11 @@ module.exports = function(sequelize, DataTypes) {
   var Entry = sequelize.define("Entry", {
     race_types: DataTypes.STRING,
     special_notes: DataTypes.TEXT,
+    cost_per_race: DataTypes.INTEGER,
+    admin_fee: DataTypes.INTEGER,
+    payment_total: DataTypes.INTEGER,
     paid: DataTypes.BOOLEAN,
+    paid_date: DataTypes.DATE,
     payment_method: DataTypes.STRING
   }, {
     classMethods: {

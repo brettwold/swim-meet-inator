@@ -174,27 +174,18 @@ app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($htt
   return Swimmer;
 }]);
 
-app.directive('swimmer', ['ConfigData', function (ConfigData) {
+app.directive('swimmer', ['ConfigData', 'Swimmer', function (ConfigData, Swimmer) {
 
   return {
     replace: true,
     restrict: 'E',
     templateUrl: 'app/components/swimmers/swimmer-basic.html',
     scope: {
-      'swimmerId' : '='
+      'swimmer' : '='
     },
     link: function ($scope, element, attrs) {
       ConfigData.getConfig().then(function(data) {
         $scope.config = data;
-      });
-
-      $scope.$watch('swimmerId', function(newVal, oldVal) {
-        var SwimmerFactory = element.injector().get('SwimmerFactory');
-        if(newVal) {
-          SwimmerFactory.getSwimmer(newVal).then(function(swimmer) {
-            $scope.swimmer = swimmer;
-          });
-        }
       });
     }
   };

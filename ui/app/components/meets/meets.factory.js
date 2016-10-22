@@ -357,14 +357,11 @@ app.directive('meetEvents', function () {
     replace: true,
     templateUrl: 'app/components/meets/meet-events.html',
     scope: {
-      'meetId' : '=',
-      'swimmerId' : '=',
+      'meet' : '=',
+      'swimmer' : '=',
       'entryEvents': '=',
       'raceEntries': '='
     },
-    controller: EntryCtrl,
-    controllerAs: 'ctrl',
-    bindToController: true,
     link: function ($scope, element, attrs, ctrl) {
 
       $scope.toggle = function (item, list) {
@@ -379,25 +376,6 @@ app.directive('meetEvents', function () {
       $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
       };
-
-      $scope.$watch('ctrl.meetId', function(newVal, oldVal) {
-        var MeetFactory = element.injector().get('MeetFactory');
-        if(newVal) {
-          MeetFactory.getMeet(newVal).then(function(meet) {
-            $scope.meet = meet;
-          });
-        }
-      });
-      $scope.$watch('ctrl.swimmerId', function(newVal, oldVal) {
-        var SwimmerFactory = element.injector().get('SwimmerFactory');
-        if(newVal) {
-          SwimmerFactory.getSwimmer(newVal).then(function(swimmer) {
-            $scope.swimmer = swimmer;
-          });
-        }
-      });
-
-
     }
   };
 });

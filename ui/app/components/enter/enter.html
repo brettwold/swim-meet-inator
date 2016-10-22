@@ -19,7 +19,7 @@
       </md-card>
 
       <div ng-if="app.swimmer && !app.entry" layout="column">
-        <swimmer swimmer-id="app.swimmer.id"></swimmer>
+        <swimmer swimmer="app.swimmer"></swimmer>
 
         <md-card>
           <md-card-content>
@@ -33,8 +33,8 @@
         </md-card>
       </div>
 
-      <div ng-if="app.meetId && !app.entry">
-        <meet-events meet-id="app.meetId" swimmer-id="app.swimmer.id" race-entries="app.raceEntries" entry-events="app.entryEvents"></meet-events>
+      <div ng-if="app.meet && !app.entry">
+        <meet-events meet="app.meet" swimmer="app.swimmer" race-entries="app.raceEntries" entry-events="app.entryEvents"></meet-events>
       </div>
 
       <div ng-if="app.entry">
