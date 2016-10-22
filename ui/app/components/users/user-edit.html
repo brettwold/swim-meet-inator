@@ -1,4 +1,4 @@
-<div ng-controller="SwimmersCtrl" layout="column">
+<div ng-controller="UsersCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
   <div layout-padding>
     <div ng-cloak class="md-inline-form">
@@ -6,16 +6,16 @@
         <div layout="row">
           <md-input-container>
             <label>Firstname</label>
-            <input ng-model="user.first_name">
+            <input ng-model="app.user.first_name">
           </md-input-container>
           <md-input-container>
             <label>Surname</label>
-            <input ng-model="user.last_name">
+            <input ng-model="app.user.last_name">
           </md-input-container>
           <md-input-container>
             <label>Role</label>
-            <md-select ng-model="user.role" flex>
-              <md-option ng-repeat="(key, role) in config.user_roles" value="{{key}}">{{role.name}}</md-option>
+            <md-select ng-model="app.user.role" flex>
+              <md-option ng-repeat="(key, role) in app.config.user_roles" value="{{key}}">{{role.name}}</md-option>
             </md-select>
           <md-input-container>
         </div>

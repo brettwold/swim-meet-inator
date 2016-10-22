@@ -7,13 +7,9 @@ angular
 
 function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFactory, SwimmerFactory, Swimmer, ConfigData) {
 
-  var menu = { title: "Entry management" };
-  var status = $route.current.status;
-  var config, entries;
-
   angular.extend(this, {
-    config: config,
-    entries: entries,
+    menu: { title: "Entry management" },
+    status: $route.current.status,
     init: function() {
       var self = this;
       ConfigData.getConfig().then(function(data) {

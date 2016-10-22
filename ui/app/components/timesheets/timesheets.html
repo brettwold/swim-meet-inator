@@ -1,16 +1,16 @@
-<div ng-controller="TimesheetCtrl">
+<div ng-controller="TimesheetCtrl as app">
   <div ng-include="'partials/section-menu.html'"></div>
 
-  <md-button ng-click="navigateTo('/import')" class="md-primary md-raised">Import</md-button>
+  <md-button ng-click="app.navigateTo('/import')" class="md-primary md-raised">Import</md-button>
 
-  <div ng-init="getAll()" layout-padding>
+  <div layout-padding>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="timesheet in timesheets" ng-click="navigateTo('/edit/' + timesheet.id)">
+      <md-list-item class="md-2-line" ng-repeat="timesheet in app.timesheets" ng-click="app.navigateTo('/edit/' + timesheet.id)">
         <div class="md-list-item-text">
           <h3>{{timesheet.name}}</h3>
         </div>
         <span flex></span>
-        <md-button ng-click="delete(timesheet.id)" class="md-secondary">Delete</md-button>
+        <md-button ng-click="app.delete(timesheet.id)" class="md-secondary">Delete</md-button>
         <md-divider></md-divider>
       </md-list-item>
     </md-list>

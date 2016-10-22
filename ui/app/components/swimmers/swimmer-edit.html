@@ -1,4 +1,4 @@
-<div ng-controller="SwimmersCtrl" layout="column">
+<div ng-controller="SwimmersCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
   <div layout-padding>
     <div ng-cloak class="md-inline-form">
@@ -6,47 +6,47 @@
         <div layout="row">
           <md-input-container>
             <label>Firstname</label>
-            <input ng-model="swimmer.first_name">
+            <input ng-model="app.swimmer.first_name">
           </md-input-container>
           <md-input-container>
             <label>Surname</label>
-            <input ng-model="swimmer.last_name">
+            <input ng-model="app.swimmer.last_name">
           </md-input-container>
         </div>
         <div layout="row">
           <md-input-container>
             <label>Date of Birth (yyyy-mm-dd)</label>
-            <input ng-model="swimmer.dob">
+            <input ng-model="app.swimmer.dob">
           </md-input-container>
           <md-input-container>
             <label>Gender</label>
-            <md-select ng-model="swimmer.gender" flex>
-              <md-option ng-repeat="(key, gender) in config.genders" value="{{key}}">{{gender}}</md-option>
+            <md-select ng-model="app.swimmer.gender" flex>
+              <md-option ng-repeat="(key, gender) in app.config.genders" value="{{key}}">{{gender}}</md-option>
             </md-select>
           <md-input-container>
         </div>
         <div layout="row">
           <md-input-container class="md-block" flex="75">
             <label>ASA Number</label>
-            <input ng-model="swimmer.regno">
+            <input ng-model="app.swimmer.regno">
           </md-input-container>
-          <span flex ng-if="swimmer.regno">
-            <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="lookupTimes()">
+          <span flex ng-if="app.swimmer.regno">
+            <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="app.lookupTimes()">
               Lookup times
             </md-button>
           </span>
         </div>
       </md-content>
     </div>
-    <div ng-if="swimmer.id">
+    <div ng-if="app.swimmer.id">
       <md-list class="md-dense" flex>
         <md-subheader class="md-no-sticky">Individual best swim times</md-subheader>
-        <div ng-repeat="course_type in config.course_types">
+        <div ng-repeat="course_type in app.config.course_types">
         <md-subheader class="md-no-sticky">{{course_type.name}}</md-subheader>
-        <md-list-item ng-repeat="time in swimmer.getTimesByCourseType(course_type.code)">
+        <md-list-item ng-repeat="time in app.swimmer.getTimesByCourseType(course_type.code)">
           <div class="md-list-item-text" layout="row" flex>
-            <span flex="10">{{ config.races[time.race_type].course_type }}</span>
-            <span flex>{{ config.races[time.race_type].name }}</span>
+            <span flex="10">{{ app.config.races[time.race_type].course_type }}</span>
+            <span flex>{{ app.config.races[time.race_type].name }}</span>
             <span flex display-time="{{ time.time }}"></span>
             <span flex >{{ time.meet_name }}</span>
             <span flex >{{ time.venue }}</span>

@@ -5,85 +5,67 @@ angular
     appRouteProvider.setName('meets', 'meet', MeetCtrl);
   });
 
-function MeetCtrl($scope, $location, $route, $routeParams, MeetFactory, Meet, TimesheetFactory, ConfigData) {
+function MeetCtrl($location, $route, $routeParams, MeetFactory, Meet, TimesheetFactory, ConfigData) {
 
-  $scope.menu = { title: "Meet management" };
-  $scope.status = $route.current.status;
-
-  $scope.navigateTo = function(to, event) {
-    $location.path('/meets' + to);
-  };
-
-  $scope.getAll = function() {
-    MeetFactory.loadMeets().then(function(result) {
-      $scope.meets = result;
-    });
-  };
-
-  $scope.add = function() {
-    $scope.navigateTo('/edit');
-  };
-
-  $scope.save = function() {
-    $scope.status_message = "";
-    $scope.meet.update().then(function(response) {
-      if(response.status == 200) {
-        $scope.status_message = "Meet saved";
-      } else {
-        $scope.status_message = "Error saving meet";
-      }
-    })
-  };
-
-  $scope.delete = function(id) {
-    MeetFactory.getMeet(id).then(function(meet) {
-      meet.delete();
-      MeetFactory.removeMeet(meet);
-    });
-    $scope.getAll();
-  };
-
-  $scope.exists = function (item, list) {
-    return list.indexOf(item) > -1;
-  };
-
-  $scope.toggle = function (item, list) {
-    var idx = list.indexOf(item);
-    if (idx > -1) list.splice(idx, 1);
-    else list.push(item);
-  };
-
-  $scope.checkEventsAndGroups = function() {
-    $scope.meet.checkEventsAndGroups();
-  }
-
-  if($scope.status == 'list') {
-    $scope.menu.title = "Meet management";
-  } else if($scope.status == 'edit') {
-    if($scope.meet && $scope.meet.id) {
-      $scope.menu.title = "Edit meet";
-    } else {
-      $scope.menu.title = "Create new meet";
-    }
-  }
-
-  function init() {
-    ConfigData.getConfig().then(function(data) {
-      $scope.config = data;
-    });
-
-    if($routeParams.id) {
-      MeetFactory.getMeet($routeParams.id).then(function(response) {
-        $scope.meet = response;
+  angular.extend(this, {
+    menu: { title: "Meet management" },
+    status: $route.current.status,
+    init: function() {
+      var self = this;
+      ConfigData.getConfig().then(function(data) {
+        self.config = data;
       });
-    } else {
-      $scope.meet = new Meet({});
+
+      if($routeParams.id) {
+        MeetFactory.getMeet($routeParams.id).then(function(response) {
+          self.meet = response;
+        });
+      } else {
+        MeetFactory.loadMeets().then(function(result) {
+          self.meets = result;
+        });
+      }
+
+      TimesheetFactory.loadTimesheets().then(function(result){
+        self.timesheets = result;
+      });
+    },
+    navigateTo: function(to, event) {
+      $location.path('/meets' + to);
+    },
+    add: function() {
+      $scope.navigateTo('/edit');
+    },
+    save: function() {
+      var self = this;
+      self.status_message = "";
+      self.meet.update().then(function(response) {
+        if(response.status == 200) {
+          self.status_message = "Meet saved";
+        } else {
+          self.status_message = "Error saving meet";
+        }
+      })
+    },
+    delete: function(id) {
+      MeetFactory.getMeet(id).then(function(meet) {
+        meet.delete();
+        MeetFactory.removeMeet(meet);
+      });
+      $scope.getAll();
+    },
+    exists: function (item, list) {
+      return list.indexOf(item) > -1;
+    },
+    toggle: function (item, list) {
+      var idx = list.indexOf(item);
+      if (idx > -1) list.splice(idx, 1);
+      else list.push(item);
+    },
+    checkEventsAndGroups: function() {
+      this.meet.checkEventsAndGroups();
     }
+  });
 
-    TimesheetFactory.loadTimesheets().then(function(result){
-      $scope.timesheets = result;
-    });
-  }
-
-  init();
+  this.init();
 }

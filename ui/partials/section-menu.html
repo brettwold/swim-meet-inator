@@ -1,14 +1,14 @@
 <md-toolbar>
 <div class="md-toolbar-tools">
   <h2>
-    <span>{{menu.title}}</span>
+    <span>{{app.menu.title}}</span>
   </h2>
   <span flex></span>
   <span class="status-message">{{status_message}}</span>
-  <md-button class="md-raised" aria-label="Save" ng-click="save()" ng-if="status == 'edit'">
+  <md-button class="md-raised" aria-label="Save" ng-click="app.save()" ng-if="app.status == 'edit'">
     Save
   </md-button>
-  <md-button class="md-raised" aria-label="Add" ng-click="add()" ng-if="status != 'index'">
+  <md-button class="md-raised" aria-label="Add" ng-click="app.add()" ng-if="app.status == 'list'">
     Add
   </md-button>
   <a ng-href="/logout" ng-if="session.authenticated">

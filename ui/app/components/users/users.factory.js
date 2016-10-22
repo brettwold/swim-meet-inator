@@ -46,7 +46,7 @@ app.factory('UserFactory', ['$http', '$q', 'User', 'UrlService', function($http,
 
       $http.get(UrlService.baseUrl + '/api/users').success(function(usersArray) {
         var users = [];
-        usersArray.rows.forEach(function(userData) {
+        usersArray.forEach(function(userData) {
           var user = scope._retrieveInstance(userData.id, userData);
           users.push(user);
         });
@@ -67,6 +67,9 @@ app.factory('UserFactory', ['$http', '$q', 'User', 'UrlService', function($http,
         user = scope._retrieveInstance(userData);
       }
       return user;
+    },
+    removeUser: function(user) {
+      delete this._pool[user.id];
     }
   };
   return UserFactory;
@@ -83,7 +86,7 @@ app.factory('User', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, userData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/users/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/users/delete/' + this.id);
     },
     update: function() {
       return $http.put(UrlService.baseUrl + '/api/users/save', this);

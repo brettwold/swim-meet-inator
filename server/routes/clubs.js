@@ -33,10 +33,16 @@ router.get('/:id/swimmers', function(req, res, next) {
   });
 });
 
-router.post('/add', function(req, res, next) {
-  Club.create(req.body).then(function(club) {
-    res.json(club);
-  });
+router.put('/save', function(req, res, next) {
+  if(!req.body.id) {
+    Club.create(req.body).then(function(result) {
+      res.json(result);
+    });
+  } else {
+    Club.update(req.body, { where: {id: req.body.id }}).then(function(result) {
+      res.json(req.body);
+    });
+  }
 });
 
 router.post('/addswimmer', function(req, res, next) {

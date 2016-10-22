@@ -67,6 +67,9 @@ app.factory('ClubFactory', ['$http', '$q', 'Club', 'UrlService', function($http,
         club = scope._retrieveInstance(clubData);
       }
       return club;
+    },
+    removeClub: function(club) {
+      delete this._pool[club.id];
     }
   };
   return ClubFactory;
@@ -83,10 +86,13 @@ app.factory('Club', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, clubData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/clubs/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/clubs/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/clubs/save', this);
+      var self = this;
+      $http.put(UrlService.baseUrl + '/api/clubs/save', this).then(function(club) {
+        self.setData(club);
+      });
     }
   };
   return Club;

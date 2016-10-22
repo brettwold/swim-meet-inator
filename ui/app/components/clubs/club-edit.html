@@ -1,4 +1,4 @@
-<div ng-controller="ClubCtrl" layout="column">
+<div ng-controller="ClubCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
   <md-tabs md-dynamic-height md-border-bottom>
   <md-tab label="club">
@@ -8,14 +8,14 @@
           <md-content layout="column">
             <md-input-container class="md-block" flex-gt-xs>
               <label>Name</label>
-              <input ng-model="club.name">
+              <input ng-model="app.club.name">
             </md-input-container>
           </md-content>
         </div>
       </div>
   </md-tab>
 
-  <md-tab label="swimmers" md-on-select="getSwimmers()" ng-if="club.id">
+  <md-tab label="swimmers" md-on-select="app.getSwimmers()" ng-if="club.id">
     <md-content class="md-padding">
         <md-content>
           <md-list class="md-dense" flex>

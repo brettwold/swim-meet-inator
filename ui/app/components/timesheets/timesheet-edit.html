@@ -1,4 +1,4 @@
-<div ng-controller="TimesheetCtrl" layout="column">
+<div ng-controller="TimesheetCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
 
   <md-card>
@@ -7,22 +7,22 @@
         <md-input-container flex="20">
           <label>Add race type</label>
           <md-select ng-model="selected_race_type">
-            <md-option ng-repeat="(key, race) in config.races | raceByCourse:timesheet.course_type" value="{{key}}">{{ race.name }}</md-option>
+            <md-option ng-repeat="(key, race) in app.config.races | raceByCourse:app.timesheet.course_type" value="{{key}}">{{ race.name }}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container flex>
-          <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="addRaceType(selected_race_type)">
+          <md-button class="md-raised md-primary" aria-label="Add race type" ng-click="app.addRaceType(selected_race_type)">
             Add
           </md-button>
         </md-input-container>
         <md-input-container flex="20">
           <label>Add group</label>
           <md-select ng-model="entry_group">
-            <md-option ng-repeat="(key, group) in config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
+            <md-option ng-repeat="(key, group) in app.config.entry_groups" value="{{key}}">{{ group.name }}</md-option>
           </md-select>
         </md-input-container>
         <md-input-container flex>
-          <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="addEntryGroup(entry_group)">
+          <md-button class="md-raised md-primary" aria-label="Add entry group" ng-click="app.addEntryGroup(entry_group)">
             Add
           </md-button>
         </md-input-container>
