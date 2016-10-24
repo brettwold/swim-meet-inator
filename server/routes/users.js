@@ -2,32 +2,35 @@ var express = require('express');
 var router = express.Router();
 
 var User = require('../models').User;
+var Swimmer = require('../models').Swimmer;
+
+var INCLUDES = [
+  { model: Swimmer, through: 'UserSwimmers', as: "swimmers" }
+];
 
 router.get('/', function(req, res, next) {
-
   User.findAll({
     offset: 0,
-    limit: 10
+    limit: 10,
   })
   .then(function(result) {
     res.json(result);
+  })
+  .catch(function(err) {
+    console.log(err);
+    next(err);
   });
 });
 
 router.get('/:id', function(req, res, next) {
-  User.findById(req.params.id).then(function(result) {
+  User.findOne({
+    where: { id: req.params.id },
+    include: INCLUDES
+  }).then(function(result) {
     res.json(result);
-  });
-});
-
-router.get('/:id/users', function(req, res, next) {
-  User.findAndCountAll({
-    offset: 0,
-    limit: 10,
-    where: { user_id: req.params.id }
-  })
-  .then(function(result) {
-    res.json(result);
+  }).catch(function(err) {
+    console.log(err);
+    next(err);
   });
 });
 

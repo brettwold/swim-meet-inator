@@ -21,6 +21,7 @@ angular
             .success(function(data, status, headers, config) {
               SessionService.authenticated = true;
               SessionService.user = new User(data);
+              console.log(SessionService.user);
               if (typeof(callback) === typeof(Function)) callback();
             })
             .error(function(data, status, headers, config) {

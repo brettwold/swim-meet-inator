@@ -12,23 +12,10 @@ angular
       });
   });
 
-function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry, MeetFactory, SwimmerFactory, ConfigData) {
-
-  var menu = { title: "Enter a Meet" };
-  var swimmer, meets, config;
-  var meetId;
-  var raceEntries, entryEvents;
-  var asaregno;
+function EnterCtrl($scope, $location, $route, $routeParams, SessionService, EntryFactory, Entry, MeetFactory, SwimmerFactory, ConfigData) {
 
   angular.extend(this, {
-    menu: menu,
-    swimmer: swimmer,
-    meets: meets,
-    config: config,
-    meetId: meetId,
-    asaregno: asaregno,
-    entryEvents: entryEvents,
-    raceEntries: raceEntries,
+    menu: { title: "Enter a Meet" },
     init: function() {
       var self = this;
       ConfigData.getConfig().then(function(data) {
@@ -38,6 +25,8 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
       MeetFactory.loadCurrentMeets().then(function(meets) {
         self.meets = meets;
       });
+
+      self.swimmers = SessionService.user.swimmers;
 
       self.raceEntries = new Array();
     },
@@ -52,6 +41,14 @@ function EnterCtrl($scope, $location, $route, $routeParams, EntryFactory, Entry,
           console.log(entryEvents);
           self.entryEvents = entryEvents;
         });
+      });
+    },
+    selectSwimmer: function(id) {
+      var self = this;
+      console.log(id);
+      SwimmerFactory.getSwimmer(id).then(function(swimmer) {
+        self.swimmer = swimmer;
+        self.moveToNext();
       });
     },
     confirm: function() {

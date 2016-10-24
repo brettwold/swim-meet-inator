@@ -26,6 +26,7 @@
         <div>
           <md-list ng-controller="MenuListCtrl" ng-cloak>
             <md-list-item class="md-clickable" ng-click="navigateTo('/enter')">Enter meet</md-list-item>
+            <md-list-item class="md-clickable" ng-click="navigateTo('/swimmers')">Manage swimmers</md-list-item>
             <md-divider></md-divider>
             <md-list-item class="md-clickable" ng-click="navigateTo('/home')">Home</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/clubs')" ng-if="session.user.isAdmin()">Clubs</md-list-item>

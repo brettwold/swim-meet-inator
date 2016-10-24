@@ -107,8 +107,6 @@ ApiServer.prototype.startServer = function() {
   expressApp.use('/api/timesheets', auth.isAuth, require('./server/routes/timesheets'));
   expressApp.use('/api/users', auth.isAdmin, require('./server/routes/users'));
   expressApp.use('/api', function(req, res) {
-    res.send({});
-    return;
     if(req.isAuthenticated()) {
       res.send(req.user);
     } else {

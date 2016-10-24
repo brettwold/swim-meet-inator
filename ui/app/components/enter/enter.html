@@ -10,7 +10,22 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content>
-          <p>Enter your ASA number below</p>
+          <div ng-if="app.swimmers">
+            <p>Select swimmer</p>
+            <md-list>
+              <md-list-item class="md-1-line" ng-repeat="swimmer in app.swimmers" >
+                <div class="md-list-item-text" layout="row">
+                  <h3 flex>{{swimmer.first_name}}</h3>
+                  <h3 flex>{{swimmer.last_name}}</h3>
+                </div>
+                <span flex></span>
+                <md-button class="md-primary" ng-click="app.selectSwimmer(swimmer.id)">Select</md-button>
+                <md-divider></md-divider>
+              </md-list-item>
+            </md-list>
+          </div>
+
+          <p>Create new swimmer by entering your ASA number below</p>
           <md-input-container class="md-block" flex="75">
             <label>ASA Number</label>
             <input ng-model="app.asaregno">

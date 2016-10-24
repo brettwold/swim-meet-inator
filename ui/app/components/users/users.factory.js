@@ -95,10 +95,8 @@ app.factory('User', ['$http', 'UrlService', function($http, UrlService) {
       return this.first_name + ' ' + this.last_name;
     },
     isAdmin: function() {
-      return true;
-      //return this.role == "admin" || this.role == "superAdmin";
+      return this.role == "admin" || this.role == "superAdmin";
     }
-
   };
   return User;
 }]);
