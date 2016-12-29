@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
     	associate: function(models) {
-        User.belongsToMany(models.Swimmer, {through: 'UserSwimmers', as: 'swimmers'});
+        User.belongsToMany(models.Swimmer, {through: 'UserSwimmers'});
     	}
     },
     getterMethods: {

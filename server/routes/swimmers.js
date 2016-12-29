@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Club = require('../models').Club;
+var User = require('../models').User;
 var Swimmer = require('../models').Swimmer;
 var SwimTime = require('../models').SwimTime;
 var sequelize = require('../models').sequelize;
@@ -12,13 +13,40 @@ var INCLUDES = [{
 
 router.get('/', function(req, res, next) {
 
-  Swimmer.findAndCountAll({
+  Swimmer.findAll({
     order: 'last_name ASC',
     offset: 0,
     limit: 10
   })
   .then(function(result) {
     res.json(result);
+  });
+});
+
+router.get('/user', function(req, res, next) {
+  var user = User.build(req.user);
+  user.getSwimmers().then(function(swimmers) {
+    res.json(swimmers);
+  }).catch(function(err) {
+    res.json([]);
+  });
+});
+
+router.put('/addtouser/:swimmerid', function(req, res, next) {
+  var user = User.build(req.user);
+  Swimmer.findById(req.params.swimmerid).then(function(swimmer) {
+    user.addSwimmer(swimmer).then(function(response){
+      res.json(user.getSwimmers());
+    });
+  });
+});
+
+router.put('/removefromuser/:swimmerid', function(req, res, next) {
+  var user = User.build(req.user);
+  Swimmer.findById(req.params.swimmerid).then(function(swimmer) {
+    user.removeSwimmer(swimmer).then(function(response){
+      res.json(user.getSwimmers());
+    });
   });
 });
 

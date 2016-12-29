@@ -1,6 +1,5 @@
 const enterpathprefix = '/app/components/enter';
 const enterbase = '/enter';
-const confirm = '/enter/confirm';
 angular
   .module('SwimResultinator')
   .controller('EnterCtrl', EnterCtrl)
@@ -26,7 +25,9 @@ function EnterCtrl($scope, $location, $route, $routeParams, SessionService, Entr
         self.meets = meets;
       });
 
-      self.swimmers = SessionService.user.swimmers;
+      SwimmerFactory.loadUserSwimmers().then(function(swimmers) {
+        self.swimmers = swimmers;
+      });
 
       self.raceEntries = new Array();
     },

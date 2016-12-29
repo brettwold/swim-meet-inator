@@ -325,7 +325,7 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
         }
       }
     },
-    getTotalCostForEntries(raceEntries) {
+    getTotalCostForEntries: function(raceEntries) {
       var total = 0;
       if(raceEntries) {
         total += raceEntries.length * this.cost_per_race;

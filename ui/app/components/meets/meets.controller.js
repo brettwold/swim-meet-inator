@@ -24,6 +24,7 @@ function MeetCtrl($location, $route, $routeParams, MeetFactory, Meet, TimesheetF
         MeetFactory.loadMeets().then(function(result) {
           self.meets = result;
         });
+        self.meet = new Meet();
       }
 
       TimesheetFactory.loadTimesheets().then(function(result){
@@ -34,7 +35,7 @@ function MeetCtrl($location, $route, $routeParams, MeetFactory, Meet, TimesheetF
       $location.path('/meets' + to);
     },
     add: function() {
-      $scope.navigateTo('/edit');
+      this.navigateTo('/edit');
     },
     save: function() {
       var self = this;

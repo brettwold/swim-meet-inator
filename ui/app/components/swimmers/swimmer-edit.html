@@ -1,44 +1,15 @@
 <div ng-controller="SwimmersCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
   <div layout-padding>
-    <div ng-cloak class="md-inline-form">
-      <md-content layout="column">
-        <div layout="row">
-          <md-input-container>
-            <label>Firstname</label>
-            <input ng-model="app.swimmer.first_name">
-          </md-input-container>
-          <md-input-container>
-            <label>Surname</label>
-            <input ng-model="app.swimmer.last_name">
-          </md-input-container>
-        </div>
-        <div layout="row">
-          <md-input-container>
-            <label>Date of Birth (yyyy-mm-dd)</label>
-            <input ng-model="app.swimmer.dob">
-          </md-input-container>
-          <md-input-container>
-            <label>Gender</label>
-            <md-select ng-model="app.swimmer.gender" flex>
-              <md-option ng-repeat="(key, gender) in app.config.genders" value="{{key}}">{{gender}}</md-option>
-            </md-select>
-          <md-input-container>
-        </div>
-        <div layout="row">
-          <md-input-container class="md-block" flex="75">
-            <label>ASA Number</label>
-            <input ng-model="app.swimmer.regno">
-          </md-input-container>
-          <span flex ng-if="app.swimmer.regno">
-            <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="app.lookupTimes()">
-              Lookup times
-            </md-button>
-          </span>
-        </div>
-      </md-content>
+    <div ng-cloak class="md-inline-form" ng-include="'/app/components/swimmers/edit.html'">
+
     </div>
     <div ng-if="app.swimmer.id">
+      <span ng-if="app.swimmer.regno">
+        <md-button class="md-raised md-primary" aria-label="Find swimmer" ng-click="app.lookupTimes()">
+          Lookup times
+        </md-button>
+      </span>
       <md-list class="md-dense" flex>
         <md-subheader class="md-no-sticky">Individual best swim times</md-subheader>
         <div ng-repeat="course_type in app.config.course_types">

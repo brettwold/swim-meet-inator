@@ -147,15 +147,22 @@ router.get('/swimmer/:id', function(req, res, next) {
       processBestTimeTables($, swimmer);
 
       Swimmer.find({where: {regno: swimmer.regno}, include: INCLUDES }).then(function(storedswimmer) {
+        if(!storedswimmer) {
+          storedswimmer = Swimmer.build(swimmer);
+          storedswimmer.save();
+        }
 
         for(sTime in swimmer.times) {
-           swimmer.times[sTime].swimmer_id = storedswimmer.id;
-           SwimTime.upsert(swimmer.times[sTime].get());
+          swimmer.times[sTime].swimmer_id = storedswimmer.id;
+          SwimTime.upsert(swimmer.times[sTime].get());
         }
-      });
 
-      res.json(swimmer);
+        res.json(storedswimmer);
+      }).catch(function(err) {
+        res.status(404).send('Failed to create swimmer');
+      });
     } else {
+      res.status(404).send(error);
       console.log("Failed to get data from ASA: " + response);
       console.log(error);
     }

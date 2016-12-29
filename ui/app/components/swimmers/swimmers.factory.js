@@ -66,24 +66,28 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
       }
       return deferred.promise;
     },
-    loadSwimmers: function() {
+    _doLoadSwimmers: function(api) {
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/swimmers')
-      .success(function(swimmersArray) {
+      $http.get(UrlService.baseUrl + api).success(function(swimmersArray) {
         var swimmers = [];
-        swimmersArray.rows.forEach(function(swimmerData) {
+        swimmersArray.forEach(function(swimmerData) {
           var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
           swimmers.push(swimmer);
         });
 
         deferred.resolve(swimmers);
-      })
-      .error(function() {
+      }).error(function() {
         deferred.reject();
       });
       return deferred.promise;
+    },
+    loadUserSwimmers: function() {
+      return this._doLoadSwimmers('/api/swimmers/user');
+    },
+    loadSwimmers: function() {
+      return this._doLoadSwimmers('/api/swimmers');
     },
     lookupTimes: function(asanum) {
       var deferred = $q.defer();
@@ -134,6 +138,12 @@ app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($htt
     },
     update: function() {
       return $http.put(UrlService.baseUrl + '/api/swimmers/save', this);
+    },
+    addToUser: function() {
+      return $http.put(UrlService.baseUrl + '/api/swimmers/addtouser/' + this.id);
+    },
+    removeFromUser: function() {
+      return $http.put(UrlService.baseUrl + '/api/swimmers/removefromuser/' + this.id);
     },
     dateOfBirth: function() {
       if (!this.dob) {

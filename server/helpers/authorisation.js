@@ -7,10 +7,6 @@ var Swimmer = require('../models').Swimmer;
 var dotenv = require('dotenv');
 dotenv.load();
 
-var INCLUDES = [
-  { model: Swimmer, through: 'UserSwimmers', as: "swimmers" }
-];
-
 var Auth = function () {};
 
 passport.use(new GoogleStrategy({
@@ -27,8 +23,7 @@ passport.use(new GoogleStrategy({
         last_name: profile.name.familyName,
         photo: profile.photos[0].value,
         role: 'user'
-      },
-      include: INCLUDES
+      }
     }).spread(function(user, created) {
       done(null, user);
     });

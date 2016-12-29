@@ -7,6 +7,7 @@
     <title>Swim Resultinator</title>
 	  <link rel="stylesheet" href="public/stylesheets/style.css"/>
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css"/>
+    <link rel="stylesheet" href="bower_components/material-design-icons/iconfont/material-icons.css"/>
 </head>
 <body ng-app="SwimResultinator" ng-cloak>
 
@@ -26,7 +27,8 @@
         <div>
           <md-list ng-controller="MenuListCtrl" ng-cloak>
             <md-list-item class="md-clickable" ng-click="navigateTo('/enter')">Enter meet</md-list-item>
-            <md-list-item class="md-clickable" ng-click="navigateTo('/swimmers')">Manage swimmers</md-list-item>
+            <md-list-item class="md-clickable" ng-click="navigateTo('/user/swimmers')">Manage swimmers</md-list-item>
+            <md-list-item class="md-clickable" ng-click="navigateTo('/user/entries')">Manage entries</md-list-item>
             <md-divider></md-divider>
             <md-list-item class="md-clickable" ng-click="navigateTo('/home')">Home</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/clubs')" ng-if="session.user.isAdmin()">Clubs</md-list-item>
@@ -64,6 +66,8 @@
   <script src="app/app.menu.js"></script>
   <script src="app/app.directives.js"></script>
   <script src="app/app.routeprovider.js"></script>
+  <script src="app/components/user/user.controller.js"></script>
+  <script src="app/components/user/user.factory.js"></script>
   <script src="app/components/users/users.controller.js"></script>
   <script src="app/components/users/users.factory.js"></script>
   <script src="app/components/clubs/clubs.controller.js"></script>
