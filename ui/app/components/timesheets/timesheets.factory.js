@@ -49,9 +49,10 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/timesheets').success(function(timesheetsArray) {
+      $http.get(UrlService.baseUrl + '/api/timesheets').success(function(res) {
+        var timesheetsArray = res.timesheets;
         var timesheets = [];
-        timesheetsArray.rows.forEach(function(timesheetData) {
+        timesheetsArray.forEach(function(timesheetData) {
           var timesheet = scope._retrieveInstance(timesheetData.id, timesheetData);
           timesheets.push(timesheet);
         });

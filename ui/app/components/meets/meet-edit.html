@@ -152,7 +152,7 @@
            <div>
              <md-list ng-repeat="gender in app.meet.genders_arr">
                <div layout="row">
-                 <md-subheader class="md-no-sticky" flex="20">{{config.genders[gender]}}</md-subheader>
+                 <md-subheader class="md-no-sticky" flex="20">{{app.config.genders[gender]}}</md-subheader>
                  <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in app.meet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
                </div>
                <div ng-repeat="race_type in app.meet.race_types_arr">

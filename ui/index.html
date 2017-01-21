@@ -27,8 +27,6 @@
         <div>
           <md-list ng-controller="MenuListCtrl" ng-cloak>
             <md-list-item class="md-clickable" ng-click="navigateTo('/enter')">Enter meet</md-list-item>
-            <md-list-item class="md-clickable" ng-click="navigateTo('/user/swimmers')">Manage swimmers</md-list-item>
-            <md-list-item class="md-clickable" ng-click="navigateTo('/user/entries')">Manage entries</md-list-item>
             <md-divider></md-divider>
             <md-list-item class="md-clickable" ng-click="navigateTo('/home')">Home</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/clubs')" ng-if="session.user.isAdmin()">Clubs</md-list-item>
@@ -38,8 +36,6 @@
             <md-list-item class="md-clickable" ng-click="navigateTo('/entries')" ng-if="session.user.isAdmin()">Entries</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/results')" ng-if="session.user.isAdmin()">Results</md-list-item>
             <md-list-item class="md-clickable" ng-click="navigateTo('/users')" ng-if="session.user.isAdmin()">Users</md-list-item>
-            <md-list-item class="md-clickable" ng-click="navigateTo('/about')">About</md-list-item>
-            <md-list-item class="md-clickable" ng-click="navigateTo('/contact')">Contact</md-list-item>
           </md-list>
         </div>
       </md-content>

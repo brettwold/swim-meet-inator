@@ -4,7 +4,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 
-var ApiServer = require('./server');
+import ApiServer  from './server';
 
 let mainWindow;
 

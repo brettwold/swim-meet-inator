@@ -44,7 +44,8 @@ app.factory('UserFactory', ['$http', '$q', 'User', 'UrlService', function($http,
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/users').success(function(usersArray) {
+      $http.get(UrlService.baseUrl + '/api/users').success(function(res) {
+        var usersArray = res.users;
         var users = [];
         usersArray.forEach(function(userData) {
           var user = scope._retrieveInstance(userData.id, userData);
