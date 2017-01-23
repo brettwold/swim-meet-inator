@@ -1,5 +1,4 @@
 import ModelController from './modelcontroller';
-import Models from '../models';
 import MeetsService from '../services/meets';
 
 const meetsService = new MeetsService();
@@ -11,16 +10,15 @@ export default class MeetsController extends ModelController {
   }
 
   current(req, res) {
-    Meet.findAll({
-      where: {
-        is_complete: 0
-      },
-      offset: 0,
-      limit: 10,
-      include: INCLUDES,
-      order: [['meet_date', 'DESC']]
-    }).then((result) => {
-      res.json(result);
+    meetsService.current().then((objects) => {
+      res.json(super.getListViewData(req.user, 1, objects));
+    }).catch((error) => {
+      console.log('Failed to get current meets', error);
+      res.status(403).json({
+        status: 'FAILED',
+        message: error.message,
+        error: error.stack
+      });
     });
   }
 }

@@ -44,8 +44,9 @@ app.factory('EntryFactory', ['$http', '$q', 'Entry', 'UrlService', function($htt
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/entries/meet/' + meetId).success(function(entriesArray) {
+      $http.get(UrlService.baseUrl + '/api/entries/meet/' + meetId).success(function(response) {
         var entries = [];
+        var entriesArray = response.entries;
         if(entriesArray) {
           entriesArray.forEach(function(entryData) {
             var entry = scope._retrieveInstance(entryData.id, entryData);

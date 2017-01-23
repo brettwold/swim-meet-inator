@@ -25,4 +25,7 @@ export default class MeetsService extends ObjectService {
     return super.doSave(object);
   }
 
+  current() {
+    return super.findAll(1, 50, { is_complete: 0 });
+  }
 }

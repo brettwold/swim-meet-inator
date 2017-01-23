@@ -22,8 +22,10 @@ export default class ObjectService {
     return this.objectType.find({ where: { id: objId, include: this.includes }});
   }
 
-  findAll(page, pagesize) {
-    let where = {};
+  findAll(page, pagesize, where) {
+    if(!where) {
+      where = {};
+    }
     let options = {};
     let result = {};
     let order = [['created_at', 'desc']];

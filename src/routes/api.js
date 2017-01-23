@@ -1,15 +1,19 @@
 import express from 'express';
 import MeetsController from '../controllers/meets';
-import TImesheetsController from '../controllers/timesheets';
+import TimesheetsController from '../controllers/timesheets';
 import ClubsController from '../controllers/clubs';
+import SwimmersController from '../controllers/swimmers';
+import EntriesController from '../controllers/entries';
 import UsersController from '../controllers/users';
 import SwimData from '../helpers/swimdata';
 import auth from '../helpers/authorisation';
 
 const meetsController = new MeetsController();
-const timesheetController = new TImesheetsController();
+const timesheetController = new TimesheetsController();
 const clubsController = new ClubsController();
 const usersController = new UsersController();
+const swimmersController = new SwimmersController();
+const entriesController = new EntriesController();
 
 const router = express.Router();
 
@@ -41,6 +45,18 @@ router.put('/clubs/save', (req, res) => { clubsController.save(req, res) });
 router.post('/addswimmer', (req, res) => { clubsController.addSwimmer(req, res) });
 router.post('/deleteswimmer', (req, res) => { clubsController.deleteSwimmer(req, res) });
 router.get('/delete/:id', (req, res) => { clubsController.delete(req, res) });
+
+router.get('/swimmers', (req, res) => { swimmersController.get(req, res) });
+router.get('/swimmers/:id',  (req, res) => { swimmersController.edit(req, res) });
+router.put('/swimmers/save', (req, res) => { swimmersController.save(req, res) });
+router.get('/swimmers/delete/:id', (req, res) => { swimmersController.delete(req, res) });
+router.get('/swimmers/regno/:regno', (req, res) => { swimmersController.findByRegno(req, res) });
+
+router.get('/entries', (req, res) => { entriesController.get(req, res) });
+router.get('/entries/:id',  (req, res) => { entriesController.edit(req, res) });
+router.put('/entries/save', (req, res) => { entriesController.save(req, res) });
+router.get('/entries/delete/:id', (req, res) => { entriesController.delete(req, res) });
+router.get('/entries/meet/:meet_id', (req, res) => { entriesController.findByMeet(req, res) });
 
 router.get('/users', (req, res) => { usersController.get(req, res) });
 router.get('/users/:id',  (req, res) => { usersController.edit(req, res) });

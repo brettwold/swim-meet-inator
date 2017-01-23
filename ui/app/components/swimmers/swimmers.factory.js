@@ -70,8 +70,9 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function(
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + api).success(function(swimmersArray) {
+      $http.get(UrlService.baseUrl + api).success(function(response) {
         var swimmers = [];
+        var swimmersArray = response.swimmers;
         swimmersArray.forEach(function(swimmerData) {
           var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
           swimmers.push(swimmer);

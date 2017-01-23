@@ -16,21 +16,25 @@ export default class ModelController {
     }
 
     this.modelService.findAll((page-1)*this.pagesize, this.pagesize).then((objects) => {
-      let pageinfo;
-      let pages = Math.ceil(objects.count/this.pagesize);
-      if(objects.count > 0) {
-        pageinfo = { urlprefix: this.prefixUrl, page: page, pagesize: this.pagesize, pages: pages }
-      }
-      let viewData = { user: req.user, pageinfo: pageinfo };
-      viewData[this.pluralName] = objects.rows;
-      res.json(viewData);
-    }, (error) => {
+      res.json(this.getListViewData(req.user, page, objects));
+    }).catch((error) => {
       console.log(error);
       res.status(403).json({
         message: error.message,
         error: error.stack
       });
     });
+  }
+
+  getListViewData(user, page, objects) {
+    let pageinfo;
+    let pages = Math.ceil(objects.count/this.pagesize);
+    if(objects.count > 0) {
+      pageinfo = { urlprefix: this.prefixUrl, page: page, pagesize: this.pagesize, pages: pages }
+    }
+    let viewData = { user: user, pageinfo: pageinfo };
+    viewData[this.pluralName] = objects.rows;
+    return viewData;
   }
 
   edit(req, res, extras) {
@@ -41,7 +45,7 @@ export default class ModelController {
         viewData[this.singularName] = object;
       }
       res.json(viewData);
-    }, (error) => {
+    }).catch((error) => {
       console.log('Failed to find ' + this.singularName, error);
       res.status(404).json({
         status: 'FAILED',
@@ -54,7 +58,7 @@ export default class ModelController {
   delete(req, res) {
     this.modelService.delete(req.params[this.paramIdKey]).then(() => {
       res.json({ status: 'OK' });
-    }, (error) => {
+    }).catch((error) => {
       console.log('Failed to delete ' + this.singularName, error);
       res.status(403).json({
         status: 'FAILED',
@@ -77,7 +81,7 @@ export default class ModelController {
           message: 'Failed to save '+ this.singularName,
         });
       }
-    }, (error) => {
+    }).catch((error) => {
       console.log('Failed to save ' + this.singularName, error);
       res.status(403).json({
         status: 'FAILED',
