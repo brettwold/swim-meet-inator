@@ -22,13 +22,16 @@ export default class ObjectService {
     return this.objectType.find({ where: { id: objId, include: this.includes }});
   }
 
-  findAll(page, pagesize, where) {
+  findAll(page, pagesize, where, order, group) {
     if(!where) {
       where = {};
     }
     let options = {};
     let result = {};
-    let order = [['created_at', 'desc']];
+
+    if(!order) {
+      order = [['created_at', 'desc']];
+    }
 
     if(page && pagesize) {
       let limit = pagesize ? parseInt(pagesize) : 20;
@@ -40,10 +43,18 @@ export default class ObjectService {
       options = { where: where, order: order, include: this.includes };
     }
 
+    if(group) {
+      options.group = group;
+    }
+
     return new Promise((resolve, reject) => {
       this.objectType.findAndCountAll(options).then((data) => {
         result.rows = data.rows;
-        result.count = data.count;
+        if(group && data.count) {
+          result.count = data.count.length;
+        } else {
+          result.count = data.count;
+        }
         resolve(result);
       }).catch(error => {
         reject(error);
