@@ -7,8 +7,7 @@ const Swimmer = Models.Swimmer;
 const SwimTime = Models.SwimTime;
 
 var INCLUDES = [
-  { model: Swimmer, as: 'swimmer' },
-  { model: SwimTime, through: 'entrytime', as: 'entrytimes' }
+  { model: Swimmer, as: 'swimmer' }
 ];
 
 export default class EntriesService extends ObjectService {
@@ -20,11 +19,12 @@ export default class EntriesService extends ObjectService {
   save(object) {
     const payload = {
       id: object.id,
-      race_types: object.race_types,
+      entry_date: object.entry_date,
+      entries: object.entries,
       special_notes: object.special_notes,
       cost_per_race: object.cost_per_race,
       admin_fee: object.admin_fee,
-      payment_total: object.payment_total,
+      total_cost: object.total_cost,
       paid: object.paid,
       paid_date: object.paid_date,
       payment_method: object.payment_method

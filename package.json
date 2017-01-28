@@ -56,6 +56,7 @@
     "promise": "^7.1.1",
     "request": "^2.79.0",
     "sequelize": "^3.27.0",
+    "sequelize-json": "^2.1.2",
     "serve-favicon": "~2.3.0",
     "slugify": "^1.0.2",
     "sqlite3": "^3.1.8",

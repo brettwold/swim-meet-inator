@@ -1,4 +1,4 @@
-{
+module.exports = {
   "development": {
     "username": "root",
     "password": null,
@@ -23,14 +23,14 @@
   	}
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "yyyyy",
+    "password": "xxxx",
+    "database": "ebdb",
+    "host": "xxx.rds.amazonaws.com",
     "dialect": "mysql",
   	"define": {
   	    "underscored": true,
   	    "timestamps": true
   	}
   }
-}
+};
