@@ -34,11 +34,12 @@ app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http,
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + uri).success(function(meetsArray) {
+      $http.get(UrlService.baseUrl + uri).success(function(res) {
+        var meetsArray = res.meets;
         if(meetsArray) {
           var meets = [];
-          meetsArray.forEach(function(meetData) {
-            var meet = scope._retrieveInstance(meetData.id, meetData);
+          meetsArray.forEach(function(meetsData) {
+            var meet = scope._retrieveInstance(meetsData.id, meetsData);
             meets.push(meet);
           });
 

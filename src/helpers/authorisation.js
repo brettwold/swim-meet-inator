@@ -39,12 +39,19 @@ passport.deserializeUser(function(user, done) {
 });
 
 Auth.prototype.isAuth = function(req, res, next) {
-  if (!req.isAuthenticated()) {
-    res.sendStatus(401);
-  } else {
-    next();
-  }
+  next();
+
+  // if (!req.isAuthenticated()) {
+  //   res.sendStatus(401);
+  // } else {
+  //   next();
+  // }
 };
+
+Auth.prototype.hasToken = function(req, res, next) {
+  next();
+};
+
 
 Auth.prototype.isAdmin = function(req, res, next) {
   if (req.isAuthenticated() &&

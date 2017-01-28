@@ -44,9 +44,10 @@ app.factory('ClubFactory', ['$http', '$q', 'Club', 'UrlService', function($http,
       var deferred = $q.defer();
       var scope = this;
 
-      $http.get(UrlService.baseUrl + '/api/clubs').success(function(clubsArray) {
+      $http.get(UrlService.baseUrl + '/api/clubs').success(function(res) {
+        var clubsArray = res.clubs;
         var clubs = [];
-        clubsArray.rows.forEach(function(clubData) {
+        clubsArray.forEach(function(clubData) {
           var club = scope._retrieveInstance(clubData.id, clubData);
           clubs.push(club);
         });
@@ -91,7 +92,8 @@ app.factory('Club', ['$http', 'UrlService', function($http, UrlService) {
     update: function() {
       var self = this;
       $http.put(UrlService.baseUrl + '/api/clubs/save', this).then(function(club) {
-        self.setData(club);
+        console.log(club);
+        //self.setData(club);
       });
     }
   };
