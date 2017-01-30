@@ -6,6 +6,6 @@ const timesheetService = new TimesheetService();
 
 export default class TimesheetsController extends ModelController {
   constructor() {
-    super(timesheetService, '/timesheets', 'timesheet', 'timesheets', DEFAULT_PAGE_SIZE, 'timesheet_id');
+    super(timesheetService, '/timesheets', 'timesheet', 'timesheets', DEFAULT_PAGE_SIZE, 'id');
   }
 }

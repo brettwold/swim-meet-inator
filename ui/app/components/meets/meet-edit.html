@@ -61,20 +61,20 @@
            </md-input-container>
            <md-input-container>
              <label>Minimum Times (Base times)</label>
-             <md-select ng-model="app.meet.minimum_timesheet_id" flex-gt-xs ng-change="checkEventsAndGroups()">
+             <md-select ng-model="app.meet.minimum_timesheet_id" flex-gt-xs ng-change="app.checkEventsAndGroups()">
                <md-option ng-repeat="sheet in app.timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
              </md-select>
            </md-input-container>
            <md-input-container>
              <label>Automatic Times (Auto times)</label>
-             <md-select ng-model="app.meet.auto_timesheet_id" flex-gt-xs>
+             <md-select ng-model="app.meet.auto_timesheet_id" flex-gt-xs ng-change="app.checkEventsAndGroups()">
                <md-option value="-1">No auto entry times</md-option>
                <md-option ng-repeat="sheet in app.timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
              </md-select>
            </md-input-container>
            <md-input-container>
              <label>Maximum Times (Upper limit)</label>
-             <md-select ng-model="app.meet.maximum_timesheet_id" flex-gt-xs ng-change="checkEventsAndGroups()">
+             <md-select ng-model="app.meet.maximum_timesheet_id" flex-gt-xs ng-change="app.checkEventsAndGroups()">
                <md-option value="-1">No maximum entry times</md-option>
                <md-option ng-repeat="sheet in app.timesheets" value="{{sheet.id}}">{{ sheet.name }}</md-option>
              </md-select>
@@ -111,7 +111,7 @@
            </md-input-container>
            <md-input-container>
              <label>Entrants</label>
-             <md-select multiple="true" ng-model="app.meet.genders_arr" flex-gt-xs>
+             <md-select multiple="true" ng-model="app.meet.genders" flex-gt-xs>
                <md-option ng-repeat="(key, gender) in app.config.genders" value="{{key}}">{{gender}}</md-option>
              </md-select>
             <md-input-container>
@@ -150,15 +150,15 @@
          </md-toolbar>
          <div layout-padding>
            <div>
-             <md-list ng-repeat="gender in app.meet.genders_arr">
+             <md-list ng-repeat="gender in app.meet.genders">
                <div layout="row">
                  <md-subheader class="md-no-sticky" flex="20">{{app.config.genders[gender]}}</md-subheader>
-                 <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in app.meet.entry_groups_arr | orderBy: entry_group">{{ config.entry_groups[entry_group].name }}</md-subheader>
+                 <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in app.meet.entry_groups | orderBy: entry_group">{{ app.config.entry_groups[entry_group].name }}</md-subheader>
                </div>
-               <div ng-repeat="race_type in app.meet.race_types_arr">
+               <div ng-repeat="race_type in app.meet.race_types">
                  <md-list-item layout="row">
                    <span flex="20">{{ app.config.races[race_type].name }}</span>
-                   <span flex ng-repeat="entry_group in app.meet.entry_groups_arr">
+                   <span flex ng-repeat="entry_group in app.meet.entry_groups">
                      <md-checkbox ng-model="app.meet.entry_events[gender][entry_group][race_type]" aria-label="h">
                      </md-checkbox>
                    </span>

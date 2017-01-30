@@ -6,7 +6,7 @@ const swimmersService = new SwimmersService();
 
 export default class SwimmersController extends ModelController {
   constructor() {
-    super(swimmersService, '/swimmers', 'swimmer', 'swimmers', DEFAULT_PAGE_SIZE, 'swimmer_id');
+    super(swimmersService, '/swimmers', 'swimmer', 'swimmers', DEFAULT_PAGE_SIZE, 'id');
   }
 
   findByRegno(req, res) {

@@ -124,11 +124,6 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       return $http.get(UrlService.baseUrl + '/api/meets/delete/' + this.id);
     },
     update: function() {
-
-      delete this.entry_groups;
-      delete this.race_types;
-      delete this.genders;
-      delete this.entry_events_data;
       return $http.put(UrlService.baseUrl + '/api/meets/save', this);
     },
     startDate: function() {
@@ -150,10 +145,10 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       this.events.push( { stroke: config.strokes[index].code } );
     },
     addRaceType: function(type) {
-      this.race_types_arr = this._addItemToArray(type, this.race_types_arr);
+      this.race_types = this._addItemToArray(type, this.race_types);
     },
     addEntryGroup: function(group) {
-      this.entry_groups_arr = this._addItemToArray(group, this.entry_groups_arr);
+      this.entry_groups = this._addItemToArray(group, this.entry_groups);
     },
     ageAtMeet: function(swimmer) {
       if (!swimmer || !swimmer.dob || !this.meet_date) {
@@ -180,8 +175,8 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
     getGroupForSwimmer: function(swimmer) {
       var aam = this.ageAtMeet(swimmer);
       if (aam) {
-        for(i = 0; i < this.entry_groups_arr.length; i++) {
-          var entryGroup = config.entry_groups[this.entry_groups_arr[i]];
+        for(i = 0; i < this.entry_groups.length; i++) {
+          var entryGroup = config.entry_groups[this.entry_groups[i]];
           if(aam >= entryGroup.min && aam < entryGroup.max) {
             return entryGroup;
           }
@@ -201,29 +196,29 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       var self = this;
       if(this.minimum_timesheet_id) {
         TimesheetFactory.getTimesheet(this.minimum_timesheet_id).then(function(timesheet) {
-          self.entry_groups_arr = new Array();
-          self.race_types_arr = new Array();
-          self.genders_arr = new Array();
+          self.entry_groups = new Array();
+          self.race_types = new Array();
+          self.genders = new Array();
           self.entry_events = {};
 
-          for(group in timesheet.entry_groups_arr) {
-            self.entry_groups_arr.push(timesheet.entry_groups_arr[group]);
+          for(group in timesheet.entry_groups) {
+            self.entry_groups.push(timesheet.entry_groups[group]);
           }
 
-          for(race_type in timesheet.race_types_arr) {
-            self.race_types_arr.push(timesheet.race_types_arr[race_type]);
+          for(race_type in timesheet.race_types) {
+            self.race_types.push(timesheet.race_types[race_type]);
           }
 
-          for(gender in timesheet.genders_arr) {
-            self.genders_arr.push(timesheet.genders_arr[gender]);
+          for(gender in timesheet.genders) {
+            self.genders.push(timesheet.genders[gender]);
           }
 
-          for(i = 0; i < self.genders_arr.length; i++) {
-            self.entry_events[self.genders_arr[i]] = {};
-            for(j = 0; j < self.entry_groups_arr.length; j++) {
-              self.entry_events[self.genders_arr[i]][self.entry_groups_arr[j]] = {};
-              for(k = 0; k < self.race_types_arr.length; k++) {
-                self.entry_events[self.genders_arr[i]][self.entry_groups_arr[j]][self.race_types_arr[k]] = true;
+          for(i = 0; i < self.genders.length; i++) {
+            self.entry_events[self.genders[i]] = {};
+            for(j = 0; j < self.entry_groups.length; j++) {
+              self.entry_events[self.genders[i]][self.entry_groups[j]] = {};
+              for(k = 0; k < self.race_types.length; k++) {
+                self.entry_events[self.genders[i]][self.entry_groups[j]][self.race_types[k]] = true;
               }
             }
           }
@@ -234,8 +229,8 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       var self = this;
       if(swimmer) {
         swimmer.getBestTimes(race.id, this.qual_date).then(function(bestTimes) {
-          var mins = JSON.parse(this.minimum_timesheet.timesheet_data);
-          var maxs = JSON.parse(this.maximum_timesheet.timesheet_data);
+          var mins = this.minimum_timesheet.sheet;
+          var maxs =  this.maximum_timesheet.sheet;
           var swimmerGroup = this.getGroupForSwimmer(swimmer).id;
           var events = [];
           var types = this.entry_events[swimmer.gender][swimmerGroup];
@@ -270,10 +265,10 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       if(swimmer) {
         swimmer.getBestTimes(self.qual_date).then(function(bestTimes) {
           var events = [];
-          var mins = JSON.parse(self.minimum_timesheet.timesheet_data);
+          var mins = self.minimum_timesheet.sheet;
           var hasAutos = false;
           if(self.auto_timesheet) {
-            var autos = JSON.parse(self.auto_timesheet.timesheet_data);
+            var autos = self.auto_timesheet.sheet;
             hasAutos = true;
           }
           var swimmerGroup = self.getGroupForSwimmer(swimmer).id;

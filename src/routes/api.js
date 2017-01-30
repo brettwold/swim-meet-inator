@@ -35,7 +35,7 @@ router.get('/swimdata', (req, res) => { res.json(SwimData); });
 
 router.get('/meets', (req, res) => { meetsController.get(req, res) });
 router.get('/meets/current',  (req, res) => { meetsController.current(req, res) });
-router.get('/meets/:id',  (req, res) => { meetsController.find(req, res) });
+router.get('/meets/:id',  (req, res) => { meetsController.edit(req, res) });
 router.put('/meets/save', (req, res) => { meetsController.save(req, res) });
 router.get('/meets/delete/:id', (req, res) => { meetsController.delete(req, res) });
 

@@ -90,11 +90,11 @@ function TimesheetCtrl($location, $route, $routeParams, TimesheetFactory, Config
     },
     addRaceType: function(type) {
       var self = this;
-      self.timesheet.race_types_arr = self.addItemToArray(type, self.timesheet.race_types_arr);
+      self.timesheet.race_types = self.addItemToArray(type, self.timesheet.race_types);
     },
     addEntryGroup: function(group) {
       var self = this;
-      self.timesheet.entry_groups_arr = self.addItemToArray(group, self.timesheet.entry_groups_arr);
+      self.timesheet.entry_groups = self.addItemToArray(group, self.timesheet.entry_groups);
     },
     addItemToArray: function(item, arr) {
       if(item) {

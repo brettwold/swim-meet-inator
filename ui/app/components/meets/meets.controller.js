@@ -53,7 +53,7 @@ function MeetCtrl($location, $route, $routeParams, MeetFactory, Meet, TimesheetF
         meet.delete();
         MeetFactory.removeMeet(meet);
       });
-      $scope.getAll();
+      this.init();
     },
     exists: function (item, list) {
       return list.indexOf(item) > -1;
@@ -64,6 +64,7 @@ function MeetCtrl($location, $route, $routeParams, MeetFactory, Meet, TimesheetF
       else list.push(item);
     },
     checkEventsAndGroups: function() {
+      console.log("checkEventsAndGroups");
       this.meet.checkEventsAndGroups();
     }
   });

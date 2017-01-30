@@ -112,8 +112,8 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
     _checkForGender: function(line, parseData) {
       var gender = this._parseGender(line);
       if (gender) {
-        if (parseData.genders_arr.indexOf(gender) < 0) {
-          parseData.genders_arr.push(gender);
+        if (parseData.genders.indexOf(gender) < 0) {
+          parseData.genders.push(gender);
         }
         return gender;
       }
@@ -123,9 +123,9 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
       for (j = 0; j < cols.length; j++) {
         var group = this._parseGroupType(cols[j]);
         if (group) {
-          console.log(parseData.entry_groups_arr.indexOf(group));
-          if (parseData.entry_groups_arr.indexOf(group) < 0) {
-            parseData.entry_groups_arr.push(group);
+          console.log(parseData.entry_groups.indexOf(group));
+          if (parseData.entry_groups.indexOf(group) < 0) {
+            parseData.entry_groups.push(group);
           }
           parseData.sheet[gender][group] = {};
           found = true;
@@ -136,8 +136,8 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
     _checkForRaceType: function(firstCol, parseData) {
       var raceType = this._parseRaceType(firstCol);
       if (raceType) {
-        if (parseData.race_types_arr.indexOf(raceType) < 0) {
-          parseData.race_types_arr.push(raceType);
+        if (parseData.race_types.indexOf(raceType) < 0) {
+          parseData.race_types.push(raceType);
         }
         return raceType;
       }
@@ -164,17 +164,18 @@ app.factory('TimesheetFactory', ['$http', '$q', 'Timesheet', 'UrlService', 'Conf
     },
     _checkForTimes: function(timeCols, colOffset, gender, raceType, parseData) {
       for(i = colOffset; i < timeCols.length; i++) {
-        if(parseData.entry_groups_arr.length > (i-colOffset)) {
+        if(parseData.entry_groups.length > (i-colOffset)) {
           var time = this.parseTime(timeCols[i]);
-          parseData.sheet[gender][parseData.entry_groups_arr[i-colOffset]][raceType] = time;
+          parseData.sheet[gender][parseData.entry_groups[i-colOffset]][raceType] = time;
         }
       }
     },
     parseTimesheet: function(importData) {
       var lines = importData.split('\n');
       var gender;
+      console.log("Got lines: " + lines.length);
       if (lines && lines.length > 0) {
-        var parseData = new Timesheet({ genders_arr: [], entry_groups_arr: [], race_types_arr: [], sheet: {} });
+        var parseData = new Timesheet({ genders: [], entry_groups: [], race_types: [], sheet: {} });
         console.log("Found " + lines.length + " lines");
         var lineCount = 0;
         while(lineCount < lines.length) {
@@ -223,11 +224,6 @@ app.factory('Timesheet', ['$http', 'UrlService', function($http, UrlService) {
       return $http.get(UrlService.baseUrl + '/api/timesheets/delete/' + this.id);
     },
     update: function() {
-      delete this.entry_groups;
-      delete this.race_types;
-      delete this.genders;
-      delete this.timesheet_data;
-      console.log(this);
       return $http.put(UrlService.baseUrl + '/api/timesheets/save', this);
     }
   };

@@ -8,7 +8,7 @@ const DEFAULT_PAGE_SIZE = 20;
 
 export default class ClubsController extends ModelController {
   constructor() {
-    super(clubsService, '/clubs', 'club', 'clubs', DEFAULT_PAGE_SIZE, 'club_id');
+    super(clubsService, '/clubs', 'club', 'clubs', DEFAULT_PAGE_SIZE, 'id');
   }
 
   swimmers(req, res) {

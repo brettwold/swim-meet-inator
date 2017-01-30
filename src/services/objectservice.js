@@ -19,7 +19,7 @@ export default class ObjectService {
   }
 
   find(objId) {
-    return this.objectType.find({ where: { id: objId, include: this.includes }});
+    return this.objectType.find({ where: { id: objId }, include: this.includes });
   }
 
   findAll(page, pagesize, where, order, group) {
@@ -36,11 +36,15 @@ export default class ObjectService {
     if(page && pagesize) {
       let limit = pagesize ? parseInt(pagesize) : 20;
       let offset = (page ? parseInt(page)-1 : 0) * limit;
-      options = { where: where, offset: offset, limit: limit, order: order, include: this.includes };
+      options = { where: where, offset: offset, limit: limit, order: order };
       result.offset = offset;
       result.limit = limit;
     } else {
-      options = { where: where, order: order, include: this.includes };
+      options = { where: where, order: order };
+    }
+
+    if(this.includes) {
+      options.include = this.includes;
     }
 
     if(group) {
@@ -66,9 +70,9 @@ export default class ObjectService {
     return new Promise((resolve, reject) => {
       this.objectType.findById(objId).then((object) => {
         if(object) {
-          object.destroy({ force: true })
+          object.destroy({ force: true }).then(() => resolve(object));
         }
-        resolve(object);
+        reject("Not found: " + objId);
       }).catch(error => {
         reject(error);
       });

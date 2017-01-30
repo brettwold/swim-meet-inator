@@ -25,22 +25,22 @@
       </md-input-container>
       <md-input-container flex>
         <label>Entrants</label>
-        <md-select multiple="true" ng-model="app.timesheet.genders_arr">
+        <md-select multiple="true" ng-model="app.timesheet.genders">
           <md-option ng-repeat="(key, gender) in app.config.genders" value="{{key}}">{{ gender }}</md-option>
         </md-select>
       </md-input-container>
     </div>
     <div>Times format: mm:ss.hh<div>
     <div ng-cloak class="md-inline-form">
-      <md-list ng-repeat="gender in app.timesheet.genders_arr">
+      <md-list ng-repeat="gender in app.timesheet.genders">
         <div layout="row">
           <md-subheader class="md-no-sticky" flex="20">{{app.config.genders[gender]}}</md-subheader>
-          <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in app.timesheet.entry_groups_arr | orderBy: entry_group">{{ app.config.entry_groups[entry_group].name }}</md-subheader>
+          <md-subheader class="md-no-sticky" flex ng-repeat="entry_group in app.timesheet.entry_groups | orderBy: entry_group">{{ app.config.entry_groups[entry_group].name }}</md-subheader>
         </div>
-        <div ng-repeat="race_type in app.timesheet.race_types_arr">
+        <div ng-repeat="race_type in app.timesheet.race_types">
           <md-list-item layout="row">
             <span flex="20">{{ app.config.races[race_type].name }}</span>
-            <div flex ng-repeat="entry_group in app.timesheet.entry_groups_arr">
+            <div flex ng-repeat="entry_group in app.timesheet.entry_groups">
               <input ng-model="app.timesheet.sheet[gender][entry_group][race_type]" class="app.timesheet-entry" lap-time-input/>
             </div>
           </md-list-item>

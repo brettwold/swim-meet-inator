@@ -6,7 +6,7 @@ const DEFAULT_PAGE_SIZE = 20;
 
 export default class MeetsController extends ModelController {
   constructor() {
-    super(meetsService, '/meets', 'meet', 'meets', DEFAULT_PAGE_SIZE, 'meet_id');
+    super(meetsService, '/meets', 'meet', 'meets', DEFAULT_PAGE_SIZE, 'id');
   }
 
   current(req, res) {

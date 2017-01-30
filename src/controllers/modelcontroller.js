@@ -38,6 +38,7 @@ export default class ModelController {
   }
 
   edit(req, res, extras) {
+    console.log("req.params[this.paramIdKey]" + req.params[this.paramIdKey]);
     this.modelService.find(req.params[this.paramIdKey]).then((object) => {
       let viewData = { user: req.user };
       viewData = Object.assign(viewData, extras);

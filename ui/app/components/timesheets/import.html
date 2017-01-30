@@ -1,4 +1,4 @@
-<div ng-controller="TimesheetCtrl" layout="column">
+<div ng-controller="TimesheetCtrl as app" layout="column">
   <div ng-include="'partials/section-menu.html'"></div>
 
   <md-content class="md-padding">
@@ -7,12 +7,12 @@
 
      <md-input-container class="md-block">
        <label>Paste import data below</label>
-       <textarea ng-model="importData" rows="5" md-select-on-focus></textarea>
+       <textarea ng-model="app.importData" rows="5" md-select-on-focus></textarea>
      </md-input-container>
 
-     <md-button ng-click="parseImport()" class="md-primary md-raised">Parse</md-button>
+     <md-button ng-click="app.parseImport()" class="md-primary md-raised">Parse</md-button>
 
      <ng-include src="'/app/components/timesheets/_timesheetedit.html'"/>
-     
+
   </md-content>
 </div>

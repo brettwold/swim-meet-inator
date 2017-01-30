@@ -2,6 +2,7 @@
 var moment = require('moment');
 var path = require('path');
 var slugify = require('slugify')
+var JsonField = require('sequelize-json');
 
 module.exports = function(sequelize, DataTypes) {
   var Meet = sequelize.define("Meet", {
@@ -20,9 +21,9 @@ module.exports = function(sequelize, DataTypes) {
     lanes: DataTypes.INTEGER,
     meet_type: DataTypes.STRING,
     age_type: DataTypes.CHAR(3),
-    genders: DataTypes.STRING,
-    entry_groups: DataTypes.STRING,
-    race_types: DataTypes.STRING,
+    genders: JsonField(sequelize, 'Meet', 'genders'),
+    entry_groups: JsonField(sequelize, 'Meet', 'entry_groups'),
+    race_types: JsonField(sequelize, 'Meet', 'race_types'),
     cost_per_race: { type: DataTypes.INTEGER, defaultValue: 0 },
     admin_fee: { type: DataTypes.INTEGER, defaultValue: 0 },
     promoter: DataTypes.STRING,
@@ -40,17 +41,12 @@ module.exports = function(sequelize, DataTypes) {
     num_sessions: { type: DataTypes.INTEGER, defaultValue: 0 },
   	print_times: { type: DataTypes.BOOLEAN, defaultValue: false },
   	split_last_heats: { type: DataTypes.BOOLEAN, defaultValue: false },
-  	www_directory: DataTypes.STRING,
-  	www_style: DataTypes.STRING,
-  	www_class: DataTypes.STRING,
-  	www_header: DataTypes.STRING,
-  	www_footer: DataTypes.STRING,
   	gala_directory: DataTypes.STRING,
   	work_directory: DataTypes.STRING,
   	notes: DataTypes.STRING,
     is_open: { type: DataTypes.BOOLEAN, defaultValue: false },
     is_complete: { type: DataTypes.BOOLEAN, defaultValue: false },
-    entry_events_data: DataTypes.STRING
+    entry_events: JsonField(sequelize, 'Meet', 'entry_events')
     }, {
       classMethods: {
         associate: function(models) {
@@ -62,18 +58,6 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       getterMethods: {
-        genders_arr: function() {
-          return this.getDataValue('genders') ? this.getDataValue('genders').split(',') : null;
-        },
-        entry_groups_arr: function() {
-          return this.getDataValue('entry_groups') ? this.getDataValue('entry_groups').split(',') : null;
-        },
-        race_types_arr: function() {
-          return this.getDataValue('race_types') ? this.getDataValue('race_types').split(',') : null;
-        },
-        entry_events: function() {
-          return this.getDataValue('entry_events_data') ? JSON.parse(this.getDataValue('entry_events_data')) : null;
-        },
         results_dir: function() {
           var startDate = moment(this.getDataValue('meet_date'));
           var name = slugify(this.getDataValue('name')).toLowerCase();
@@ -81,18 +65,6 @@ module.exports = function(sequelize, DataTypes) {
         }
       },
       setterMethods: {
-        genders_arr: function(arr) {
-          return this.setDataValue('genders', arr !== null ? arr.join() : null);
-        },
-        entry_groups_arr: function(arr) {
-          return this.setDataValue('entry_groups', arr !== null ? arr.join() : null);
-        },
-        race_types_arr: function(arr) {
-          return this.setDataValue('race_types', arr !== null ? arr.join() : null);
-        },
-        entry_events: function(d) {
-          return this.setDataValue('entry_events_data', JSON.stringify(d));
-        }
       },
   }, {tableName: 'meets'});
 

@@ -60,14 +60,14 @@ function EnterCtrl($scope, $location, $route, $routeParams, SessionService, Entr
       var entry = new Entry();
       entry.swimmer_id = self.swimmer.id;
       entry.meet_id = self.meet.id;
-      entry.race_types_arr = self.raceEntries;
+      entry.race_types = self.raceEntries;
       entry.entrytimes = new Array();
       entry.cost_per_race = self.meet.cost_per_race;
       entry.admin_fee = self.meet.admin_fee;
       entry.payment_total = self.meet.getTotalCostForEntries(self.raceEntries);
       for(var i = 0; i < self.raceEntries.length; i++) {
         for(var j = 0; j < self.entryEvents.length; j++) {
-          if(self.entryEvents[j].id == entry.race_types_arr[i]) {
+          if(self.entryEvents[j].id == entry.race_types[i]) {
             entry.entrytimes.push(self.entryEvents[j].best);
           }
         }

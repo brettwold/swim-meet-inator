@@ -6,7 +6,7 @@ const DEFAULT_PAGE_SIZE = 20;
 
 export default class EntriesController extends ModelController {
   constructor() {
-    super(entriesService, '/entries', 'entry', 'entries', DEFAULT_PAGE_SIZE, 'entry_id');
+    super(entriesService, '/entries', 'entry', 'entries', DEFAULT_PAGE_SIZE, 'id');
   }
 
   findByMeet(req, res) {

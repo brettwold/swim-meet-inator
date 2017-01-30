@@ -6,6 +6,6 @@ const usersService = new UsersService();
 
 export default class UsersController extends ModelController {
   constructor() {
-    super(usersService, '/users', 'user', 'users', DEFAULT_PAGE_SIZE, 'user_id');
+    super(usersService, '/users', 'user', 'users', DEFAULT_PAGE_SIZE, 'id');
   }
 }
