@@ -48,7 +48,13 @@ module.exports = function(sequelize, DataTypes) {
         this.setDataValue('first_name',Utils.trimQuotes(fields[fieldCount++]));
         this.setDataValue('dob', fields[fieldCount++]);
       }
-    }
+    },
+    indexes: [
+      {
+        unique: true,
+        fields: ['regno']
+      }
+    ]
   });
 
   return Swimmer;

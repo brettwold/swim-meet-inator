@@ -1,4 +1,5 @@
 import ObjectService from './objectservice';
+import SwimmersService from '../services/swimmers';
 
 const Models = require('../models');
 const Meet = Models.Meet;

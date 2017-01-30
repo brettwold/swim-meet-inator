@@ -1,4 +1,7 @@
 import ObjectService from './objectservice';
+import SwimmersService from './swimmers';
+
+const swimmersService = new SwimmersService();
 
 const Models = require('../models');
 const Meet = Models.Meet;
@@ -35,5 +38,30 @@ export default class EntriesService extends ObjectService {
 
   findByMeet(page, pagesize, meet_id) {
     return super.findAll(page, pagesize, { meet_id: meet_id });
+  }
+
+  saveCheckSwimmerAndCreateEntry(entry) {
+    return new Promise((resolve, reject) => {
+      if(entry) {
+        let putSwimmer = entry.swimmer;
+        if(putSwimmer) {
+          Swimmer.findOrCreate({ defaults: putSwimmer, where: { regno: putSwimmer.regno }}).spread((swimmer, created) => {
+            console.log("Got swimmer: " + swimmer);
+            for(let sTime in putSwimmer.times) {
+              putSwimmer.times[sTime].swimmer_id = swimmer.id;
+              SwimTime.upsert(putSwimmer.times[sTime]);
+            }
+
+            entry.entry_date = new Date();
+            super.doSave(entry).then((entry) => {
+              entry.setSwimmer(swimmer);
+              resolve();
+            })
+          });
+        }
+      } else {
+        reject("No entry data")
+      }
+    });
   }
 }

@@ -71,8 +71,9 @@ export default class ObjectService {
       this.objectType.findById(objId).then((object) => {
         if(object) {
           object.destroy({ force: true }).then(() => resolve(object));
+        } else {
+          reject("Not found: " + objId);
         }
-        reject("Not found: " + objId);
       }).catch(error => {
         reject(error);
       });

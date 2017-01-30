@@ -72,6 +72,9 @@ app.factory('EntryFactory', ['$http', '$q', 'Entry', 'UrlService', function($htt
         entry = scope._retrieveInstance(entryData);
       }
       return entry;
+    },
+    removeEntry: function(entry) {
+      delete this._pool[entry.id];
     }
   };
   return EntryFactory;
@@ -88,7 +91,7 @@ app.factory('Entry', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, entryData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/entries/delete/' + id);
+      return $http.get(UrlService.baseUrl + '/api/entries/delete/' + this.id);
     },
     update: function() {
       return $http.put(UrlService.baseUrl + '/api/entries/save', this);

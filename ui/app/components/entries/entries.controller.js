@@ -20,6 +20,16 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
         self.meets = meets;
       });
 
+      if(self.meetId) {
+        MeetFactory.getMeet(self.meetId).then(function(meet) {
+          self.meet = meet;
+          EntryFactory.loadEntries(meet.id).then(function(entries) {
+            console.log(entries);
+            self.entries = entries;
+          });
+        });
+      }
+
       if($routeParams.id) {
         EntryFactory.getEntry($routeParams.id).then(function(entry) {
           self.entry = entry;
@@ -35,14 +45,14 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       $location.path('/entries' + to);
     },
     selectMeet: function() {
-      var self = this;
-      MeetFactory.getMeet(self.meetId).then(function(meet) {
-        self.meet = meet;
-        EntryFactory.loadEntries(meet.id).then(function(entries) {
-          console.log(entries);
-          self.entries = entries;
-        });
+      this.init();
+    },
+    delete: function(id) {
+      EntryFactory.getEntry(id).then(function(entry) {
+        entry.delete();
+        EntryFactory.removeEntry(entry);
       });
+      this.init();
     },
   });
 

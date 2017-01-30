@@ -14,10 +14,10 @@
           <span flex="10">Cost</span>
         </div>
       </md-list-item>
-      <md-list-item ng-repeat="entrytime in entry.entrytimes">
+      <md-list-item ng-repeat="entrytime in entry.entries">
         <div class="md-list-item-text" layout="row" flex>
-          <span flex>{{ config.races[entrytime.race_type].name }}</span>
-          <span flex="10" display-time="{{ entrytime.time }}"></span>
+          <span flex>{{ config.races[entrytime.best.race_type].name }}</span>
+          <span flex="10" display-time="{{ entrytime.best.time }}"></span>
           <span flex="10">{{ entry.cost_per_race  | currency : '£' }}</span>
         </div>
       </md-list-item>
@@ -29,7 +29,7 @@
       <md-list-item>
         <span flex>TOTAL</span>
         <span flex="10"></span>
-        <span flex="10">{{ entry.payment_total | currency : '£' }}</span>
+        <span flex="10">{{ entry.total_cost | currency : '£' }}</span>
       </md-list-item>
       <md-list-item>
         <span flex>PAID</span>

@@ -9,6 +9,19 @@ export default class EntriesController extends ModelController {
     super(entriesService, '/entries', 'entry', 'entries', DEFAULT_PAGE_SIZE, 'id');
   }
 
+  save(req, res) {
+    entriesService.saveCheckSwimmerAndCreateEntry(req.body.entry).then((response) => {
+      res.json({ status: 'OK' });
+    }).catch((error) => {
+      console.log('Failed to save entry for meet', error);
+      res.status(403).json({
+        status: 'FAILED',
+        message: error.message,
+        error: error.stack
+      });
+    });
+  }
+
   findByMeet(req, res) {
     let page = 1;
     if(req.params.page) {
