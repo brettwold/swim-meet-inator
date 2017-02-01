@@ -21,19 +21,4 @@ export default class ClubsController extends ModelController {
       res.json(result);
     });
   }
-
-  addSwimmer(req, res) {
-    Swimmer.upsert(req.body).then(function(swimmer) {
-      res.json(swimmer);
-    });
-  }
-
-  deleteSwimmer(req, res) {
-    Swimmer.findById(req.body.id).then(function(swimmer) {
-      var club_id = swimmer.club_id;
-      swimmer.destroy().then(function() {
-        next('/' + club_id + '/swimmers');
-      });
-    })
-  }
 }

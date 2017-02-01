@@ -1,76 +1,19 @@
 var app = angular.module('SwimResultinator')
 
-app.factory('UserFactory', ['$http', '$q', 'User', 'UrlService', function($http, $q, User, UrlService) {
+app.factory('UserFactory', ['User', 'ObjectPool', function(User, ObjectPool) {
   var UserFactory = {
-    _pool: {},
-    _retrieveInstance: function(userId, userData) {
-      var instance = this._pool[userId];
-
-      if (instance) {
-        instance.setData(userData);
-      } else {
-        instance = new User(userData);
-        this._pool[userId] = instance;
-      }
-
-      return instance;
-    },
-    _search: function(userId) {
-      return this._pool[userId];
-    },
-    _load: function(userId, deferred) {
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/users/' + userId)
-      .success(function(userData) {
-        var user = scope._retrieveInstance(userData.id, userData);
-        deferred.resolve(user);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-    },
+    pool: new ObjectPool('/api/users', User, 'users'),
     getUser: function(userId) {
-      var deferred = $q.defer();
-      var user = this._search(userId);
-      if (user) {
-        deferred.resolve(user);
-      } else {
-        this._load(userId, deferred);
-      }
-      return deferred.promise;
+      return this.pool.get(userId);
     },
     loadUsers: function() {
-      var deferred = $q.defer();
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/users').success(function(res) {
-        var usersArray = res.users;
-        var users = [];
-        usersArray.forEach(function(userData) {
-          var user = scope._retrieveInstance(userData.id, userData);
-          users.push(user);
-        });
-
-        deferred.resolve(users);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-      return deferred.promise;
+      return this.pool.load();
     },
     setUser: function(userData) {
-      var scope = this;
-      var user = this._search(userData.id);
-      if (user) {
-        user.setData(userData);
-      } else {
-        user = scope._retrieveInstance(userData);
-      }
-      return user;
+      return this.pool.set(userData);
     },
     removeUser: function(user) {
-      delete this._pool[user.id];
+      this.pool.remove(user);
     }
   };
   return UserFactory;

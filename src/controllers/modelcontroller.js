@@ -1,3 +1,5 @@
+import HttpStatus from 'http-status-codes';
+
 export default class ModelController {
 
   constructor(modelService, prefixUrl, singularName, pluralName, pagesize, paramIdKey) {
@@ -19,10 +21,7 @@ export default class ModelController {
       res.json(this.getListViewData(req.user, page, objects));
     }).catch((error) => {
       console.log(error);
-      res.status(403).json({
-        message: error.message,
-        error: error.stack
-      });
+      res.status(HttpStatus.NOT_FOUND).json(this.getErrorResponse(error));
     });
   }
 
@@ -30,7 +29,7 @@ export default class ModelController {
     let pageinfo;
     let pages = Math.ceil(objects.count/this.pagesize);
     if(objects.count > 0) {
-      pageinfo = { urlprefix: this.prefixUrl, page: page, pagesize: this.pagesize, pages: pages }
+      pageinfo = { urlprefix: this.prefixUrl, page: page, pagesize: this.pagesize, pages: pages };
     }
     let viewData = { user: user, pageinfo: pageinfo };
     viewData[this.pluralName] = objects.rows;
@@ -40,19 +39,17 @@ export default class ModelController {
   edit(req, res, extras) {
     console.log("req.params[this.paramIdKey]" + req.params[this.paramIdKey]);
     this.modelService.find(req.params[this.paramIdKey]).then((object) => {
-      let viewData = { user: req.user };
-      viewData = Object.assign(viewData, extras);
       if(object) {
+        let viewData = { user: req.user };
+        viewData = Object.assign(viewData, extras);
         viewData[this.singularName] = object;
+        res.json(viewData);
+      } else {
+        res.status(HttpStatus.NOT_FOUND).json(this.getErrorResponse({ message: "Failed to find " + this.singularName }));
       }
-      res.json(viewData);
     }).catch((error) => {
       console.log('Failed to find ' + this.singularName, error);
-      res.status(404).json({
-        status: 'FAILED',
-        message: error.message,
-        error: error.stack
-      });
+      res.status(HttpStatus.NOT_FOUND).json(this.getErrorResponse(error));
     });
   }
 
@@ -61,34 +58,31 @@ export default class ModelController {
       res.json({ status: 'OK' });
     }).catch((error) => {
       console.log('Failed to delete ' + this.singularName, error);
-      res.status(403).json({
-        status: 'FAILED',
-        message: error.message,
-        error: error.stack
-      });
+      res.status(HttpStatus.NOT_FOUND).json(this.getErrorResponse(error));
     });
   }
 
   save(req, res) {
-      this.modelService.save(req.body).then((object) => {
+    this.modelService.save(req.body).then((object) => {
       if(object) {
         let viewData = { status: 'OK' };
         viewData[this.singularName] = object;
         res.json(viewData);
       } else {
         console.log('Failed to save ' + this.singularName);
-        res.status(206).json({
-          status: 'FAILED',
-          message: 'Failed to save '+ this.singularName,
-        });
+        res.status(HttpStatus.NOT_ACCEPTABLE).json(this.getErrorResponse({ message: 'Failed to save '+ this.singularName }));
       }
     }).catch((error) => {
       console.log('Failed to save ' + this.singularName, error);
-      res.status(403).json({
-        status: 'FAILED',
-        message: error.message,
-        error: error.stack
-      });
+      res.status(HttpStatus.NOT_ACCEPTABLE).json(this.getErrorResponse(error));
     });
+  }
+
+  getErrorResponse(error) {
+    return {
+      status: 'FAILED',
+      message: error ? error.message : "",
+      error: error ? error.stack : ""
+    };
   }
 }

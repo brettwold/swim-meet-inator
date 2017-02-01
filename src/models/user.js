@@ -17,7 +17,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.ENUM('user', 'admin', 'superadmin'),
       defaultValue: 'user'
     },
-    google_id: DataTypes.STRING
+    google_id: DataTypes.STRING,
+    access_key_id: DataTypes.STRING,
+    access_key_secret: DataTypes.STRING
   }, {
     classMethods: {
     	associate: function(models) {

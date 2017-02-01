@@ -1,82 +1,26 @@
 var app = angular.module('SwimResultinator')
 
-app.factory('EntryFactory', ['$http', '$q', 'Entry', 'UrlService', function($http, $q, Entry, UrlService) {
+app.factory('EntryFactory', ['$http', '$q', 'Entry', function($http, $q, Entry) {
   var EntryFactory = {
-    _pool: {},
-    _retrieveInstance: function(entryId, entryData) {
-      var instance = this._pool[entryId];
-
-      if (instance) {
-        instance.setData(entryData);
-      } else {
-        instance = new Entry(entryData);
-        this._pool[entryId] = instance;
-      }
-
-      return instance;
-    },
-    _search: function(entryId) {
-      return this._pool[entryId];
-    },
-    _load: function(entryId, deferred) {
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/entries/' + entryId)
-      .success(function(entryData) {
-        var entry = scope._retrieveInstance(entryData.id, entryData);
-        deferred.resolve(entry);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-    },
     getEntry: function(entryId) {
       var deferred = $q.defer();
-      var entry = this._search(entryId);
-      if (entry) {
-        deferred.resolve(entry);
-      } else {
-        this._load(entryId, deferred);
-      }
+      $http.get('/api/entries/' + entryId).success(function(res) {
+        deferred.resolve(new Entry(res.entry));
+      }).error(function(err) {
+        deferred.reject(err);
+      });
       return deferred.promise;
     },
     loadEntries: function(meetId) {
       var deferred = $q.defer();
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/entries/meet/' + meetId).success(function(response) {
-        var entries = [];
-        var entriesArray = response.entries;
-        if(entriesArray) {
-          entriesArray.forEach(function(entryData) {
-            var entry = scope._retrieveInstance(entryData.id, entryData);
-            entries.push(entry);
-          });
-        } else {
-          console.log("No entries for meet");
-        }
-
-        deferred.resolve(entries);
-      })
-      .error(function() {
-        deferred.reject();
+      $http.get('/api/entries/meet/' + meetId).success(function(res) {
+        deferred.resolve(res.entries);
+      }).error(function(err) {
+        deferred.reject(err);
       });
       return deferred.promise;
-    },
-    setEntry: function(entryData) {
-      var scope = this;
-      var entry = this._search(entryData.id);
-      if (entry) {
-        entry.setData(entryData);
-      } else {
-        entry = scope._retrieveInstance(entryData);
-      }
-      return entry;
-    },
-    removeEntry: function(entry) {
-      delete this._pool[entry.id];
     }
-  };
+  }
   return EntryFactory;
 }]);
 
@@ -85,7 +29,7 @@ app.factory('Entry', ['$http', 'UrlService', function($http, UrlService) {
     if (entryData) {
       this.setData(entryData);
     }
-  };
+  }
   Entry.prototype = {
     setData: function(entryData) {
       angular.extend(this, entryData);
@@ -96,7 +40,7 @@ app.factory('Entry', ['$http', 'UrlService', function($http, UrlService) {
     update: function() {
       return $http.put(UrlService.baseUrl + '/api/entries/save', this);
     }
-  };
+  }
   return Entry;
 }]);
 

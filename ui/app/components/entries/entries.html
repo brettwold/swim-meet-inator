@@ -16,11 +16,15 @@
   <div layout-padding>
     <md-list>
       <md-list-item class="md-2-line" ng-repeat="entry in app.entries" ng-click="app.navigateTo('/edit/' + entry.id)">
-        <div class="md-list-item-text">
-          <h3>{{entry.swimmer.full_name}}</h3>
+        <div class="md-list-item-text" flex>
+          <h3>{{entry.swimmer.full_name}} ({{entry.swimmer.regno}})</h3>
         </div>
-        <span flex>{{ entry.entry_times }}
+        <span flex>{{ entry.swimmer.club }}</span>
+        <span flex>
+          {{ entry.entries.length }} races(s)
         </span>
+        <span flex="10">{{ entry.cost_per_race  | currency : '£' }}</span>
+        <span flex="10">{{ entry.paid ? "Yes" : "No" }}</span>
         <md-button ng-click="app.delete(entry.id)" class="md-secondary">Delete</md-button>
         <md-divider></md-divider>
       </md-list-item>

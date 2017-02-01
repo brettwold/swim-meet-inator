@@ -1,86 +1,22 @@
 var app = angular.module('SwimResultinator')
 
-app.factory('MeetFactory', ['$http', '$q', 'Meet', 'UrlService', function($http, $q, Meet, UrlService) {
+app.factory('MeetFactory', ['Meet', 'ObjectPool', function(Meet, ObjectPool) {
   var MeetFactory = {
-    _pool: {},
-    _retrieveInstance: function(meetId, meetData) {
-      var instance = this._pool[meetId];
-
-      if (instance) {
-        instance.setData(meetData);
-      } else {
-        instance = new Meet(meetData);
-        this._pool[meetId] = instance;
-      }
-
-      return instance;
-    },
-    _search: function(meetId) {
-      return this._pool[meetId];
-    },
-    _load: function(meetId, deferred) {
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + '/api/meets/' + meetId)
-      .success(function(meetData) {
-        var meet = scope._retrieveInstance(meetData.id, meetData);
-        deferred.resolve(meet);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-    },
-    _loadFromUri: function(uri) {
-      var deferred = $q.defer();
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + uri).success(function(res) {
-        var meetsArray = res.meets;
-        if(meetsArray) {
-          var meets = [];
-          meetsArray.forEach(function(meetsData) {
-            var meet = scope._retrieveInstance(meetsData.id, meetsData);
-            meets.push(meet);
-          });
-
-          deferred.resolve(meets);
-        } else {
-          deferred.reject();
-        }
-      })
-      .error(function() {
-        deferred.reject();
-      });
-      return deferred.promise;
-    },
+    pool: new ObjectPool('/api/meets', Meet, 'meets'),
     getMeet: function(meetId) {
-      var deferred = $q.defer();
-      var meet = this._search(meetId);
-      if (meet) {
-        deferred.resolve(meet);
-      } else {
-        this._load(meetId, deferred);
-      }
-      return deferred.promise;
+      return this.pool.get(meetId);
     },
     loadCurrentMeets: function() {
-      return this._loadFromUri('/api/meets/current');
+      return this.pool.load('/api/meets/current');
     },
     loadMeets: function() {
-      return this._loadFromUri('/api/meets');
+      return this.pool.load('/api/meets');
     },
     setMeet: function(meetData) {
-      var scope = this;
-      var meet = this._search(meetData.id);
-      if (meet) {
-        meet.setData(meetData);
-      } else {
-        meet = scope._retrieveInstance(meetData);
-      }
-      return meet;
+      return this.pool.set(meetData);
     },
     removeMeet: function(meet) {
-      delete this._pool[meet.id];
+      return this.pool.delete(meet);
     }
   };
   return MeetFactory;

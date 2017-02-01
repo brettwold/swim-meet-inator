@@ -9,13 +9,16 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import request from 'request';
-import auth from './helpers/authorisation';
+import AuthService from './services/authorise';
+import HttpStatus from 'http-status-codes';
 
 import api from './routes/api';
 
-let server;
 const expressApp = express();
 const port = process.env.PORT || '3456';
+
+let server;
+let auth = new AuthService();
 
 dotenv.load();
 
@@ -40,7 +43,7 @@ class ApiServer {
     expressApp.use(function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8100');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
         res.setHeader('Access-Control-Allow-Credentials', true);
         next();
     });
@@ -49,27 +52,14 @@ class ApiServer {
       req.logout();
       res.redirect('/');
     });
+    expressApp.use('/login', (req, res) => {
+      if(req.isAuthenticated()) {
+        res.send(req.user);
+      } else {
+        res.sendStatus(HttpStatus.UNAUTHORIZED);
+      }
+    });
     expressApp.use('/api', api);
-    // expressApp.use('/api/swimdata', auth.hasToken, require('./routes/swimdata'));
-    // expressApp.use('/api/meets', auth.hasToken, require('./routes/meets'));
-    // expressApp.use('/api/entries', auth.hasToken, require('./routes/entries'));
-    // expressApp.use('/api/clubs', auth.hasToken, require('./routes/clubs'));
-    // expressApp.use('/api/swimmers', auth.hasToken, require('./routes/swimmers'));
-    // expressApp.use('/api/swimtimes', auth.hasToken, require('./routes/swimtimes'));
-    //
-    // expressApp.use('/api/results', auth.isAdmin, require('./routes/results'));
-    // expressApp.use('/api/asa', auth.isAdmin, require('./routes/asa'));
-    // expressApp.use('/api/timesheets', auth.isAdmin, require('./routes/timesheets'));
-    // expressApp.use('/api/users', auth.isAdmin, require('./routes/users'));
-    //
-    // expressApp.use('/api', function(req, res) {
-    //   if(req.isAuthenticated()) {
-    //     res.send(req.user);
-    //   } else {
-    //     res.sendStatus(401);
-    //   }
-    // });
-
     expressApp.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
     expressApp.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/api' }),
       function(req, res) {

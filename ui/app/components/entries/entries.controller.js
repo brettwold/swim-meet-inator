@@ -23,10 +23,7 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       if(self.meetId) {
         MeetFactory.getMeet(self.meetId).then(function(meet) {
           self.meet = meet;
-          EntryFactory.loadEntries(meet.id).then(function(entries) {
-            console.log(entries);
-            self.entries = entries;
-          });
+          self._loadEntries(meet);
         });
       }
 
@@ -41,6 +38,12 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
         });
       }
     },
+    _loadEntries: function(meet) {
+      var self = this;
+      EntryFactory.loadEntries(meet.id).then(function(entries) {
+        self.entries = entries;
+      });
+    },
     navigateTo: function(to, event) {
       $location.path('/entries' + to);
     },
@@ -48,9 +51,10 @@ function EntryCtrl($scope, $location, $route, $routeParams, EntryFactory, MeetFa
       this.init();
     },
     delete: function(id) {
+      var self = this;
       EntryFactory.getEntry(id).then(function(entry) {
         entry.delete();
-        EntryFactory.removeEntry(entry);
+        self._loadEntries(self.meet);
       });
       this.init();
     },

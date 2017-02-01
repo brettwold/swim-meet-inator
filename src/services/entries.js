@@ -1,12 +1,15 @@
 import ObjectService from './objectservice';
 import SwimmersService from './swimmers';
+import ClubsService from './clubs';
 
 const swimmersService = new SwimmersService();
+const clubsService = new ClubsService();
 
 const Models = require('../models');
 const Meet = Models.Meet;
 const Entry = Models.Entry;
 const Swimmer = Models.Swimmer;
+const Club = Models.Club;
 const SwimTime = Models.SwimTime;
 
 var INCLUDES = [
@@ -46,21 +49,24 @@ export default class EntriesService extends ObjectService {
         let putSwimmer = entry.swimmer;
         if(putSwimmer) {
           Swimmer.findOrCreate({ defaults: putSwimmer, where: { regno: putSwimmer.regno }}).spread((swimmer, created) => {
-            console.log("Got swimmer: " + swimmer);
             for(let sTime in putSwimmer.times) {
               putSwimmer.times[sTime].swimmer_id = swimmer.id;
               SwimTime.upsert(putSwimmer.times[sTime]);
             }
 
+            Club.findOrCreate({ defaults: { name: swimmer.club }, where: { name: swimmer.club }}).spread((club, created) => {
+              swimmer.setClub(club);
+            });
+
             entry.entry_date = new Date();
             super.doSave(entry).then((entry) => {
               entry.setSwimmer(swimmer);
-              resolve();
-            })
+              resolve(entry);
+            });
           });
         }
       } else {
-        reject("No entry data")
+        reject("No entry data");
       }
     });
   }

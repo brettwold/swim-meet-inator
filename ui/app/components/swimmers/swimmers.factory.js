@@ -1,134 +1,58 @@
 var app = angular.module('SwimResultinator')
 
-app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', function($http, $q, Swimmer, UrlService) {
+app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', 'ObjectPool', function($http, $q, Swimmer, UrlService, ObjectPool) {
   var SwimmerFactory = {
-    _pool: {},
-    _retrieveInstance: function(swimmerId, swimmerData) {
-      var instance = this._pool[swimmerId];
-
-      if (instance) {
-        instance.setData(swimmerData);
-      } else {
-        instance = new Swimmer(swimmerData);
-        this._pool[swimmerId] = instance;
-      }
-
-      return instance;
-    },
-    _search: function(swimmerId) {
-      return this._pool[swimmerId];
-    },
+    pool: new ObjectPool('/api/swimmers', Swimmer, 'swimmers'),
     _searchByRegNo: function(regno) {
-      for(swimmer in this._pool) {
+      for(swimmer in this.pool.current()) {
         if(swimmer.regno == regno) {
           return swimmer;
         }
       }
     },
-    _load: function(swimmerId, deferred, byRegno) {
-      var scope = this;
-
-      var getUrl = UrlService.baseUrl + '/api/swimmers/' + swimmerId;
-
-      if(byRegno) {
-        getUrl = UrlService.baseUrl + '/api/swimmers/regno/' + swimmerId;
-      }
-
-      $http.get(getUrl)
-        .success(function(swimmerData) {
-          if(swimmerData) {
-            var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
-            deferred.resolve(swimmer);
-          } else {
-            deferred.reject("No swimmer data found");
-          }
-        }).catch(function(e) {
-          deferred.reject(e.statusText);
-        });
-    },
     getSwimmer: function(swimmerId) {
-      var deferred = $q.defer();
-      var swimmer = this._search(swimmerId);
-      if (swimmer && swimmer.swim_times) {
-        deferred.resolve(swimmer);
-      } else {
-        this._load(swimmerId, deferred);
-      }
-      return deferred.promise;
+      return this.pool.get(swimmerId);
     },
     getSwimmerByRegNo: function(regno) {
-      var deferred = $q.defer();
       var swimmer = this._searchByRegNo(regno);
       if (swimmer && swimmer.swim_times) {
+        var deferred = $q.defer();
         deferred.resolve(swimmer);
+        return deferred.promise;
       } else {
-        this._load(regno, deferred, true);
+        return this.pool.load('/api/swimmers/regno/' + swimmerId);
       }
-      return deferred.promise;
     },
-    _doLoadSwimmers: function(api) {
+    loadSwimmers: function() {
+      return this.pool.load();
+    },
+    lookupTimes: function(asanum) {
       var deferred = $q.defer();
-      var scope = this;
-
-      $http.get(UrlService.baseUrl + api).success(function(response) {
-        var swimmers = [];
-        var swimmersArray = response.swimmers;
-        swimmersArray.forEach(function(swimmerData) {
-          var swimmer = scope._retrieveInstance(swimmerData.id, swimmerData);
-          swimmers.push(swimmer);
-        });
-
-        deferred.resolve(swimmers);
+      $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum).success(function(response) {
+        deferred.resolve(response.times);
       }).error(function() {
         deferred.reject();
       });
       return deferred.promise;
     },
-    loadUserSwimmers: function() {
-      return this._doLoadSwimmers('/api/swimmers/user');
-    },
-    loadSwimmers: function() {
-      return this._doLoadSwimmers('/api/swimmers');
-    },
-    lookupTimes: function(asanum) {
-      var deferred = $q.defer();
-
-      $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum)
-      .success(function(response) {
-        deferred.resolve(response.times);
-      })
-      .error(function() {
-        deferred.reject();
-      });
-      return deferred.promise;
-    },
     setSwimmer: function(swimmerData) {
-      var scope = this;
-      var swimmer = this._search(swimmerData.id);
-      if (swimmer) {
-        swimmer.setData(swimmerData);
-      } else {
-        swimmer = scope._retrieveInstance(swimmerData);
-      }
-      return swimmer;
+      return this.pool.set(swimmerData);
     },
     removeSwimmer: function(swimmer) {
-      delete this._pool[swimmer.id];
+      this.pool.remove(swimmer);
     }
   };
   return SwimmerFactory;
 }]);
 
 app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($http, $q, UrlService, ConfigData) {
-  var config;
-  ConfigData.getConfig().then(function(data) {
-    config = data;
-  });
-
   function Swimmer(swimmerData) {
     if (swimmerData) {
       this.setData(swimmerData);
     }
+    ConfigData.getConfig().then(function(data) {
+      this.config = data;
+    });
   };
   Swimmer.prototype = {
     setData: function(swimmerData) {
