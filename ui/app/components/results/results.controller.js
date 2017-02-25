@@ -5,7 +5,7 @@ angular
 function ResultCtrl($scope, $http, UrlService, MeetFactory, SwimmerFactory, ConfigData) {
 
   $scope.readResults = function() {
-    $http.get(UrlService.baseUrl + '/api/results/' + $scope.meetId).then(function(response) {
+    $http.get(UrlService.baseUrl + '/results/' + $scope.meetId).then(function(response) {
       $scope.data = response.data;
     });
   }

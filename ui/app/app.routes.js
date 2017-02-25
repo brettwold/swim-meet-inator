@@ -9,7 +9,7 @@ angular
       redirectTo: '/'
     });
 
-    $httpProvider.interceptors.push(['$rootScope', '$q', '$injector','$location', 'SessionService', function ($rootScope, $q, $injector, $location, SessionService) {
+    $httpProvider.interceptors.push(['$rootScope', '$q', '$injector','$location', 'SessionService', 'UrlService', function ($rootScope, $q, $injector, $location, SessionService, UrlService) {
       return {
         request: function(request) {
             if ($rootScope.oauth) {
@@ -23,7 +23,7 @@ angular
         responseError: function (response) {
           if (response.status === 401 && response.data.error && response.data.error === "invalid_token") {
             var deferred = $q.defer();
-            $injector.get("$http").post('/api/authenticate', {
+            $injector.get("$http").post(UrlService.baseUrl + '/authenticate', {
               access_key_id: SessionService.user.access_key_id,
               access_key_secret: SessionService.user.access_key_secret
             }).then(function(loginResponse) {

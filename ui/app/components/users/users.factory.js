@@ -2,7 +2,7 @@ var app = angular.module('SwimResultinator')
 
 app.factory('UserFactory', ['User', 'ObjectPool', function(User, ObjectPool) {
   var UserFactory = {
-    pool: new ObjectPool('/api/users', User, 'users'),
+    pool: new ObjectPool('/users', User, 'users'),
     getUser: function(userId) {
       return this.pool.get(userId);
     },
@@ -30,10 +30,10 @@ app.factory('User', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, userData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/users/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/users/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/users/save', this);
+      return $http.put(UrlService.baseUrl + '/users/save', this);
     },
     fullName: function() {
       return this.first_name + ' ' + this.last_name;

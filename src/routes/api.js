@@ -7,6 +7,7 @@ import SwimmersController from '../controllers/swimmers';
 import SwimtimesController from '../controllers/swimtimes';
 import EntriesController from '../controllers/entries';
 import UsersController from '../controllers/users';
+import MembersController from '../controllers/members';
 import ResultsController from '../controllers/results';
 import AsaController from '../controllers/asa';
 import SwimData from '../helpers/swimdata';
@@ -17,6 +18,7 @@ const meetsController = new MeetsController();
 const timesheetController = new TimesheetsController();
 const clubsController = new ClubsController();
 const usersController = new UsersController();
+const membersController = new MembersController();
 const swimmersController = new SwimmersController();
 const swimtimesController = new SwimtimesController();
 const entriesController = new EntriesController();
@@ -32,9 +34,11 @@ router.post('/authenticate', function(req, res) { authenticationController.authe
 router.get('/swimdata', (req, res) => { res.json(SwimData); });
 
 // External api URIs to be called from application
+router.put('/members/signup', auth.isAuthApi, (req, res) => { membersController.signup(req, res) });
+
 router.get('/meets', auth.isAuthApi, (req, res) => { meetsController.get(req, res) });
-router.get('/meets/current',  auth.isAuthApi, (req, res) => { meetsController.current(req, res) });
-router.get('/meets/:id',  auth.isAuthApi, (req, res) => { meetsController.edit(req, res) });
+router.get('/meets/current', auth.isAuthApi, (req, res) => { meetsController.current(req, res) });
+router.get('/meets/:id', auth.isAuthApi, (req, res) => { meetsController.edit(req, res) });
 
 router.get('/entries', auth.isAuthApi, (req, res) => { entriesController.get(req, res) });
 router.get('/entries/:id', auth.isAuthApi, (req, res) => { entriesController.edit(req, res) });

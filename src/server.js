@@ -59,9 +59,9 @@ class ApiServer {
         res.sendStatus(HttpStatus.UNAUTHORIZED);
       }
     });
-    expressApp.use('/api', api);
+    expressApp.use('/api/v1', api);
     expressApp.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
-    expressApp.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/api' }),
+    expressApp.get('/auth/google/callback',passport.authenticate('google', { failureRedirect: '/login' }),
       function(req, res) {
         console.log(req.user);
         res.redirect('/');

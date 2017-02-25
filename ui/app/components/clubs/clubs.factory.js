@@ -2,7 +2,7 @@ var app = angular.module('SwimResultinator')
 
 app.factory('ClubFactory', ['Club', 'ObjectPool', function(Club, ObjectPool) {
   var ClubFactory = {
-    pool: new ObjectPool('/api/clubs', Club, 'clubs'),
+    pool: new ObjectPool('/clubs', Club, 'clubs'),
     getClub: function(clubId) {
       return this.pool.get(clubId);
     },
@@ -30,10 +30,10 @@ app.factory('Club', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, clubData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/clubs/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/clubs/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/clubs/save', this);
+      return $http.put(UrlService.baseUrl + '/clubs/save', this);
     }
   };
   return Club;

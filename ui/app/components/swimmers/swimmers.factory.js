@@ -2,7 +2,7 @@ var app = angular.module('SwimResultinator')
 
 app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', 'ObjectPool', function($http, $q, Swimmer, UrlService, ObjectPool) {
   var SwimmerFactory = {
-    pool: new ObjectPool('/api/swimmers', Swimmer, 'swimmers'),
+    pool: new ObjectPool('/swimmers', Swimmer, 'swimmers'),
     _searchByRegNo: function(regno) {
       for(swimmer in this.pool.current()) {
         if(swimmer.regno == regno) {
@@ -20,7 +20,7 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', 'ObjectPo
         deferred.resolve(swimmer);
         return deferred.promise;
       } else {
-        return this.pool.load('/api/swimmers/regno/' + swimmerId);
+        return this.pool.load('/swimmers/regno/' + swimmerId);
       }
     },
     loadSwimmers: function() {
@@ -28,7 +28,7 @@ app.factory('SwimmerFactory', ['$http', '$q', 'Swimmer', 'UrlService', 'ObjectPo
     },
     lookupTimes: function(asanum) {
       var deferred = $q.defer();
-      $http.get(UrlService.baseUrl + '/api/asa/swimmer/' + asanum).success(function(response) {
+      $http.get(UrlService.baseUrl + '/asa/swimmer/' + asanum).success(function(response) {
         deferred.resolve(response.times);
       }).error(function() {
         deferred.reject();
@@ -59,16 +59,16 @@ app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($htt
       angular.extend(this, swimmerData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/swimmers/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/swimmers/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/swimmers/save', this);
+      return $http.put(UrlService.baseUrl + '/swimmers/save', this);
     },
     addToUser: function() {
-      return $http.put(UrlService.baseUrl + '/api/swimmers/addtouser/' + this.id);
+      return $http.put(UrlService.baseUrl + '/swimmers/addtouser/' + this.id);
     },
     removeFromUser: function() {
-      return $http.put(UrlService.baseUrl + '/api/swimmers/removefromuser/' + this.id);
+      return $http.put(UrlService.baseUrl + '/swimmers/removefromuser/' + this.id);
     },
     dateOfBirth: function() {
       if (!this.dob) {
@@ -89,7 +89,7 @@ app.factory('Swimmer', ['$http', '$q', 'UrlService', 'ConfigData', function($htt
     getBestTimes: function(qualDate) {
       var deferred = $q.defer();
       if(qualDate) {
-        $http.get(UrlService.baseUrl + '/api/swimtimes/best/' + this.id + '/' + qualDate)
+        $http.get(UrlService.baseUrl + '/swimtimes/best/' + this.id + '/' + qualDate)
           .success(function(swimTimes) {
             if(swimTimes) {
               deferred.resolve(swimTimes);

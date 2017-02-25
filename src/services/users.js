@@ -38,6 +38,28 @@ export default class UsersService extends ObjectService {
     return super.doSave(payload);
   }
 
+  createMember(data) {
+    console.log("Creating member");
+    console.log(data);
+    const payload = {
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      photo: data.image,
+      role: 'user',
+      access_key_id: this.generateId(),
+      access_key_secret: this.generateSecret()
+    }
+
+    console.log(payload);
+
+    if(payload.first_name && payload.last_name && payload.email) {
+      return super.doSave(payload);
+    } else {
+      return Promise.reject("Missing signup data");
+    }
+  }
+
   getToken(user) {
     let jwtData = { id: user.id,
       name: user.last_name,

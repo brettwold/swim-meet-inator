@@ -2,15 +2,15 @@ var app = angular.module('SwimResultinator')
 
 app.factory('MeetFactory', ['Meet', 'ObjectPool', function(Meet, ObjectPool) {
   var MeetFactory = {
-    pool: new ObjectPool('/api/meets', Meet, 'meets'),
+    pool: new ObjectPool('/meets', Meet, 'meets'),
     getMeet: function(meetId) {
       return this.pool.get(meetId);
     },
     loadCurrentMeets: function() {
-      return this.pool.load('/api/meets/current');
+      return this.pool.load('/meets/current');
     },
     loadMeets: function() {
-      return this.pool.load('/api/meets');
+      return this.pool.load('/meets');
     },
     setMeet: function(meetData) {
       return this.pool.set(meetData);
@@ -57,10 +57,10 @@ app.factory('Meet', ['$http', '$q', 'UrlService', 'ConfigData', 'TimesheetFactor
       this.config = config;
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/meets/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/meets/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/meets/save', this);
+      return $http.put(UrlService.baseUrl + '/meets/save', this);
     },
     startDate: function() {
       if (!this.meet_date) {

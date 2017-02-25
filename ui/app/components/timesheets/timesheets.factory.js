@@ -2,7 +2,7 @@ var app = angular.module('SwimResultinator')
 
 app.factory('TimesheetFactory', ['Timesheet', 'ObjectPool', 'TimesheetParser', function(Timesheet, ObjectPool, TimesheetParser) {
   var TimesheetFactory = {
-    pool: new ObjectPool('/api/timesheets', Timesheet, 'timesheets'),
+    pool: new ObjectPool('/timesheets', Timesheet, 'timesheets'),
     parser: new TimesheetParser(),
     getTimesheet: function(timesheetId) {
       return this.pool.get(timesheetId);
@@ -37,10 +37,10 @@ app.factory('Timesheet', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, timesheetData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/timesheets/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/timesheets/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/timesheets/save', this);
+      return $http.put(UrlService.baseUrl + '/timesheets/save', this);
     }
   };
   return Timesheet;

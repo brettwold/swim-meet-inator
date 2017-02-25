@@ -1,17 +1,15 @@
 angular
-  .module('SwimResultinator')
-  .factory('UrlService', function($location) {
+  .module('SwimResultinator').factory('UrlService', function($location) {
     return {
-        baseUrl : 'http://' + $location.host() + ':3456'
+        baseUrl : 'http://' + $location.host() + ':3456/api/v1'
     };
-  })
-  .factory('ConfigData', function($http, $q) {
+  }).factory('ConfigData', function($http, $q, UrlService) {
     var swimdata;
     return {
       getConfig: function() {
         var data = $q.defer();
         if(!swimdata) {
-          $http.get('/api/swimdata')
+          $http.get(UrlService.baseUrl + '/swimdata')
             .success(function (response) {
               swimdata = response;
               data.resolve(response);
@@ -25,9 +23,7 @@ angular
         return data.promise;
       }
     };
-  });
-
-  angular.module('SwimResultinator').config(function($mdDateLocaleProvider) {
+  }).config(function($mdDateLocaleProvider) {
     $mdDateLocaleProvider.formatDate = function(date) {
       return moment(date).format('DD-MMM-YYYY');
     };

@@ -10,15 +10,15 @@ export default class EntriesController extends ModelController {
   }
 
   save(req, res) {
-    entriesService.saveCheckSwimmerAndCreateEntry(req.body).then((entry) => {
-      if(entry) {
-        res.json({ status: 'OK' });
-      } else {
-
-      }
+    entriesService.saveCheckSwimmerAndCreateEntry(req.body.entry).then((response) => {
+      res.json({ status: 'OK', entry: response });
     }).catch((error) => {
       console.log('Failed to save entry for meet', error);
-      res.status(HttpStatus.NOT_ACCEPTABLE).json(super.getErrorResponse(error));
+      res.status(403).json({
+        status: 'FAILED',
+        message: error.message,
+        error: error.stack
+      });
     });
   }
 
@@ -32,7 +32,11 @@ export default class EntriesController extends ModelController {
       res.json(super.getListViewData(req.user, 1, objects));
     }).catch((error) => {
       console.log('Failed to get entries for meet', error);
-      res.status(HttpStatus.NOT_FOUND).json(super.getErrorResponse(error));
+      res.status(403).json({
+        status: 'FAILED',
+        message: error.message,
+        error: error.stack
+      });
     });
   }
 }

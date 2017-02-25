@@ -1,10 +1,10 @@
 var app = angular.module('SwimResultinator')
 
-app.factory('EntryFactory', ['$http', '$q', 'Entry', function($http, $q, Entry) {
+app.factory('EntryFactory', ['$http', '$q', 'Entry', 'UrlService', function($http, $q, Entry, UrlService) {
   var EntryFactory = {
     getEntry: function(entryId) {
       var deferred = $q.defer();
-      $http.get('/api/entries/' + entryId).success(function(res) {
+      $http.get(UrlService.baseUrl + '/entries/' + entryId).success(function(res) {
         deferred.resolve(new Entry(res.entry));
       }).error(function(err) {
         deferred.reject(err);
@@ -13,7 +13,7 @@ app.factory('EntryFactory', ['$http', '$q', 'Entry', function($http, $q, Entry) 
     },
     loadEntries: function(meetId) {
       var deferred = $q.defer();
-      $http.get('/api/entries/meet/' + meetId).success(function(res) {
+      $http.get(UrlService.baseUrl + '/entries/meet/' + meetId).success(function(res) {
         deferred.resolve(res.entries);
       }).error(function(err) {
         deferred.reject(err);
@@ -35,10 +35,10 @@ app.factory('Entry', ['$http', 'UrlService', function($http, UrlService) {
       angular.extend(this, entryData);
     },
     delete: function() {
-      return $http.get(UrlService.baseUrl + '/api/entries/delete/' + this.id);
+      return $http.get(UrlService.baseUrl + '/entries/delete/' + this.id);
     },
     update: function() {
-      return $http.put(UrlService.baseUrl + '/api/entries/save', this);
+      return $http.put(UrlService.baseUrl + '/entries/save', this);
     }
   }
   return Entry;
