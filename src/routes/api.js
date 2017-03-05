@@ -58,6 +58,7 @@ router.get('/clubs/:id', auth.isAdmin, (req, res) => { clubsController.edit(req,
 router.get('/clubs/:id/swimmers', auth.isAdmin, (req, res) => { clubsController.swimmers(req, res) });
 router.put('/clubs/save', auth.isAdmin, (req, res) => { clubsController.save(req, res) });
 router.get('/clubs/delete/:id', auth.isAdmin, (req, res) => { clubsController.delete(req, res) });
+router.get('/clubsimport', (req, res) => { clubsController.importClubs(req, res) });
 
 router.get('/swimmers', auth.isAdmin, (req, res) => { swimmersController.get(req, res) });
 router.get('/swimmers/:id', auth.isAdmin, (req, res) => { swimmersController.edit(req, res) });

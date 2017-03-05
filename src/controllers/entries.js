@@ -10,6 +10,7 @@ export default class EntriesController extends ModelController {
   }
 
   save(req, res) {
+    console.log(req.body);
     entriesService.saveCheckSwimmerAndCreateEntry(req.body.entry).then((response) => {
       res.json({ status: 'OK', entry: response });
     }).catch((error) => {

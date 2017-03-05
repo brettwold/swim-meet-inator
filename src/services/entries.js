@@ -1,7 +1,9 @@
 import ObjectService from './objectservice';
 import SwimmersService from './swimmers';
+import ClubsService from './clubs';
 
 const swimmersService = new SwimmersService();
+const clubService = new ClubsService();
 
 const Models = require('../models');
 const Meet = Models.Meet;
@@ -51,12 +53,11 @@ export default class EntriesService extends ObjectService {
               putSwimmer.times[sTime].swimmer_id = swimmer.id;
               SwimTime.upsert(putSwimmer.times[sTime]);
             }
-
             entry.entry_date = new Date();
             super.doSave(entry).then((entry) => {
               entry.setSwimmer(swimmer);
               resolve(entry);
-            })
+            });
           });
         }
       } else {

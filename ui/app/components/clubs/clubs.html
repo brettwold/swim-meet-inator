@@ -5,7 +5,7 @@
     <md-list>
       <md-list-item class="md-2-line" ng-repeat="club in app.clubs" ng-click="app.navigateTo('/edit/' + club.id)">
         <div class="md-list-item-text">
-          <h3>{{club.name}}</h3>
+          <h3>{{club.name}} ({{club.code}})</h3>
         </div>
         <span flex></span>
         <md-button ng-click="app.delete(club.id)" class="md-secondary">Delete</md-button>

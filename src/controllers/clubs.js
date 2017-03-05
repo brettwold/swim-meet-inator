@@ -21,4 +21,9 @@ export default class ClubsController extends ModelController {
       res.json(result);
     });
   }
+
+  importClubs(req, res) {
+    clubsService.importClubs();
+    res.json({});
+  }
 }
